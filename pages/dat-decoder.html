@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DAT Decoder - Growtools</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        /* Additional styles for the dropdown menu */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: var(--darker);
+            min-width: 200px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+            border-radius: 6px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .dropdown-content a {
+            color: var(--light);
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            text-align: left;
+            font-size: 14px;
+        }
+        
+        .dropdown-content a:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+        
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+        
+        .dropdown:hover .dropbtn {
+            background: rgba(255, 255, 255, 0.05);
+        }
+        
+        .more-tools-btn {
+            display: flex;
+            align-items: center;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        
+        .more-tools-btn i {
+            margin-left: 5px;
+            font-size: 12px;
+        }
+        
+        @media (max-width: 1024px) {
+            .dropdown-content {
+                right: 0;
+            }
+        }
+        
+        .status-message {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            text-align: center;
+            font-weight: 500;
+        }
+        
+        .status-uploading {
+            background-color: rgba(255, 204, 77, 0.1);
+            color: var(--warning);
+            border: 1px solid rgba(255, 204, 77, 0.3);
+        }
+        
+        .status-success {
+            background-color: rgba(93, 218, 130, 0.1);
+            color: var(--success);
+            border: 1px solid rgba(93, 218, 130, 0.3);
+        }
+        
+        .status-decoding {
+            background-color: rgba(91, 140, 255, 0.1);
+            color: var(--primary);
+            border: 1px solid rgba(91, 140, 255, 0.3);
+        }
+        
+        .status-error {
+            background-color: rgba(255, 107, 107, 0.1);
+            color: var(--danger);
+            border: 1px solid rgba(255, 107, 107, 0.3);
+        }
+        .tool-header h1 {
+    color: var(--tool-1);
+    }
+
+    .tool-section h2 {
+        color: var(--tool-1);
+        border-bottom: 2px solid var(--tool-1);
+    }
+
+    .btn-primary {
+        background: linear-gradient(to right, var(--tool-1), #ff6b6b);
+    }
+
+    .btn-primary:hover {
+        background: linear-gradient(to right, #ff6b6b, var(--tool-1));
+    }     
+
+    .results-header h3 {
+        color: var(--tool-1);
+    }
+    .tool-section h3 {
+        color: var(--tool-1);
+        border-bottom: 2px solid var(--tool-1);
+        padding-bottom: 8px;
+        margin-top: 20px;
+        font-size: 1.2em;
+    }
+    .social-links a,
+        .social-links a:focus,
+        .social-links a:active,
+        .social-links a:hover {
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            outline: none !important;
+            box-shadow: none !important;
+            border: none !important;
+            text-decoration: none !important;
+            display: inline-block;
+            color: var(--light);
+            transition: all 0.3s ease;
+            font-size: 20px;
+            margin-right: 15px;
+            background: none !important;
+            width: auto !important;
+            height: auto !important;
+            border-radius: 0 !important;
+        }
+
+        .social-links a:hover {
+            color: var(--primary);
+            transform: translateY(-3px);
+        }
+
+        /* Remove default focus styles in modern browsers */
+        .social-links a:focus:not(:focus-visible) {
+            outline: none !important;
+        }
+
+        /* Add custom focus style for keyboard navigation only */
+        .social-links a:focus-visible {
+            outline: 2px solid var(--tool-3) !important;
+            outline-offset: 3px;
+            border-radius: 2px;
+        }
+        .logo {
+        display: flex;
+        align-items: center;
+        gap: 10px; /* space between logo and text */
+        }
+
+        .logo-img {
+        height: 50px;  /* make the logo bigger */
+        width: auto;
+        }
+        .nav-links a[href*="render-world"] i {
+        color: var(--tool-8);
+    }
+header {
+  position: relative; /* so child absolute positioning works */
+}
+
+.visitor-count {
+  position: absolute;
+  top: 50%;
+  right: 20px;       /* adjust spacing from right edge */
+  transform: translateY(-50%); /* vertical centering */
+  list-style: none;
+}
+
+
+
+
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-content">
+            <div class="logo">
+                <img src="../images/Water_Stone.png" alt="Growtools Logo" class="logo-img">
+                <span class="logo-text">Growtools</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="../index.html" class="nav-link"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="dat-decoder.html" class="nav-link active"><i class="fas fa-code"></i> DAT Decoder</a></li>
+                <li><a href="data-mining.html" class="nav-link"><i class="fas fa-database"></i> Data Mining</a></li>
+                <li><a href="rttex-converter.html" class="nav-link"><i class="fas fa-exchange-alt"></i> RTTEX Converter</a></li>
+                
+                <!-- Dropdown for additional tools -->
+                <li class="dropdown">
+                    <div class="more-tools-btn nav-link">
+                        <i class="fas fa-cubes"></i> More Tools <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="dropdown-content">
+                        <a href="account-checker.html"><i class="fas fa-user-shield"></i> Account Checker</a>
+                        <a href="render-world.html"><i class="fas fa-globe"></i> World Renderer</a>
+                        <a href="server-monitor.html"><i class="fas fa-server"></i> Server Monitor</a>
+                        <a href="cache-checker.html"><i class="fas fa-id-card"></i> Cache Checker</a>
+                    </div>
+                </li>
+                
+                <div class="visitor-count">
+                <a href="https://visitorbadge.io/status?path=https%3A%2F%2Fgithub.com%2FxSkriptx%2FSkriptProxy">
+                    <img src="https://api.visitorbadge.io/api/visitors?path=https%3A%2F%2Fgithub.com%2FxSkriptx%2FSkriptProxy&countColor=%23263759" />
+                </a>
+            </div>  
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="content-area">
+            <div class="container tool-container">
+                <div class="tool-header">
+                    <h1><i class="fas fa-code"></i> DAT Decoder</h1>
+                    <p>Decode and analyze Growtopia item DAT files to extract detailed information</p>
+                </div>
+                
+                <div class="tool-content">
+                    <div class="tool-section">
+                        <h2>Upload DAT File</h2>
+                        <p>Select a Growtopia item DAT file to decode its contents and analyze the item properties.</p>
+                        
+                        <div class="form-group">
+                            <label for="datFile">DAT File</label>
+                            <input type="file" id="datFile" class="form-control" accept=".dat">
+                        </div>
+                        
+                        <div id="statusArea"></div>
+                        
+                        <button class="btn btn-primary" id="decodeBtn">
+                            <i class="fas fa-cog"></i> Decode File
+                        </button>
+                    </div>
+                    
+                    <div class="tool-section">
+                        <h2>Decoded Results</h2>
+                        <div class="results-area">
+                            <div class="results-header">
+                                <h3>Item Information</h3>
+                                <button class="btn btn-primary" id="copyResults">
+                                    <i class="fas fa-copy"></i> Copy
+                                </button>
+                            </div>
+                            <div class="results-content" id="decodedResults">
+                                // Decoded results will appear here
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tool-content">
+                    <div class="tool-section">
+                        <h2>About DAT Files</h2>
+                        <p>Growtopia DAT files contain information about items in the game, including their properties, behaviors, and visual characteristics. This tool helps you decode these files to understand how items work.</p>
+                        
+                        <h3>How to find DAT files</h3>
+                        <p>DAT files are located in the Growtopia game directory. On Android devices, you can find them in the game's data folder. On PC, they're typically in the Growtopia installation directory.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+<footer>
+    <div class="container">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>About Growtools</h3>
+                <p>A collection of powerful utilities designed to help Growtopia players get the most out of their game experience.</p>
+                <div class="social-links">
+                    <a href="https://discord.gg/HSdayEQKwe" target="_blank"><i class="fab fa-discord"></i></a>
+                    <a href="https://www.youtube.com/channel/UCvoRNyYeWnmb1TojljTkdbA" target="_blank"><i class="fab fa-youtube"></i></a>
+                    <a href="https://github.com/xSkriptx/Growtools" target="_blank"><i class="fab fa-github"></i></a>
+                </div>
+            </div>
+            <div class="footer-section">
+                <h3>Tools</h3>
+                <a href="dat-decoder.html"><i class="fas fa-code"></i> DAT Decoder</a>
+                <a href="data-mining.html"><i class="fas fa-database"></i> Data Mining</a>
+                <a href="rttex-converter.html"><i class="fas fa-exchange-alt"></i> RTTEX Converter</a>
+                <a href="account-checker.html"><i class="fas fa-user-shield"></i> Account Checker</a>
+            </div>
+            <div class="footer-section">
+                <h3>Support</h3>
+                <a href="https://discord.gg/HSdayEQKwe" target="_blank"><i class="fas fa-envelope"></i> Contact Us</a>
+                <a href="https://discord.gg/HSdayEQKwe" target="_blank"><i class="fas fa-question-circle"></i> FAQ</a>
+                <a href="https://discord.gg/HSdayEQKwe" target="_blank"><i class="fas fa-bug"></i> Report Bug</a>
+                <a href="https://discord.gg/HSdayEQKwe" target="_blank"><i class="fas fa-lightbulb"></i> Feature Request</a>
+            </div>
+        </div>
+        <div class="copyright">
+            &copy; 2025 Growtools. Not affiliated with Growtopia or Ubisoft. All Growtopia content is property of Ubisoft Entertainment.
+        </div>
+    </div>
+</footer>
+
+    <script src="../js/script.js"></script>
+    <script>
+        // Constants for field types
+        const STRING = -1;
+        const STRING_XOR = -2;
+
+        // Field definition function
+        function field(size, { version = 0 } = {}) {
+            return { size, version };
+        }
+
+        // Get the generic template for DAT files
+        function getGenericTemplate() {
+            return {
+                "id": field(4),
+                "properties": field(2),
+                "type": field(1),
+                "material": field(1),
+                "name": field(STRING_XOR),
+                "file_name": field(STRING),
+                "file_hash": field(4),
+                "visual_type": field(1),
+                "cook_time": field(4),
+                "tex_x": field(1),
+                "tex_y": field(1),
+                "storage_type": field(1),
+                "layer": field(1),
+                "collision_type": field(1),
+                "hardness": field(1),
+                "regen_time": field(4),
+                "clothing_type": field(1),
+                "rarity": field(2),
+                "max_hold": field(1),
+                "alt_file_path": field(STRING),
+                "alt_file_hash": field(4),
+                "anim_ms": field(4),
+                "pet_name": field(STRING, { version: 4 }),
+                "pet_prefix": field(STRING, { version: 4 }),
+                "pet_suffix": field(STRING, { version: 4 }),
+                "pet_ability": field(STRING, { version: 5 }),
+                "seed_base": field(1),
+                "seed_over": field(1),
+                "tree_base": field(1),
+                "tree_over": field(1),
+                "bg_col": field(4),
+                "fg_col": field(4),
+                "seed1": field(2),
+                "seed2": field(2),
+                "bloom_time": field(4),
+                "anim_type": field(4, { version: 7 }),
+                "anim_string": field(STRING, { version: 7 }),
+                "anim_tex": field(STRING, { version: 8 }),
+                "anim_string2": field(STRING, { version: 8 }),
+                "dlayer1": field(4, { version: 8 }),
+                "dlayer2": field(4, { version: 8 }),
+                "properties2": field(2, { version: 9 }),
+                "_unk": field(62, { version: 9 }),
+                "tile_range": field(4, { version: 10 }),
+                "pile_range": field(4, { version: 10 }),
+                "custom_punch": field(STRING, { version: 11 }),
+                "_unk2": field(13, { version: 12 }),
+                "clock_div": field(4, { version: 13 }),
+                "parent_id": field(4, { version: 14 }),
+                "_unk3": field(25, { version: 15 }),
+                "alt_sit_path": field(STRING, { version: 15 }),
+                "_unk4": field(STRING, { version: 16 }),
+                "_unk5": field(4, { version: 17 }),
+                "_unk6": field(4, { version: 18 }),
+                "_unk7": field(9, { version: 19 }),
+                "_unk8": field(1, { version: 20 }),
+                "_unk9": field(1, { version: 21 }),
+                "_unk10": field(STRING, { version: 22 }), // Item's info
+            };
+        }
+
+        // Parse a number from the buffer
+        function parseNumber(buffer, offset, size) {
+            let value = 0;
+            for (let i = 0; i < size; i++) {
+                value += buffer[offset + i] << (i * 8);
+            }
+            return { value, newOffset: offset + size };
+        }
+
+        // Parse a string from the buffer
+        function parseString(buffer, offset) {
+            const lengthResult = parseNumber(buffer, offset, 2);
+            const length = lengthResult.value;
+            const stringBytes = buffer.slice(lengthResult.newOffset, lengthResult.newOffset + length);
+            const str = new TextDecoder().decode(stringBytes);
+            return { value: str, newOffset: lengthResult.newOffset + length };
+        }
+
+        // Decrypt item name using XOR cipher
+        function decryptItemName(name, id) {
+            const key = "PBG892FXX982ABC*";
+            const keyLen = key.length;
+            let result = "";
+            
+            for (let i = 0; i < name.length; i++) {
+                const keyChar = key[(i + id) % keyLen];
+                result += String.fromCharCode(name.charCodeAt(i) ^ keyChar.charCodeAt(0));
+            }
+            
+            return result;
+        }
+
+        // Parse the items.dat file
+        function parseItemsDat(buffer) {
+            let offset = 0;
+            
+            // Read version
+            const versionResult = parseNumber(buffer, offset, 2);
+            const version = versionResult.value;
+            offset = versionResult.newOffset;
+            
+            // Read item count
+            const itemCountResult = parseNumber(buffer, offset, 4);
+            const itemCount = itemCountResult.value;
+            offset = itemCountResult.newOffset;
+            
+            const template = getGenericTemplate();
+            const items = [];
+            
+            for (let i = 0; i < itemCount; i++) {
+                const item = {};
+                
+                for (const [key, fieldInfo] of Object.entries(template)) {
+                    // Skip fields that are not in this version
+                    if (fieldInfo.version > version) {
+                        continue;
+                    }
+                    
+                    if (fieldInfo.size === STRING_XOR) {
+                        const strResult = parseString(buffer, offset);
+                        item[key] = decryptItemName(strResult.value, i);
+                        offset = strResult.newOffset;
+                    } else if (fieldInfo.size === STRING) {
+                        const strResult = parseString(buffer, offset);
+                        item[key] = strResult.value;
+                        offset = strResult.newOffset;
+                    } else {
+                        const numResult = parseNumber(buffer, offset, fieldInfo.size);
+                        item[key] = numResult.value;
+                        offset = numResult.newOffset;
+                    }
+                }
+                
+                items.push(item);
+            }
+            
+            return { version, itemCount, items };
+        }
+
+        // Format the decoded results for display
+        function formatResults(result) {
+            let output = `DAT File Version: ${result.version}\n`;
+            output += `Item Count: ${result.itemCount}\n\n`;
+            
+            output += "Items:\n";
+            output += "------\n\n";
+            
+            // Display all items
+            result.items.forEach((item, index) => {
+                output += `Item ${index} (ID: ${item.id || 'N/A'}):\n`;
+                
+                // Display all available fields
+                for (const [field, value] of Object.entries(item)) {
+                    output += `  ${field}: ${value}\n`;
+                }
+                
+                output += '\n';
+            });
+            
+            return output;
+        }
+
+        // Show status message
+        function showStatus(message, type) {
+            const statusArea = document.getElementById('statusArea');
+            statusArea.innerHTML = `<div class="status-message status-${type}">${message}</div>`;
+        }
+
+        // Clear status message
+        function clearStatus() {
+            const statusArea = document.getElementById('statusArea');
+            statusArea.innerHTML = '';
+        }
+
+        // DAT Decoder specific functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const decodeBtn = document.getElementById('decodeBtn');
+            const copyBtn = document.getElementById('copyResults');
+            const fileInput = document.getElementById('datFile');
+            const resultsArea = document.getElementById('decodedResults');
+            
+            // Handle file selection
+            fileInput.addEventListener('change', function() {
+                if (fileInput.files.length) {
+                    const file = fileInput.files[0];
+                    showStatus(`Uploading ${file.name}...`, 'uploading');
+                    
+                    // Simulate upload process
+                    setTimeout(() => {
+                        showStatus(`File "${file.name}" successfully uploaded! Ready to decode.`, 'success');
+                    }, 1000);
+                }
+            });
+            
+            decodeBtn.addEventListener('click', function() {
+                if (!fileInput.files.length) {
+                    resultsArea.textContent = 'Please select a DAT file first.';
+                    return;
+                }
+                
+                // Show decoding status
+                showStatus('Decoding file... This may take a while for large files.', 'decoding');
+                
+                // Show loading state
+                decodeBtn.innerHTML = '<span class="loading"></span> Decoding...';
+                decodeBtn.disabled = true;
+                
+                const file = fileInput.files[0];
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    try {
+                        const arrayBuffer = e.target.result;
+                        const buffer = new Uint8Array(arrayBuffer);
+                        const result = parseItemsDat(buffer);
+                        resultsArea.textContent = formatResults(result);
+                        showStatus('File successfully decoded!', 'success');
+                    } catch (error) {
+                        console.error('Error decoding DAT file:', error);
+                        resultsArea.textContent = `Error decoding file: ${error.message}\n\nThis might not be a valid Growtopia items.dat file.`;
+                        showStatus('Error decoding file. Please check if it\'s a valid items.dat file.', 'error');
+                    } finally {
+                        // Reset button
+                        decodeBtn.innerHTML = '<i class="fas fa-cog"></i> Decode File';
+                        decodeBtn.disabled = false;
+                    }
+                };
+                
+                reader.onerror = function() {
+                    resultsArea.textContent = 'Error reading file. Please try again.';
+                    showStatus('Error reading file. Please try again.', 'error');
+                    decodeBtn.innerHTML = '<i class="fas fa-cog"></i> Decode File';
+                    decodeBtn.disabled = false;
+                };
+                
+                reader.readAsArrayBuffer(file);
+            });
+            
+            copyBtn.addEventListener('click', function() {
+                navigator.clipboard.writeText(resultsArea.textContent)
+                    .then(() => {
+                        const originalText = copyBtn.innerHTML;
+                        copyBtn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                        setTimeout(() => {
+                            copyBtn.innerHTML = originalText;
+                        }, 2000);
+                    })
+                    .catch(err => {
+                        console.error('Failed to copy: ', err);
+                    });
+            });
+        });
+    </script>
+</body>
+</html>

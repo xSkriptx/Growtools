@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RTTEX Converter - Growtools</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        /* Additional styles for the dropdown menu */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: var(--darker);
+            min-width: 200px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+            border-radius: 6px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .dropdown-content a {
+            color: var(--light);
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            text-align: left;
+            font-size: 14px;
+        }
+        
+        .dropdown-content a:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+        
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+        
+        .dropdown:hover .dropbtn {
+            background: rgba(255, 255, 255, 0.05);
+        }
+        
+        .more-tools-btn {
+            display: flex;
+            align-items: center;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        
+        .more-tools-btn i {
+            margin-left: 5px;
+            font-size: 12px;
+        }
+        
+        @media (max-width: 1024px) {
+            .dropdown-content {
+                right: 0;
+            }
+        }
+        
+        /* RTTEX Converter specific styles */
+        .tool-header h1 {
+            color: var(--tool-3);
+        }
+        
+        .tool-section h2 {
+            color: var(--tool-3);
+            border-bottom: 2px solid var(--tool-3);
+        }
+        
+        .rttex-btn {
+            background: linear-gradient(to right, var(--tool-3), #8e44ad);
+            color: white;
+        }
+        
+        .rttex-btn:hover {
+            background: linear-gradient(to right, #8e44ad, var(--tool-3));
+        }
+        
+        .results-header h3 {
+            color: var(--tool-3);
+        }
+        
+        .tool-section h3 {
+            color: var(--tool-3);
+            border-bottom: 2px solid var(--tool-3);
+            padding-bottom: 8px;
+            margin-top: 20px;
+            font-size: 1.2em;
+        }
+        
+        /* File upload area */
+        .file-upload-area {
+            border: 2px dashed rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 30px;
+            text-align: center;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .file-upload-area:hover {
+            border-color: var(--tool-3);
+            background: rgba(155, 89, 182, 0.05);
+        }
+        
+        .file-upload-area i {
+            font-size: 48px;
+            color: var(--tool-3);
+            margin-bottom: 15px;
+        }
+        
+        .file-list {
+            margin-top: 20px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        
+        .file-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 6px;
+            margin-bottom: 8px;
+        }
+        
+        .file-item .file-name {
+            flex: 1;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .file-item .file-size {
+            color: #8a9bb0;
+            margin: 0 10px;
+        }
+        
+        .file-item .file-remove {
+            color: var(--danger);
+            cursor: pointer;
+        }
+        
+        /* Image preview */
+        .image-previews {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .image-preview {
+            position: relative;
+            border-radius: 6px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .image-preview img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+        }
+        
+        .image-preview .preview-name {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 5px;
+            font-size: 12px;
+            text-align: center;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        /* File content display */
+        .file-content {
+            background: var(--darkest);
+            border-radius: 6px;
+            padding: 15px;
+            margin-top: 15px;
+            font-family: monospace;
+            white-space: pre-wrap;
+            max-height: 300px;
+            overflow-y: auto;
+            position: relative;
+        }
+        
+        .file-content-download {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+        }
+        
+        /* Remove circles from social media icons */
+        .social-links a,
+        .social-links a:focus,
+        .social-links a:active,
+        .social-links a:hover {
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            outline: none !important;
+            box-shadow: none !important;
+            border: none !important;
+            text-decoration: none !important;
+            display: inline-block;
+            color: var(--light);
+            transition: all 0.3s ease;
+            font-size: 20px;
+            margin-right: 15px;
+            background: none !important;
+            width: auto !important;
+            height: auto !important;
+            border-radius: 0 !important;
+        }
+
+        .social-links a:hover {
+            color: var(--primary);
+            transform: translateY(-3px);
+        }
+
+        /* Remove default focus styles in modern browsers */
+        .social-links a:focus:not(:focus-visible) {
+            outline: none !important;
+        }
+
+        /* Add custom focus style for keyboard navigation only */
+        .social-links a:focus-visible {
+            outline: 2px solid var(--tool-3) !important;
+            outline-offset: 3px;
+            border-radius: 2px;
+        }
+        
+        /* Status message styles */
+        .status-message {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            text-align: center;
+            font-weight: 500;
+        }
+        
+        .status-uploading {
+            background-color: rgba(255, 204, 77, 0.1);
+            color: var(--warning);
+            border: 1px solid rgba(255, 204, 77, 0.3);
+        }
+        
+        .status-success {
+            background-color: rgba(93, 218, 130, 0.1);
+            color: var(--success);
+            border: 1px solid rgba(93, 218, 130, 0.3);
+        }
+        
+        .status-decoding {
+            background-color: rgba(155, 89, 182, 0.1);
+            color: var(--tool-3);
+            border: 1px solid rgba(155, 89, 182, 0.3);
+        }
+        
+        .status-error {
+            background-color: rgba(255, 107, 107, 0.1);
+            color: var(--danger);
+            border: 1px solid rgba(255, 107, 107, 0.3);
+        }
+        
+        /* Full screen layout */
+        .full-screen-container {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            min-height: 70vh;
+        }
+        
+        .conversion-options {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .conversion-option {
+            flex: 1;
+            min-width: 200px;
+        }
+        
+        .download-all-btn {
+            margin-top: 20px;
+            width: 100%;
+        }
+        .logo {
+        display: flex;
+        align-items: center;
+        gap: 10px; /* space between logo and text */
+        }
+
+        .logo-img {
+        height: 50px;  /* make the logo bigger */
+        width: auto;
+        }
+        .nav-links a[href*="render-world"] i {
+        color: var(--tool-8);
+    }
+    header {
+  position: relative; /* so child absolute positioning works */
+}
+
+.visitor-count {
+  position: absolute;
+  top: 50%;
+  right: 20px;       /* adjust spacing from right edge */
+  transform: translateY(-50%); /* vertical centering */
+  list-style: none;
+}
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-content">
+            <div class="logo">
+                <img src="../images/Water_Stone.png" alt="Growtools Logo" class="logo-img">
+                <span class="logo-text">Growtools</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="../index.html" class="nav-link"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="dat-decoder.html" class="nav-link"><i class="fas fa-code"></i> DAT Decoder</a></li>
+                <li><a href="data-mining.html" class="nav-link"><i class="fas fa-database"></i> Data Mining</a></li>
+                <li><a href="rttex-converter.html" class="nav-link active"><i class="fas fa-exchange-alt"></i> RTTEX Converter</a></li>
+                
+                <!-- Dropdown for additional tools -->
+                <li class="dropdown">
+                    <div class="more-tools-btn nav-link">
+                        <i class="fas fa-cubes"></i>  More Tools <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="dropdown-content">
+                        <a href="account-checker.html"><i class="fas fa-user-shield"></i> Account Checker</a>
+                        <a href="render-world.html"><i class="fas fa-globe"></i> World Renderer</a>
+                        <a href="server-monitor.html"><i class="fas fa-server"></i> Server Monitor</a>
+                        <a href="cache-checker.html"><i class="fas fa-id-card"></i> Cache Checker</a>
+                    </div>
+                </li>
+            </ul>
+             <div class="visitor-count">
+                <a href="https://visitorbadge.io/status?path=https%3A%2F%2Fgithub.com%2FxSkriptx%2FSkriptProxy">
+                    <img src="https://api.visitorbadge.io/api/visitors?path=https%3A%2F%2Fgithub.com%2FxSkriptx%2FSkriptProxy&countColor=%23263759" />
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="content-area">
+            <div class="container tool-container">
+                <div class="tool-header">
+                    <h1><i class="fas fa-exchange-alt"></i> RTTEX Converter</h1>
+                    <p>Convert between RTTEX and PNG formats. Supports batch processing of multiple files.</p>
+                </div>
+                
+                <div class="full-screen-container">
+                    <div class="tool-content">
+                        <div class="tool-section">
+                            <h2>Upload Files</h2>
+                            <p>Select RTTEX or PNG files to convert. You can upload multiple files at once.</p>
+                            
+                            <div class="file-upload-area" id="dropZone">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                                <h3>Drag & Drop files here</h3>
+                                <p>or</p>
+                                <label for="rttexFiles" class="btn rttex-btn">
+                                    <i class="fas fa-folder-open"></i> Select Files
+                                </label>
+                                <input type="file" id="rttexFiles" class="form-control" accept=".rttex,.png" multiple hidden>
+                            </div>
+                            
+                            <div id="statusArea"></div>
+                            
+                            <div class="file-list" id="fileList"></div>
+                            
+                            <div class="conversion-options">
+                                <div class="conversion-option form-group">
+                                    <label for="conversionType">Conversion Type</label>
+                                    <select id="conversionType" class="form-control">
+                                        <option value="rttex_to_png">RTTEX to PNG</option>
+                                        <option value="png_to_rttex">PNG to RTTEX</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="conversion-option form-group">
+                                    <label for="forceOpaque">Force Opaque (RTTEX to PNG)</label>
+                                    <select id="forceOpaque" class="form-control">
+                                        <option value="false">Keep Transparency</option>
+                                        <option value="true">Force Opaque</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <button class="btn rttex-btn" id="convertBtn">
+                                <i class="fas fa-cog"></i> Convert Files
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="tool-content">
+                        <div class="tool-section">
+                            <h2>Conversion Results</h2>
+                            <div class="results-area">
+                                <div class="results-header">
+                                    <h3>Converted Files</h3>
+                                    <button class="btn rttex-btn" id="downloadAllBtn">
+                                        <i class="fas fa-download"></i> Download All
+                                    </button>
+                                </div>
+                                <div id="convertedFiles">
+                                    <!-- Converted files will appear here -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tool-content">
+                    <div class="tool-section">
+                        <h2>About RTTEX Files</h2>
+                        <p>RTTEX is Growtopia's proprietary texture format used for storing game assets. This tool allows you to convert between RTTEX and standard PNG format.</p>
+                        
+                        <h3>Common Uses</h3>
+                        <p>RTTEX conversion is useful for modders, content creators, and players who want to customize game assets or extract images from the game files.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>About Growtools</h3>
+                    <p>A collection of powerful utilities designed to help Growtopia players get the most out of their game experience.</p>
+                    <div class="social-links">
+                        <a href="https://discord.gg/HSdayEQKwe" target="_blank"><i class="fab fa-discord"></i></a>
+                        <a href="https://www.youtube.com/channel/UCvoRNyYeWnmb1TojljTkdbA" target="_blank"><i class="fab fa-youtube"></i></a>
+                        <a href="https://github.com/xSkriptx/Growtools" target="_blank"><i class="fab fa-github"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h3>Tools</h3>
+                    <a href="dat-decoder.html"><i class="fas fa-code"></i> DAT Decoder</a>
+                    <a href="data-mining.html"><i class="fas fa-database"></i> Data Mining</a>
+                    <a href="rttex-converter.html"><i class="fas fa-exchange-alt"></i> RTTEX Converter</a>
+                    <a href="account-checker.html"><i class="fas fa-user-shield"></i> Account Checker</a>
+                </div>
+                <div class="footer-section">
+                    <h3>Support</h3>
+                    <a href="https://discord.gg/HSdayEQKwe" target="_blank"><i class="fas fa-envelope"></i> Contact Us</a>
+                    <a href="https://discord.gg/HSdayEQKwe" target="_blank"><i class="fas fa-question-circle"></i> FAQ</a>
+                    <a href="https://discord.gg/HSdayEQKwe" target="_blank"><i class="fas fa-bug"></i> Report Bug</a>
+                    <a href="https://discord.gg/HSdayEQKwe" target="_blank"><i class="fas fa-lightbulb"></i> Feature Request</a>
+                </div>
+            </div>
+            <div class="copyright">
+                &copy; 2025 Growtools. Not affiliated with Growtopia or Ubisoft. All Growtopia content is property of Ubisoft Entertainment.
+            </div>
+        </div>
+    </footer>
+
+    <script src="../js/script.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const fileInput = document.getElementById('rttexFiles');
+  const dropZone = document.getElementById('dropZone');
+  const fileList = document.getElementById('fileList');
+  const convertedFiles = document.getElementById('convertedFiles');
+  const convertBtn = document.getElementById('convertBtn');
+  const downloadAllBtn = document.getElementById('downloadAllBtn');
+  const statusArea = document.getElementById('statusArea');
+  const conversionType = document.getElementById('conversionType');
+  const forceOpaqueEl = document.getElementById('forceOpaque');
+
+  // Create cosmetics dropdown if missing
+  let isCosmeticsEl = document.getElementById('isCosmetics');
+  if (!isCosmeticsEl) {
+    const cosmeticsOption = document.createElement('div');
+    cosmeticsOption.className = 'conversion-option form-group';
+    cosmeticsOption.innerHTML = `
+      <label for="isCosmetics">Is Player Cosmetics</label>
+      <select id="isCosmetics" class="form-control">
+        <option value="false">No (Full Images)</option>
+        <option value="true">Yes (Tiled Images)</option>
+      </select>
+    `;
+    document.querySelector('.conversion-options').appendChild(cosmeticsOption);
+    isCosmeticsEl = document.getElementById('isCosmetics');
+  }
+
+  let uploadedFiles = [];
+  let convertedFileData = [];
+  let createdObjectURLs = [];
+
+  function ensurePako() {
+    if (window.pako) return Promise.resolve();
+    return new Promise((res, rej) => {
+      const s = document.createElement('script');
+      s.src = 'https://cdnjs.cloudflare.com/ajax/libs/pako/2.1.0/pako.min.js';
+      s.onload = () => res();
+      s.onerror = () => rej(new Error('Failed to load pako'));
+      document.head.appendChild(s);
+    });
+  }
+
+  function showStatus(msg, type = 'success') {
+    statusArea.innerHTML = `<div class="status-message status-${type}">${msg}</div>`;
+  }
+  function clearStatus() { statusArea.innerHTML = ''; }
+
+  function formatFileSize(bytes) {
+    if (bytes === 0) return '0 Bytes';
+    const k = 1024;
+    const sizes = ['Bytes','KB','MB','GB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return (bytes / Math.pow(k, i)).toFixed(2) + ' ' + sizes[i];
+  }
+
+  function makeURL(blob) {
+    const url = URL.createObjectURL(blob);
+    createdObjectURLs.push(url);
+    return url;
+  }
+  function revokeAllURLs() {
+    for (const u of createdObjectURLs) URL.revokeObjectURL(u);
+    createdObjectURLs = [];
+  }
+
+  function asciiEquals(u8arr, offset, text) {
+    for (let i = 0; i < text.length; i++) {
+      if (u8arr[offset + i] !== text.charCodeAt(i)) return false;
+    }
+    return true;
+  }
+
+  function findEmbeddedPNG(buffer) {
+    const sig = [0x89,0x50,0x4E,0x47,0x0D,0x0A,0x1A,0x0A];
+    const view = new Uint8Array(buffer);
+    for (let i = 0; i <= view.length - sig.length; i++) {
+      let ok = true;
+      for (let j = 0; j < sig.length; j++) if (view[i+j] !== sig[j]) { ok = false; break; }
+      if (ok) return i;
+    }
+    return -1;
+  }
+
+  function decompressIfRTPACK(u8) {
+    if (u8.length >= 6 && asciiEquals(u8, 0, 'RTPACK')) {
+      const compressed = u8.subarray(32);
+      return window.pako.inflate(compressed);
+    }
+    return u8;
+  }
+
+  function lowestPowerOfTwoGE(n) { let v=1; while(v<n) v<<=1; return v; }
+
+  async function packPngToRTPACKFromArrayBuffer(arrayBuffer, imgWidth, imgHeight, rawRGBAflipped) {
+    const header = new Uint8Array(124);
+    header.set(new TextEncoder().encode('RTTXTR'),0);
+    const dv = new DataView(header.buffer);
+    dv.setUint32(8, lowestPowerOfTwoGE(imgHeight), true);
+    dv.setUint32(12, lowestPowerOfTwoGE(imgWidth), true);
+    dv.setUint32(16, 5121, true);
+    dv.setUint32(20, imgHeight, true);
+    dv.setUint32(24, imgWidth, true);
+    header[28] = 1;
+    dv.setUint32(32,1,true);
+    dv.setUint32(100,imgHeight,true);
+    dv.setUint32(104,imgWidth,true);
+    dv.setUint32(108, rawRGBAflipped.length,true);
+    dv.setUint32(112,0,true);
+
+    const toCompress = new Uint8Array(header.length + rawRGBAflipped.length);
+    toCompress.set(header,0); toCompress.set(rawRGBAflipped,header.length);
+
+    const compressed = window.pako.deflate(toCompress);
+    const rtpack = new Uint8Array(32);
+    rtpack.set(new TextEncoder().encode('RTPACK'),0);
+    const dv2 = new DataView(rtpack.buffer);
+    dv2.setUint32(8, compressed.length,true);
+    dv2.setUint32(12, 124 + rawRGBAflipped.length,true);
+    rtpack[16] = 1;
+
+    return new Blob([rtpack,compressed],{type:'application/octet-stream'});
+  }
+
+  function loadImageFromBlob(blob) {
+    return new Promise((res, rej) => {
+      const img = new Image();
+      img.onload = ()=>{ URL.revokeObjectURL(img.src); res(img); };
+      img.onerror = ()=> rej(new Error('Failed to load image'));
+      img.src = makeURL(blob);
+    });
+  }
+
+  function flipImageDataToRawRGBAflipped(imageData){
+    const {width,height,data}=imageData;
+    const out = new Uint8Array(width*height*4);
+    for(let y=0;y<height;y++){
+      const srcRow = height-1-y;
+      const srcOff = srcRow*width*4;
+      const dstOff = y*width*4;
+      out.set(data.subarray(srcOff,srcOff+width*4),dstOff);
+    }
+    return out;
+  }
+
+  async function decodeRTTEXBufferComplete(arrayBuffer, opts={forceOpaque:false,tileSize:32, isCosmetics:false}){
+    let u8 = new Uint8Array(arrayBuffer);
+    if(u8.length>=6 && asciiEquals(u8,0,'RTPACK')) u8=decompressIfRTPACK(u8);
+    if(!(u8.length>=6 && asciiEquals(u8,0,'RTTXTR'))){
+      const emb = findEmbeddedPNG(u8.buffer);
+      if(emb>=0){
+        const pngBlob=new Blob([u8.buffer.slice(emb)],{type:'image/png'});
+        return {url:makeURL(pngBlob),blob:pngBlob,mime:'image/png',note:'embedded-png',width:null,height:null,tiles:[]};
+      }
+      throw new Error('Not a RTTEX (RTTXTR) file');
+    }
+
+    const dv=new DataView(u8.buffer,u8.byteOffset,u8.byteLength);
+    const height=dv.getUint32(8,true);
+    const width=dv.getUint32(12,true);
+    const channels=3+dv.getUint8(28);
+    const dataStart=124;
+    const pixelBytes=u8.subarray(dataStart);
+    const rgba=new Uint8ClampedArray(width*height*4);
+
+    if(channels===4){
+      for(let y=0;y<height;y++){
+        const srcRow=height-1-y;
+        const srcOff=srcRow*width*4;
+        const dstOff=y*width*4;
+        rgba.set(pixelBytes.subarray(srcOff,srcOff+width*4),dstOff);
+      }
+    }else if(channels===3){
+      for(let y=0;y<height;y++){
+        const srcRow=height-1-y;
+        const srcOff=srcRow*width*3;
+        const dstOff=y*width*4;
+        for(let x=0;x<width;x++){
+          const s=srcOff+x*3; const d=dstOff+x*4;
+          rgba[d]=pixelBytes[s]||0;
+          rgba[d+1]=pixelBytes[s+1]||0;
+          rgba[d+2]=pixelBytes[s+2]||0;
+          rgba[d+3]=255;
+        }
+      }
+    }else{
+      for(let i=0;i<rgba.length;i+=4){rgba[i]=0;rgba[i+1]=0;rgba[i+2]=0;rgba[i+3]=0;}
+    }
+
+    if(channels===4 && opts.forceOpaque){
+      for(let i=0;i<rgba.length;i+=4){
+        if(rgba[i+3]!==0) rgba[i+3]=255;
+        else {rgba[i]=255;rgba[i+1]=255;rgba[i+2]=255;rgba[i+3]=0;}
+      }
+    }
+
+    const canvas=document.createElement('canvas');
+    canvas.width=width; canvas.height=height;
+    canvas.getContext('2d').putImageData(new ImageData(rgba,width,height),0,0);
+    const mainBlob=await new Promise(r=>canvas.toBlob(r,'image/png'));
+    const mainURL=makeURL(mainBlob);
+
+    const tiles=[];
+
+    if(opts.isCosmetics){
+      const tileSize=opts.tileSize||32;
+      for(let ty=0;ty<Math.ceil(height/tileSize);ty++){
+        for(let tx=0;tx<Math.ceil(width/tileSize);tx++){
+          const tCanvas=document.createElement('canvas');
+          tCanvas.width=tileSize; tCanvas.height=tileSize;
+          tCanvas.getContext('2d').drawImage(canvas,tx*tileSize,ty*tileSize,tileSize,tileSize,0,0,tileSize,tileSize);
+          const tBlob=await new Promise(r=>tCanvas.toBlob(r,'image/png'));
+          tiles.push({x:tx,y:ty,blob:tBlob,url:makeURL(tBlob),name:`tile_${tx}_${ty}.png`});
+        }
+      }
+    } else {
+      tiles.push({x:0,y:0,blob:mainBlob,url:mainURL,name:'full_image.png'});
+    }
+
+    return {url:mainURL,blob:mainBlob,mime:'image/png',note:`decoded ${width}x${height} (channels=${channels})`,width,height,tiles};
+  }
+
+  async function pngToRTPACKBlob(arrayBuffer){
+    if(!window.pako) throw new Error('pako required');
+    const img=await loadImageFromBlob(new Blob([arrayBuffer],{type:'image/png'}));
+    const c=document.createElement('canvas'); c.width=img.width;c.height=img.height;
+    const ctx=c.getContext('2d'); ctx.drawImage(img,0,0);
+    const rawFlipped=flipImageDataToRawRGBAflipped(ctx.getImageData(0,0,img.width,img.height));
+    return await packPngToRTPACKFromArrayBuffer(arrayBuffer,img.width,img.height,rawFlipped);
+  }
+
+  function addFileToList(file){
+    if(uploadedFiles.some(f=>f.name===file.name && f.size===file.size)){ showStatus(`File "${file.name}" already added`,'error'); setTimeout(()=>clearStatus(),1200); return; }
+    uploadedFiles.push(file);
+    const item=document.createElement('div'); item.className='file-item';
+    item.innerHTML=`<div class="file-name">${file.name}</div><div class="file-size">${formatFileSize(file.size)}</div><div class="file-remove" title="Remove">✖</div>`;
+    item.querySelector('.file-remove').addEventListener('click',()=>{
+      uploadedFiles=uploadedFiles.filter(f=>!(f.name===file.name && f.size===file.size));
+      item.remove();
+      showStatus(`Removed ${file.name}`,'success'); setTimeout(()=>clearStatus(),1200);
+    });
+    fileList.appendChild(item);
+    showStatus(`Added ${file.name}`,'success'); setTimeout(()=>clearStatus(),1200);
+  }
+
+  fileInput.addEventListener('change',e=>{
+    for(const f of Array.from(e.target.files)){
+      const lname=f.name.toLowerCase();
+      if(!lname.endsWith('.rttex') && !lname.endsWith('.png')){ showStatus(`Skipped "${f.name}" (unsupported)`,'error'); continue; }
+      addFileToList(f);
+    }
+    fileInput.value='';
+  });
+
+  dropZone.addEventListener('dragover',e=>{e.preventDefault(); dropZone.style.borderColor='var(--tool-3)';});
+  dropZone.addEventListener('dragleave',e=>{dropZone.style.borderColor='rgba(255,255,255,0.1)';});
+  dropZone.addEventListener('drop',e=>{e.preventDefault(); dropZone.style.borderColor='rgba(255,255,255,0.1)';
+    for(const f of Array.from(e.dataTransfer.files||[])){
+      const lname=f.name.toLowerCase();
+      if(!lname.endsWith('.rttex') && !lname.endsWith('.png')){ showStatus(`Skipped "${f.name}" (unsupported)`,'error'); continue; }
+      addFileToList(f);
+    }
+    fileInput.value='';
+  });
+  dropZone.addEventListener('click',e=>{ if(!e.target.closest('label') && e.target.tagName!=='INPUT') fileInput.click(); });
+
+  function downloadBlob(blob,filename){ const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=filename; document.body.appendChild(a); a.click(); a.remove(); }
+
+  convertBtn.addEventListener('click',async()=>{
+    if(uploadedFiles.length===0){ showStatus('Select files first','error'); return; }
+    try{ await ensurePako(); }catch(e){ showStatus('Failed to load zlib','error'); return; }
+
+    convertedFiles.innerHTML=''; convertedFileData=[]; revokeAllURLs();
+    showStatus(`Converting ${uploadedFiles.length} file(s)...`,'decoding'); convertBtn.disabled=true;
+
+    const doForceOpaque=(forceOpaqueEl && forceOpaqueEl.value==='true');
+    const mode=conversionType.value||'rttex_to_png';
+    const isCosmetics = isCosmeticsEl && isCosmeticsEl.value==='true';
+
+    for(const file of uploadedFiles){
+      const name=file.name; const lname=name.toLowerCase(); const ab=await file.arrayBuffer();
+      try{
+        if(lname.endsWith('.rttex') && mode==='rttex_to_png'){
+          const res=await decodeRTTEXBufferComplete(ab,{forceOpaque:doForceOpaque, tileSize:32, isCosmetics:isCosmetics});
+          
+          if(res.tiles.length>0){
+            const card=document.createElement('div'); 
+            card.className = 'result-card';
+            card.innerHTML=`<div style="margin-bottom:8px"><strong>${name}</strong><span class="muted small">(${res.note||''})</span></div>`;
+            
+            const grid=document.createElement('div'); 
+            grid.style.display='grid'; 
+            grid.style.gap=isCosmetics?'6px':'15px';
+            grid.style.gridTemplateColumns=isCosmetics?'repeat(auto-fill, 64px)':'repeat(auto-fill, minmax(250px, 1fr))';
+
+            for(const t of res.tiles){
+              const tileCard=document.createElement('div'); 
+              tileCard.style.width=isCosmetics?'64px':'100%'; 
+              tileCard.style.minHeight=isCosmetics?'64px':'200px';
+              tileCard.style.position='relative'; 
+              tileCard.style.overflow='hidden'; 
+              tileCard.style.borderRadius='6px'; 
+              tileCard.style.background='rgba(0,0,0,0.2)';
+              
+              const img=document.createElement('img'); 
+              img.src=t.url; 
+              img.style.width='100%'; 
+              img.style.height='100%'; 
+              img.style.objectFit='contain'; 
+              tileCard.appendChild(img);
+              
+              const dlBtn=document.createElement('button'); 
+              dlBtn.className='btn rttex-btn'; 
+              dlBtn.style.position='absolute'; 
+              dlBtn.style.right='4px'; 
+              dlBtn.style.bottom='4px'; 
+              dlBtn.style.padding='4px 6px'; 
+              dlBtn.style.fontSize='11px'; 
+              dlBtn.innerHTML='⬇'; 
+              dlBtn.title=t.name; 
+              dlBtn.addEventListener('click',()=>downloadBlob(t.blob,t.name));
+              
+              tileCard.appendChild(dlBtn); 
+              grid.appendChild(tileCard); 
+              convertedFileData.push({name:t.name,blob:t.blob,type:'image/png'});
+            }
+            
+            card.appendChild(grid); 
+            convertedFiles.appendChild(card);
+          } 
+        } else if(lname.endsWith('.png') && mode==='png_to_rttex'){
+          const blob=await pngToRTPACKBlob(ab);
+          const outName=name.replace(/\.png$/i,'.rttex');
+          const container=document.createElement('div'); 
+          container.className = 'result-file';
+          container.innerHTML=`<div style="margin-bottom:10px"><strong>${outName}</strong><span class="muted small">(${formatFileSize(blob.size)})</span></div>`;
+          const dl=document.createElement('button'); 
+          dl.className = 'btn rttex-btn';
+          dl.innerHTML='⬇ Download RTTEX'; 
+          dl.addEventListener('click',()=>downloadBlob(blob,outName)); 
+          container.appendChild(dl);
+          convertedFiles.appendChild(container); 
+          convertedFileData.push({name:outName,blob,type:'application/octet-stream'});
+        }
+      } catch(err) { 
+        console.error(err); 
+        showStatus(`Error processing ${name}: ${err.message}`, 'error');
+      }
+    }
+
+    showStatus('Conversion finished','success'); 
+    convertBtn.disabled=false;
+  });
+
+  downloadAllBtn.addEventListener('click',async()=>{
+    if(!convertedFileData.length){ showStatus('No files to download','error'); return; }
+    for(const f of convertedFileData) downloadBlob(f.blob,f.name);
+    showStatus('Downloads started','success');
+  });
+
+  showStatus('Ready — select or drag .rttex/.png files','success');
+  forceOpaqueEl.parentElement.style.display=conversionType.value==='rttex_to_png'?'block':'none';
+  conversionType.addEventListener('change',()=>{ 
+    forceOpaqueEl.parentElement.style.display=conversionType.value==='rttex_to_png'?'block':'none'; 
+  });
+});
+</script>
+
+
+
+</body>
+</html>
