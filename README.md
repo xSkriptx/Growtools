@@ -5,7 +5,7 @@
 >
 > ## 🚀 Features
 > - **DAT Decoder** – Decode and analyze Growtopia item `.dat` files to explore item properties and behaviors.  
-> - **Data Mining** – Extract hidden patterns, relationships, and market insights from Growtopia data.  
+> - **Data Mining** – Extract hidden patterns, relationships, and new unreleased items from Growtopia data.  
 > - **RTTEX Converter** – Convert `.rttex` files to `.png` format, useful for creators and graphic designers.  
 > - **Account Checker** – Check the security status of Growtopia accounts and get safety recommendations.  
 > - **Gacha Simulator** – Simulate Growtopia’s gacha pulls without spending world locks.  
