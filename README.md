@@ -8,10 +8,12 @@
 > - **Data Mining** – Extract hidden patterns, relationships, and new unreleased items from Growtopia data.  
 > - **RTTEX Converter** – Convert `.rttex` files to `.png` format, useful for creators and graphic designers.  
 > - **Account Checker** – Check the security status of Growtopia accounts and get safety recommendations.  
-> - **Gacha Simulator** – Simulate Growtopia’s gacha pulls without spending world locks.  
+> - **Render World** – Render a random world just by searching its name!
 > - **Server Monitor** – Track Growtopia server status with live updates and uptime history.  
 > - **Cache ID Checker** – Verify cache IDs for Growtopia assets (useful for modding & development).  
->
+> - **Gacha Simulator** – Simulate Growtopia’s gacha pulls without spending world locks (Coming Soon).
+> - **Proxy Server** - Coming Soon
+>  
 > ## 🛡 Why Growtools?
 > - ⚡ **Fast** – Optimized for handling large datasets quickly.  
 > - 🔒 **Secure** – Runs client-side whenever possible; no sensitive data stored.  
