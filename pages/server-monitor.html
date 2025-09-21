@@ -582,25 +582,24 @@ document.addEventListener('DOMContentLoaded', function() {
     // Server status history
     let serverHistory = JSON.parse(localStorage.getItem('serverHistory')) || [];
     let maintenanceCount = parseInt(localStorage.getItem('maintenanceCount')) || 0;
+
     function resetMaintenanceIfNewDay() {
-    const now = new Date();
-    const nyTime = new Date(now.toLocaleString("en-US", { timeZone: "America/New_York" }));
-    const todayKey = `${nyTime.getFullYear()}-${nyTime.getMonth()+1}-${nyTime.getDate()}`;
+        const now = new Date();
+        const nyTime = new Date(now.toLocaleString("en-US", { timeZone: "America/New_York" }));
+        const todayKey = `${nyTime.getFullYear()}-${nyTime.getMonth()+1}-${nyTime.getDate()}`;
+        const lastResetDay = localStorage.getItem('lastResetDay');
 
-    const lastResetDay = localStorage.getItem('lastResetDay');
-
-    if (lastResetDay !== todayKey) {
-        maintenanceCount = 0;
-        localStorage.setItem('maintenanceCount', maintenanceCount);
-        document.getElementById('maintenanceCount').textContent = maintenanceCount;
-        localStorage.setItem('lastResetDay', todayKey);
+        if (lastResetDay !== todayKey) {
+            maintenanceCount = 0;
+            localStorage.setItem('maintenanceCount', maintenanceCount);
+            document.getElementById('maintenanceCount').textContent = maintenanceCount;
+            localStorage.setItem('lastResetDay', todayKey);
+        }
     }
-}
 
-// Call it once on load
-resetMaintenanceIfNewDay();
+    resetMaintenanceIfNewDay();
+    setInterval(resetMaintenanceIfNewDay, 60000);
 
-setInterval(resetMaintenanceIfNewDay, 60000);
     let autoRefreshEnabled = true;
     let refreshInterval;
     let lastServerStatus = null;
@@ -611,7 +610,6 @@ setInterval(resetMaintenanceIfNewDay, 60000);
             const date = new Date(entry.timestamp);
             return date.toLocaleTimeString();
         });
-        
         const data = serverHistory.map(entry => entry.players);
         
         serverHistoryChart = new Chart(ctx, {
@@ -636,9 +634,7 @@ setInterval(resetMaintenanceIfNewDay, 60000);
                 responsive: true,
                 maintainAspectRatio: false,
                 plugins: {
-                    legend: {
-                        display: false
-                    },
+                    legend: { display: false },
                     tooltip: {
                         mode: 'index',
                         intersect: false,
@@ -652,22 +648,15 @@ setInterval(resetMaintenanceIfNewDay, 60000);
                 scales: {
                     y: {
                         beginAtZero: true,
-                        grid: {
-                            color: 'rgba(255, 255, 255, 0.05)'
-                        },
-                        ticks: {
-                            color: '#8a9bb0'
-                        }
+                        grid: { color: 'rgba(255, 255, 255, 0.05)' },
+                        ticks: { color: '#8a9bb0' }
                     },
                     x: {
-                        grid: {
-                            display: false
-                        },
+                        grid: { display: false },
                         ticks: {
                             color: '#8a9bb0',
                             maxRotation: 0,
                             callback: function(value, index) {
-                                // Show every 3rd label to avoid crowding
                                 return index % 3 === 0 ? this.getLabelForValue(value) : '';
                             }
                         }
@@ -677,150 +666,99 @@ setInterval(resetMaintenanceIfNewDay, 60000);
         });
     }
     
-    // Update the chart with new data
     function updateChart() {
         if (!serverHistoryChart) return;
-        
         const labels = serverHistory.map(entry => {
             const date = new Date(entry.timestamp);
             return date.toLocaleTimeString();
         });
-        
         const data = serverHistory.map(entry => entry.players);
-        
         serverHistoryChart.data.labels = labels;
         serverHistoryChart.data.datasets[0].data = data;
         serverHistoryChart.update();
     }
     
-    // Update status history table
     function updateStatusHistoryTable() {
         statusHistoryTable.innerHTML = '';
-        
-        // Show only the last 10 entries (most recent first)
         const recentHistory = [...serverHistory].reverse().slice(0, 10);
-        
         recentHistory.forEach(entry => {
             const row = document.createElement('tr');
-            
             const date = new Date(entry.timestamp);
             const timeCell = document.createElement('td');
             timeCell.textContent = date.toLocaleTimeString();
-            
             const statusCell = document.createElement('td');
             const statusIndicator = document.createElement('span');
             statusIndicator.className = 'status-indicator';
-            
-            if (entry.status === 'Online') {
-                statusIndicator.classList.add('status-online');
-            } else if (entry.status === 'Maintenance') {
-                statusIndicator.classList.add('status-maintenance');
-            } else {
-                statusIndicator.classList.add('status-offline');
-            }
-            
+            if (entry.status === 'Online') statusIndicator.classList.add('status-online');
+            else if (entry.status === 'Maintenance') statusIndicator.classList.add('status-maintenance');
+            else statusIndicator.classList.add('status-offline');
             statusCell.className = 'history-status';
             statusCell.appendChild(statusIndicator);
             statusCell.appendChild(document.createTextNode(entry.status));
-            
             const playersCell = document.createElement('td');
             playersCell.textContent = entry.players;
-            
             const responseCell = document.createElement('td');
             responseCell.textContent = entry.responseTime ? `${entry.responseTime}ms` : 'N/A';
-            
             row.appendChild(timeCell);
             row.appendChild(statusCell);
             row.appendChild(playersCell);
             row.appendChild(responseCell);
-            
             statusHistoryTable.appendChild(row);
         });
     }
     
-    // Show status message
     function showStatus(message, type = 'success') {
         statusArea.innerHTML = `<div class="status-message status-${type}">${message}</div>`;
     }
-    
-    // Clear status message
-    function clearStatus() {
-        statusArea.innerHTML = '';
+    function clearStatus() { statusArea.innerHTML = ''; }
+
+    async function fetchWithFallback(url) {
+        try {
+            return await fetch(url, { method: 'GET', headers: { 'Accept': 'application/json' } });
+        } catch (err) {
+            console.warn("Direct fetch failed, trying proxy...", err);
+            return await fetch('https://corsproxy.io/?' + url, {
+                method: 'GET',
+                headers: { 'Accept': 'application/json' }
+            });
+        }
     }
-    
-    // Check server status
+
     async function checkServerStatus() {
         showStatus('Checking server status...', 'checking');
         checkNowBtn.disabled = true;
-        
         const startTime = Date.now();
-        
+
         try {
-            const response = await fetch('https://www.growtopiagame.com/detail', {
-                method: 'GET',
-                headers: {
-                    'Accept': 'application/json',
-                }
-            });
-            
+            const response = await fetchWithFallback('https://www.growtopiagame.com/detail');
             const responseTime = Date.now() - startTime;
             
             if (response.ok) {
                 const text = await response.text();
-                
                 try {
-                    // Extract JSON from response (it's embedded in HTML)
                     const start = text.indexOf('{');
                     const end = text.lastIndexOf('}') + 1;
-                    
                     if (start !== -1 && end !== 0) {
                         const jsonStr = text.substring(start, end);
                         const data = JSON.parse(jsonStr);
-                        
                         const onlineUsers = parseInt(data.online_user) || 0;
                         let status, maintenance;
-                        
-                        // Determine status based on player count
-                        if (onlineUsers > 1000) {
-                            status = "Online";
-                            maintenance = false;
-                        } else if (onlineUsers > 70) {
-                            status = "Maintenance";
-                            maintenance = true;
-                        } else {
-                            status = "Offline";
-                            maintenance = true;
-                        }
-                        
-                        // Check for maintenance event (transition from online to offline)
+                        if (onlineUsers > 1000) { status = "Online"; maintenance = false; }
+                        else if (onlineUsers > 70) { status = "Maintenance"; maintenance = true; }
+                        else { status = "Offline"; maintenance = true; }
                         if (lastServerStatus === "Online" && (status === "Maintenance" || status === "Offline")) {
                             maintenanceCount++;
                             localStorage.setItem('maintenanceCount', maintenanceCount);
                             document.getElementById('maintenanceCount').textContent = maintenanceCount;
                             showStatus(`Maintenance detected! Count: ${maintenanceCount}`, 'warning');
                         }
-                        
                         lastServerStatus = status;
-                        
-                        // Update UI
                         updateServerStatus(status, onlineUsers, maintenance, responseTime);
-                        
-                        // Add to history
-                        addToHistory({
-                            timestamp: Date.now(),
-                            status: status,
-                            players: onlineUsers,
-                            maintenance: maintenance,
-                            responseTime: responseTime
-                        });
-                        
+                        addToHistory({ timestamp: Date.now(), status, players: onlineUsers, maintenance, responseTime });
                         showStatus('Server status updated successfully', 'success');
                         setTimeout(clearStatus, 2000);
-                        
                         return { players: onlineUsers, status, maintenance, responseTime };
-                    } else {
-                        throw new Error('No JSON data found in response');
-                    }
+                    } else throw new Error('No JSON data found in response');
                 } catch (e) {
                     console.error('Error parsing response:', e);
                     updateServerStatus("Error", 0, false, responseTime);
@@ -843,11 +781,8 @@ setInterval(resetMaintenanceIfNewDay, 60000);
         }
     }
     
-    // Update server status display
     function updateServerStatus(status, players, maintenance, responseTime) {
-        // Update status indicator
         statusIndicator.className = 'status-indicator';
-        
         if (status === "Online") {
             statusIndicator.classList.add('status-online');
             statusText.textContent = "Online";
@@ -869,54 +804,31 @@ setInterval(resetMaintenanceIfNewDay, 60000);
             statusDetails.textContent = "Failed to connect to server";
             serverStatusCard.className = 'server-status-card server-status-error';
         }
-        
-        // Update player count
         playerCount.textContent = players.toLocaleString();
-        
-        // Update last updated time
         lastUpdated.textContent = `Last updated: ${new Date().toLocaleTimeString()} (${responseTime}ms)`;
-        
-        // Update maintenance counter
         document.getElementById('maintenanceCount').textContent = maintenanceCount;
     }
     
-    // Add status to history
     function addToHistory(entry) {
         serverHistory.push(entry);
-        
-        // Keep only the last 100 entries
-        if (serverHistory.length > 100) {
-            serverHistory = serverHistory.slice(-100);
-        }
-        
-        // Save to localStorage
+        if (serverHistory.length > 100) serverHistory = serverHistory.slice(-100);
         localStorage.setItem('serverHistory', JSON.stringify(serverHistory));
-        
-        // Update UI
         updateChart();
         updateStatusHistoryTable();
     }
     
-    // Clear history
     function clearHistory() {
         serverHistory = [];
         localStorage.removeItem('serverHistory');
-        
-        // Update UI
-        if (serverHistoryChart) {
-            serverHistoryChart.destroy();
-        }
+        if (serverHistoryChart) serverHistoryChart.destroy();
         initChart();
         updateStatusHistoryTable();
-        
         showStatus('History cleared', 'success');
         setTimeout(clearStatus, 2000);
     }
     
-    // Toggle auto refresh
     function toggleAutoRefresh() {
         autoRefreshEnabled = !autoRefreshEnabled;
-        
         if (autoRefreshEnabled) {
             autoRefreshToggle.innerHTML = '<i class="fas fa-pause-circle"></i> Auto Refresh: On';
             startAutoRefresh();
@@ -926,53 +838,34 @@ setInterval(resetMaintenanceIfNewDay, 60000);
             stopAutoRefresh();
             showStatus('Auto refresh disabled', 'success');
         }
-        
         setTimeout(clearStatus, 2000);
     }
     
-    // Start auto refresh
     function startAutoRefresh() {
-        stopAutoRefresh(); // Clear any existing interval
-        refreshInterval = setInterval(checkServerStatus, 120000); // 2 minutes (120 seconds)
+        stopAutoRefresh();
+        refreshInterval = setInterval(checkServerStatus, 120000);
     }
-    
-    // Stop auto refresh
     function stopAutoRefresh() {
-        if (refreshInterval) {
-            clearInterval(refreshInterval);
-            refreshInterval = null;
-        }
+        if (refreshInterval) { clearInterval(refreshInterval); refreshInterval = null; }
     }
     
-    // Event listeners
     checkNowBtn.addEventListener('click', checkServerStatus);
     autoRefreshToggle.addEventListener('click', toggleAutoRefresh);
     clearHistoryBtn.addEventListener('click', clearHistory);
     
-    // Initialize
     initChart();
     updateStatusHistoryTable();
     document.getElementById('maintenanceCount').textContent = maintenanceCount;
     
-    // Load last status from history if available
     if (serverHistory.length > 0) {
         const lastEntry = serverHistory[serverHistory.length - 1];
-        updateServerStatus(
-            lastEntry.status, 
-            lastEntry.players, 
-            lastEntry.maintenance, 
-            lastEntry.responseTime || 0
-        );
+        updateServerStatus(lastEntry.status, lastEntry.players, lastEntry.maintenance, lastEntry.responseTime || 0);
         lastServerStatus = lastEntry.status;
     } else {
-        // No history, check server status
         checkServerStatus();
     }
     
-    // Start auto refresh
     startAutoRefresh();
-    
-    // Clean up on page unload
     window.addEventListener('beforeunload', stopAutoRefresh);
 });
 </script>
