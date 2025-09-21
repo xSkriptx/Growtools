@@ -391,8 +391,8 @@
                 }
                 downloadBtn.style.display = 'none';
                 
-                // Use a proxy to avoid CORS issues
-                const url = `https://corsproxy.io/?https://s3.amazonaws.com/world.growtopiagame.com/${worldName}.png`;
+                
+                const url = `https://s3.amazonaws.com/world.growtopiagame.com/${worldName}.png`;
                 
                 try {
                     const response = await fetch(url);
@@ -468,4 +468,5 @@
     </script>
 </body>
 </html>
+
 [file content end]
