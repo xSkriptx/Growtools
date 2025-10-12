@@ -5,75 +5,139 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Account Checker - Growtools</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="../images/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="../css/style.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        /* Dropdown for additional tools */
-        .dropdown {
-            position: relative;
-            display: inline-block;
-        }
+        .icon-dat-decoder { color: var(--tool-1) !important; }
+        .icon-data-mining { color: var(--tool-2) !important; }
+        .icon-rttex-converter { color: var(--tool-3) !important; }
+        .icon-account-checker { color: var(--tool-4) !important; }
+        .icon-server-monitor { color: var(--tool-6) !important; }
+        .icon-renderer { color: var(--tool-8) !important; }
+        .icon-cache { color: var(--tool-7) !important; }
         
-        .dropdown-content {
-            display: none;
-            position: absolute;
-            background-color: var(--darker);
-            min-width: 200px;
-            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-            z-index: 1;
-            border-radius: 6px;
-            overflow: hidden;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        .dropdown-content a {
-            color: var(--light);
-            padding: 12px 16px;
-            text-decoration: none;
-            display: block;
-            text-align: left;
-            font-size: 14px;
-        }
-        
-        .dropdown-content a:hover {
-            background-color: rgba(255, 255, 255, 0.05);
-        }
-        
-        .dropdown:hover .dropdown-content {
-            display: block;
-        }
-        
-        .dropdown:hover .dropbtn {
-            background: rgba(255, 255, 255, 0.05);
-        }
-        
-        .more-tools-btn {
-            display: flex;
-            align-items: center;
-            padding: 8px 12px;
-            border-radius: 6px;
-            cursor: pointer;
-        }
-        
-        .more-tools-btn i {
-            margin-left: 5px;
-            font-size: 12px;
-        }
-        
-        @media (max-width: 1024px) {
-            .dropdown-content {
-                right: 0;
-            }
+        header {
+            position: relative; 
+            background-color: var(--darker); 
+            padding: 10px 0;
         }
 
-        /* Main Content */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 1rem;
+        }
+        
+        .header-right-content {
+            display: flex;
+            align-items: center;
+            gap: 20px; 
+        }
+
+        .visitor-count {
+            list-style: none;
+            display: flex; 
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px; 
+        }
+        
+        .logo-img {
+            height: 50px; 
+            width: auto;
+        }
+
+        .logo-text {
+             color: var(--light); 
+             white-space: nowrap;
+        }
+        
+        .nav-link-custom {
+            color: var(--light) !important;
+            padding: 8px 12px !important;
+            border-radius: 6px !important;
+            transition: background-color 0.3s;
+        }
+        
+        .nav-link-custom:hover {
+            background-color: rgba(255, 255, 255, 0.05) !important;
+        }
+        
+        .nav-link-custom.active {
+            background-color: rgba(255, 255, 255, 0.05) !important;
+        }
+        
+        #dropdownNavbarLink {
+            color: var(--light) !important;
+            padding: 8px 12px !important;
+            border-radius: 6px !important;
+            transition: background-color 0.3s;
+        }
+
+        #dropdownNavbarLink:hover {
+            background-color: rgba(255, 255, 255, 0.05) !important;
+            color: var(--light) !important;
+        }
+        
+        #dropdownNavbar {
+            background-color: var(--darker) !important;
+            border: 1px solid rgba(255, 255, 255, 0.1) !important;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.4) !important;
+        }
+
+        #dropdownNavbar a {
+            color: var(--light) !important;
+        }
+
+        #dropdownNavbar a:hover {
+            background-color: rgba(255, 255, 255, 0.05) !important;
+            color: var(--light) !important;
+        }
+
+        #dropdownNavbar a.active {
+        color: var(--primary) !important;
+            
+        }
+
+        .nav-links-flowbite a i, #dropdownNavbarLink i {
+            margin-right: 5px;
+        }
+
+        .header-right-content button[data-collapse-toggle] {
+            display: none;
+        }
+        
+        @media (max-width: 768px) {
+            .visitor-count {
+                display: none;
+            }
+            .header-right-content button[data-collapse-toggle] {
+                display: inline-flex;
+            }
+        }
+        
+        .dropdown, .dropdown-content, .more-tools-btn, .nav-links {
+            display: none !important; 
+        }
+        
         .main {
             padding: 30px 0;
             flex: 1;
         }
-
-        /* Content Area */
+        
         .content-area {
             flex: 1;
             padding: 0 20px;
@@ -93,7 +157,8 @@
         .tool-header h1 {
             font-size: 36px;
             margin-bottom: 15px;
-            color: var(--tool-4); /* Yellow color for Account Checker title */
+            color: var(--tool-4); 
+            font-weight: bold;
         }
 
         .tool-header p {
@@ -117,9 +182,10 @@
         .tool-section h2 {
             font-size: 24px;
             margin-bottom: 20px;
-            color: var(--tool-4); /* Yellow color for section headers */
-            border-bottom: 2px solid var(--tool-4); /* Yellow underline */
+            color: var(--tool-4); 
+            border-bottom: 2px solid var(--tool-4); 
             padding-bottom: 10px;
+            font-weight: bold;
         }
 
         .tool-section p {
@@ -127,8 +193,7 @@
             margin-bottom: 20px;
             line-height: 1.6;
         }
-
-        /* Form elements */
+        
         .form-group {
             margin-bottom: 20px;
         }
@@ -180,8 +245,7 @@
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
         }
-
-        /* Results area */
+        
         .results-area {
             background: var(--dark);
             border-radius: 8px;
@@ -199,10 +263,10 @@
 
         .results-header h3 {
             font-size: 18px;
-            color: var(--tool-4); /* Yellow color for results header */
+            color: var(--tool-4); 
+            font-weight: bold;
         }
-
-        /* New: counter & reset button */
+        
         .check-count {
             background: rgba(255,255,255,0.02);
             padding: 6px 10px;
@@ -223,8 +287,7 @@
             background: var(--darkest);
             border-radius: 6px;
         }
-
-        /* Loading spinner */
+        
         .loading {
             display: inline-block;
             width: 20px;
@@ -238,8 +301,7 @@
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
-
-        /* Account Checker specific styles */
+        
         .account-btn {
             background: linear-gradient(to right, var(--tool-4), #f39c12);
             color: white;
@@ -250,8 +312,7 @@
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
         }
-
-        /* Status cards */
+        
         .status-card {
             background: var(--dark);
             border-radius: 8px;
@@ -277,16 +338,23 @@
             margin-right: 10px;
         }
 
+        .status-content p {
+            display: flex;
+            align-items: center;
+            font-weight: normal;
+
+        }
+
         .status-content {
             display: flex;
             align-items: center;
+            font-weight: bold;
         }
 
         .status-details {
             flex: 1;
         }
-
-        /* Status message styles */
+        
         .status-message {
             padding: 10px;
             margin: 10px 0;
@@ -312,8 +380,7 @@
             color: var(--danger);
             border: 1px solid rgba(255, 107, 107, 0.3);
         }
-
-        /* Footer messages */
+        
         .footer-message {
             font-style: italic;
             color: #8a9bb0;
@@ -321,8 +388,7 @@
             margin-top: 15px;
             font-size: 12px;
         }
-
-        /* Bulk checker */
+        
         .bulk-checker {
             margin-top: 20px;
         }
@@ -344,8 +410,7 @@
             color: #8a9bb0;
             margin-top: 5px;
         }
-
-        /* Footer */
+                      
         footer {
             background: var(--dark);
             border-top: 1px solid rgba(255, 255, 255, 0.05);
@@ -363,6 +428,7 @@
             margin-bottom: 18px;
             font-size: 18px;
             color: var(--lighter);
+            font-weight: bold;
         }
 
         .footer-section p, 
@@ -416,12 +482,10 @@
             transform: translateY(-3px);
         }
 
-        /* Remove default focus styles in modern browsers */
         .social-links a:focus:not(:focus-visible) {
             outline: none !important;
         }
 
-        /* Add custom focus style for keyboard navigation only */
         .social-links a:focus-visible {
             outline: 2px solid var(--tool-3) !important;
             outline-offset: 3px;
@@ -436,40 +500,14 @@
             color: #6a7b90;
             font-size: 13px;
         }
-
-        /* Responsive */
+        
         @media (max-width: 1024px) {
             .tools-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
-            
-            .nav-links {
-                flex-wrap: wrap;
-                justify-content: flex-end;
-            }
-            
-            .nav-links li {
-                margin: 5px;
-            }
         }
 
         @media (max-width: 768px) {
-            .header-content {
-                flex-direction: column;
-                gap: 15px;
-            }
-            
-            .nav-links {
-                width: 100%;
-                justify-content: center;
-                margin-top: 15px;
-                flex-wrap: wrap;
-            }
-            
-            .nav-links li {
-                margin: 5px 8px;
-            }
-            
             .hero-title {
                 font-size: 36px;
                 flex-direction: column;
@@ -486,67 +524,86 @@
             .tools-grid {
                 grid-template-columns: 1fr;
             }
-            
-            .visitor-count {
-                display: none;
-            }
         }
-        .logo {
-        display: flex;
-        align-items: center;
-        gap: 10px; /* space between logo and text */
-        }
-
-        .logo-img {
-        height: 50px;  /* make the logo bigger */
-        width: auto;
-        }
-        .nav-links a[href*="render-world"] i {
-        color: var(--tool-8);
-    }
-    header {
-  position: relative; /* so child absolute positioning works */
-}
-
-.visitor-count {
-  position: absolute;
-  top: 50%;
-  right: 20px;       /* adjust spacing from right edge */
-  transform: translateY(-50%); /* vertical centering */
-  list-style: none;
-}
     </style>
 </head>
 <body>
     <header>
         <div class="container header-content">
             <div class="logo">
-                <img src="../images/Water_Stone.png" alt="Growtools Logo" class="logo-img">
-                <span class="logo-text">Growtools</span>
-            </div>
-            <ul class="nav-links">
-                <li><a href="../index.html" class="nav-link"><i class="fas fa-home"></i> Home</a></li>
-                <li><a href="dat-decoder.html" class="nav-link"><i class="fas fa-code"></i> DAT Decoder</a></li>
-                <li><a href="data-mining.html" class="nav-link"><i class="fas fa-database"></i> Data Mining</a></li>
-                <li><a href="rttex-converter.html" class="nav-link"><i class="fas fa-exchange-alt"></i> RTTEX Converter</a></li>
-                
-                <!-- Dropdown for additional tools -->
-                <li class="dropdown">
-                    <div class="more-tools-btn nav-link">
-                        <i class="fas fa-cubes"></i> More Tools <i class="fas fa-chevron-down"></i>
-                    </div>
-                    <div class="dropdown-content">
-                        <a href="account-checker.html" class = "active"><i class="fas fa-user-shield"></i> Account Checker</a>
-                        <a href="render-world.html"><i class="fas fa-globe"></i> World Renderer</a>
-                        <a href="server-monitor.html"><i class="fas fa-server"></i> Server Monitor</a>
-                        <a href="cache-checker.html"><i class="fas fa-id-card"></i> Cache Checker</a>
-                    </div>
-                </li>
-            </ul>
-            <div class="visitor-count">
-                <a href="https://visitorbadge.io/status?path=https%3A%2F%2Fgithub.com%2FxSkriptx%2FSkriptProxy">
-                    <img src="https://api.visitorbadge.io/api/visitors?path=https%3A%2F%2Fgithub.com%2FxSkriptx%2FSkriptProxy&countColor=%23263759" />
+                <a href="../index.html" class="logo">
+                    <img src="../images/Water_Stone.png" alt="Growtools Logo" class="logo-img">
+                    <span class="logo-text">Growtools</span>
                 </a>
+            </div>
+
+            <div class="header-right-content">
+                <button data-collapse-toggle="navbar-dropdown" type="button" class="inline-flex items-center p-2 ms-3 w-10 h-10 justify-center text-sm rounded-lg md:hidden text-gray-400 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-600" aria-controls="navbar-dropdown" aria-expanded="false">
+                    <span class="sr-only">Open main menu</span>
+                    <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h15M1 7h15M1 13h15"/>
+                    </svg>
+                </button>
+                
+                <div class="hidden w-full md:block md:w-auto" id="navbar-dropdown">
+                    <ul class="nav-links-flowbite flex flex-col font-medium p-4 mt-4 rounded-lg md:flex-row md:mt-0 md:text-sm md:border-0 md:space-x-8 md:rtl:space-x-reverse">
+                        <li>
+                            <a href="../index.html" class="nav-link-custom block">
+                                <i class="fas fa-home"></i> Home
+                            </a>
+                        </li>
+                        <li>
+                            <a href="dat-decoder.html" class="nav-link-custom block">
+                                <i class="fas fa-code icon-dat-decoder"></i> DAT Decoder
+                            </a>
+                        </li>
+                        <li>
+                            <a href="data-mining.html" class="nav-link-custom block">
+                                <i class="fas fa-database icon-data-mining"></i> Data Mining
+                            </a>
+                        </li>
+                        <li>
+                            <a href="rttex-converter.html" class="nav-link-custom block">
+                                <i class="fas fa-exchange-alt icon-rttex-converter"></i> RTTEX Converter
+                            </a>
+                        </li>
+                        
+                        <li>
+                            <button id="dropdownNavbarLink" data-dropdown-toggle="dropdownNavbar" class="flex items-center justify-between w-full py-2 px-3 rounded-lg md:border-0 md:p-0 md:w-auto">
+                                <i class="fas fa-cubes"></i> More Tools <i class="fas fa-chevron-down ms-3" style="font-size: 12px;"></i>
+                            </button>
+                            
+                            <div id="dropdownNavbar" class="z-10 hidden font-normal divide-y divide-gray-600 rounded-lg shadow w-56">
+                                <ul class="py-2 text-sm" aria-labelledby="dropdownNavbarLink">
+                                    <li>
+                                        <a href="account-checker.html" class="nav-link-custom active block px-4 py-2" aria-current="page">
+                                            <i class="fas fa-user-shield icon-account-checker"></i> Account Checker
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="render-world.html" class="block px-4 py-2">
+                                            <i class="fas fa-globe icon-renderer"></i> World Renderer
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="server-monitor.html" class="block px-4 py-2">
+                                            <i class="fas fa-server icon-server-monitor"></i> Server Monitor
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="cache-checker.html" class="block px-4 py-2">
+                                            <i class="fas fa-id-card icon-cache"></i> Cache Checker
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="visitor-count">
+                    <img src="https://api.visitorbadge.io/api/visitors?path=https%3A%2F%2Fgithub.com%2FxSkriptx%2FSkriptProxy&countColor=%23263759" />
+                </div>  
             </div>
         </div>
     </header>
@@ -599,7 +656,6 @@
                                 </div>
                             </div>
                             <div id="accountResults">
-                                <!-- Account check results will appear here -->
                                 <div class="status-card">
                                     <div class="status-content">
                                         <div class="status-icon">🔍</div>
@@ -687,9 +743,14 @@
             </div>
         </div>
     </footer>
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
 
+<script>
+  window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+</script>
+<script defer src="/_vercel/insights/script.js"></script>
     <script>
-        // Account Checker functionality
         document.addEventListener('DOMContentLoaded', function() {
             const checkAccountBtn = document.getElementById('checkAccountBtn');
             const checkBulkBtn = document.getElementById('checkBulkBtn');
@@ -701,7 +762,6 @@
 
             const checkCountEl = document.getElementById('checkCount');
 
-            // load count from localStorage
             let accountCheckCount = parseInt(localStorage.getItem('accountCheckCount')) || 0;
 
             function updateCheckCountDisplay() {
@@ -710,7 +770,6 @@
 
             updateCheckCountDisplay();
 
-            // Professional funny footer messages
             const footerMessages = [
                 "GrowID verification in progress...",
                 "Scanning with 99.9% accuracy (probably)",
@@ -724,22 +783,18 @@
                 "Status: Definitely not a potato"
             ];
             
-            // Show status message
             function showStatus(message, type = 'success') {
                 statusArea.innerHTML = `<div class="status-message status-${type}">${message}</div>`;
             }
             
-            // Clear status message
             function clearStatus() {
                 statusArea.innerHTML = '';
             }
             
-            // Get a random footer message
             function getRandomFooter() {
                 return footerMessages[Math.floor(Math.random() * footerMessages.length)];
             }
             
-            // Check a single account
             async function checkAccount(growid) {
                 if (!growid || growid.trim() === '') {
                     showStatus('Please enter a valid GrowID', 'error');
@@ -749,7 +804,6 @@
                 growid = growid.trim();
                 showStatus(`Checking account: ${growid}...`, 'checking');
                 
-                // API endpoint and data (from the Python script)
                 const url = "https://sb-user-id-service.xsolla.com/api/v1/user-id";
                 const data = {
                     "settings": {
@@ -772,7 +826,6 @@
                 };
                 
                 try {
-                    // Make the actual API request
                     const response = await fetch(url, {
                         method: 'POST',
                         headers: headers,
@@ -782,7 +835,6 @@
                     let status, details, colorClass, statusCode;
                     statusCode = response.status;
                     
-                    // Determine status based on response code (from Python script logic)
                     if (response.status === 200 || response.status === 201) {
                         status = 'Active Account';
                         details = 'This account has logged in within the last 365 days.';
@@ -797,7 +849,6 @@
                         colorClass = 'status-unknown';
                     }
                     
-                    // Create result card
                     const resultCard = document.createElement('div');
                     resultCard.className = `status-card ${colorClass}`;
                     resultCard.innerHTML = `
@@ -813,10 +864,8 @@
                         </div>
                     `;
                     
-                    // Add to results (at the top)
                     accountResults.prepend(resultCard);
 
-                    // increment count and persist
                     accountCheckCount++;
                     localStorage.setItem('accountCheckCount', accountCheckCount);
                     updateCheckCountDisplay();
@@ -828,7 +877,6 @@
                     console.error('Error checking account:', error);
                     showStatus(`Error checking account: ${error.message}`, 'error');
                     
-                    // Create error result card
                     const errorCard = document.createElement('div');
                     errorCard.className = 'status-card status-unknown';
                     errorCard.innerHTML = `
@@ -843,17 +891,14 @@
                         </div>
                     `;
                     
-                    // Add to results (at the top)
                     accountResults.prepend(errorCard);
 
-                    // increment count (we count attempts, including failures)
                     accountCheckCount++;
                     localStorage.setItem('accountCheckCount', accountCheckCount);
                     updateCheckCountDisplay();
                 }
             }
             
-            // Check multiple accounts
             async function checkBulkAccounts() {
                 const growidsText = bulkGrowids.value.trim();
                 if (!growidsText) {
@@ -878,10 +923,8 @@
                 showStatus(`Checking ${growids.length} accounts...`, 'checking');
                 checkBulkBtn.disabled = true;
                 
-                // Check each account with a small delay between them
                 for (let i = 0; i < growids.length; i++) {
                     await checkAccount(growids[i]);
-                    // Add a small delay between requests
                     if (i < growids.length - 1) {
                         await new Promise(resolve => setTimeout(resolve, 1000));
                     }
@@ -892,7 +935,6 @@
                 setTimeout(clearStatus, 2000);
             }
             
-            // Event listeners
             checkAccountBtn.addEventListener('click', function() {
                 checkAccount(growidInput.value);
             });
@@ -918,14 +960,12 @@
                 setTimeout(clearStatus, 2000);
             });
             
-            // Allow pressing Enter in the input field
             growidInput.addEventListener('keypress', function(e) {
                 if (e.key === 'Enter') {
                     checkAccount(growidInput.value);
                 }
             });
             
-            // Initial status
             showStatus('Ready to check GrowID accounts', 'success');
         });
     </script>
