@@ -5,68 +5,138 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>World Renderer - Growtools</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="../images/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <script src="https://cdn.tailwindcss.com"></script> 
+    
     <link rel="stylesheet" href="../css/style.css">
     <style>
-        /* Additional styles for the dropdown menu */
-        .dropdown {
-            position: relative;
-            display: inline-block;
+        
+        
+        .icon-dat-decoder { color: var(--tool-1) !important; }
+        .icon-data-mining { color: var(--tool-2) !important; }
+        .icon-rttex-converter { color: var(--tool-3) !important; }
+        .icon-account-checker { color: var(--tool-4) !important; }
+        .icon-server-monitor { color: var(--tool-6) !important; }
+        .icon-renderer { color: var(--tool-8) !important; }
+        .icon-cache { color: var(--tool-7) !important; }
+        
+        
+        header {
+            position: relative; 
+            background-color: var(--darker); 
+            padding: 10px 0;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 1rem;
         }
         
-        .dropdown-content {
-            display: none;
-            position: absolute;
-            background-color: var(--darker);
-            min-width: 200px;
-            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-            z-index: 1;
-            border-radius: 6px;
-            overflow: hidden;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        .dropdown-content a {
-            color: var(--light);
-            padding: 12px 16px;
-            text-decoration: none;
-            display: block;
-            text-align: left;
-            font-size: 14px;
-        }
-        
-        .dropdown-content a:hover {
-            background-color: rgba(255, 255, 255, 0.05);
-        }
-        
-        .dropdown:hover .dropdown-content {
-            display: block;
-        }
-        
-        .dropdown:hover .dropbtn {
-            background: rgba(255, 255, 255, 0.05);
-        }
-        
-        .more-tools-btn {
+        .header-right-content {
             display: flex;
             align-items: center;
-            padding: 8px 12px;
-            border-radius: 6px;
-            cursor: pointer;
+            gap: 20px; 
+        }
+
+        .visitor-count {
+            list-style: none;
+            display: flex; 
+            align-items: center;
         }
         
-        .more-tools-btn i {
-            margin-left: 5px;
-            font-size: 12px;
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px; 
         }
         
-        @media (max-width: 1024px) {
-            .dropdown-content {
-                right: 0;
+        
+        .logo-img {
+            height: 50px; 
+            width: auto;
+        }
+
+        
+        .logo-text {
+             color: var(--light); 
+             white-space: nowrap;
+        }
+        
+        
+        .nav-link-custom {
+            color: var(--light) !important;
+            padding: 8px 12px !important;
+            border-radius: 6px !important;
+            transition: background-color 0.3s;
+        }
+        
+        .nav-link-custom:hover {
+            background-color: rgba(255, 255, 255, 0.05) !important;
+            color: var(--light) !important;
+        }
+        .nav-link-custom.active {
+            background-color: rgba(255, 255, 255, 0.05) !important;
+        }
+        
+        
+        #dropdownNavbarLink {
+            color: var(--light) !important;
+            padding: 8px 12px !important;
+            border-radius: 6px !important;
+            transition: background-color 0.3s;
+        }
+
+        #dropdownNavbarLink:hover {
+            background-color: rgba(255, 255, 255, 0.05) !important;
+            color: var(--light) !important;
+        }
+        
+        
+        #dropdownNavbar {
+            background-color: var(--darker) !important;
+            border: 1px solid rgba(255, 255, 255, 0.1) !important;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.4) !important;
+        }
+
+        #dropdownNavbar a {
+            color: var(--light) !important;
+        }
+
+        #dropdownNavbar a:hover {
+            background-color: rgba(255, 255, 255, 0.05) !important;
+        }
+
+        .nav-links-flowbite a i, #dropdownNavbarLink i {
+            margin-right: 5px;
+        }
+
+        
+        .header-right-content button[data-collapse-toggle] {
+            display: none;
+        }
+        
+        @media (max-width: 768px) {
+            .visitor-count {
+                display: none;
+            }
+            .header-right-content button[data-collapse-toggle] {
+                display: inline-flex;
             }
         }
         
-        /* World Renderer specific styles */
+        .dropdown, .dropdown-content, .more-tools-btn, .nav-links {
+            display: none !important; 
+        }
+
+
+
+        
+        
         .tool-header h1 {
             color: var(--tool-8);
         }
@@ -89,7 +159,7 @@
             color: var(--tool-8);
         }
         
-        /* Image preview */
+        
         .image-preview {
             width: 100%;
             max-width: 500px;
@@ -116,7 +186,7 @@
             font-size: 16px;
         }
         
-        /* Status message styles */
+        
         .status-message {
             padding: 10px;
             margin: 10px 0;
@@ -173,79 +243,97 @@
             transform: translateY(-3px);
         }
 
-        /* Remove default focus styles in modern browsers */
+        
         .social-links a:focus:not(:focus-visible) {
             outline: none !important;
         }
 
-        /* Add custom focus style for keyboard navigation only */
+        
         .social-links a:focus-visible {
             outline: 2px solid var(--tool-3) !important;
             outline-offset: 3px;
             border-radius: 2px;
         }
         
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .logo-img {
-            height: 50px;
-            width: auto;
-        }
-        
-        /* Add a new color variable for this tool */
-        :root {
-            --tool-8: #e67e22;
-        }
-        .nav-links a[href*="render-world"] i {
-        color: var(--tool-8);
-    }
-    header {
-  position: relative; /* so child absolute positioning works */
-}
-
-.visitor-count {
-  position: absolute;
-  top: 50%;
-  right: 20px;       /* adjust spacing from right edge */
-  transform: translateY(-50%); /* vertical centering */
-  list-style: none;
-}
     </style>
 </head>
 <body>
     <header>
         <div class="container header-content">
             <div class="logo">
-                <img src="../images/Water_Stone.png" alt="Growtools Logo" class="logo-img">
-                <span class="logo-text">Growtools</span>
+                <a href="../index.html" class="logo">
+                    <img src="../images/Water_Stone.png" alt="Growtools Logo" class="logo-img">
+                    <span class="logo-text">Growtools</span>
+                    </a>
             </div>
-            <ul class="nav-links">
-                <li><a href="../index.html" class="nav-link"><i class="fas fa-home"></i> Home</a></li>
-                <li><a href="dat-decoder.html" class="nav-link"><i class="fas fa-code"></i> DAT Decoder</a></li>
-                <li><a href="data-mining.html" class="nav-link"><i class="fas fa-database"></i> Data Mining</a></li>
-                <li><a href="rttex-converter.html" class="nav-link"><i class="fas fa-exchange-alt"></i> RTTEX Converter</a></li>
+
+            <div class="header-right-content">
+                <button data-collapse-toggle="navbar-dropdown" type="button" class="inline-flex items-center p-2 ms-3 w-10 h-10 justify-center text-sm rounded-lg md:hidden text-gray-400 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-600" aria-controls="navbar-dropdown" aria-expanded="false">
+                    <span class="sr-only">Open main menu</span>
+                    <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h15M1 7h15M1 13h15"/>
+                    </svg>
+                </button>
                 
-                <!-- Dropdown for additional tools -->
-                <li class="dropdown">
-                    <div class="more-tools-btn nav-link">
-                        <i class="fas fa-cubes"></i> More Tools <i class="fas fa-chevron-down"></i>
-                    </div>
-                    <div class="dropdown-content">
-                        <a href="account-checker.html"><i class="fas fa-user-shield"></i> Account Checker</a>
-                        <a href="render-world.html"><i class="fas fa-globe"></i> World Renderer</a>
-                        <a href="server-monitor.html"><i class="fas fa-server"></i> Server Monitor</a>
-                        <a href="cache-checker.html"><i class="fas fa-id-card"></i> Cache Checker</a>
-                    </div>
-                </li>
-            </ul>
-            <div class="visitor-count">
-                <a href="https://visitorbadge.io/status?path=https%3A%2F%2Fgithub.com%2FxSkriptx%2FSkriptProxy">
+                <div class="hidden w-full md:block md:w-auto" id="navbar-dropdown">
+                    <ul class="nav-links-flowbite flex flex-col font-medium p-4 mt-4 rounded-lg md:flex-row md:mt-0 md:text-sm md:border-0 md:space-x-8 md:rtl:space-x-reverse">
+                        <li>
+                            <a href="../index.html" class="nav-link-custom block">
+                                <i class="fas fa-home"></i> Home
+                            </a>
+                        </li>
+                        <li>
+                            <a href="dat-decoder.html" class="nav-link-custom block">
+                                <i class="fas fa-code icon-dat-decoder"></i> DAT Decoder
+                            </a>
+                        </li>
+                        <li>
+                            <a href="data-mining.html" class="nav-link-custom block">
+                                <i class="fas fa-database icon-data-mining"></i> Data Mining
+                            </a>
+                        </li>
+                        <li>
+                            <a href="rttex-converter.html" class="nav-link-custom block">
+                                <i class="fas fa-exchange-alt icon-rttex-converter"></i> RTTEX Converter
+                            </a>
+                        </li>
+                        
+                        <li>
+                            <button id="dropdownNavbarLink" data-dropdown-toggle="dropdownNavbar" class="flex items-center justify-between w-full py-2 px-3 rounded-lg md:border-0 md:p-0 md:w-auto">
+                                <i class="fas fa-cubes"></i> More Tools <i class="fas fa-chevron-down ms-3" style="font-size: 12px;"></i>
+                            </button>
+                            
+                            <div id="dropdownNavbar" class="z-10 hidden font-normal divide-y divide-gray-600 rounded-lg shadow w-56">
+                                <ul class="py-2 text-sm" aria-labelledby="dropdownNavbarLink">
+                                    <li>
+                                        <a href="account-checker.html" class="block px-4 py-2">
+                                            <i class="fas fa-user-shield icon-account-checker"></i> Account Checker
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="render-world.html" class="nav-link-custom active block px-4 py-2" aria-current="page">
+                                            <i class="fas fa-globe icon-renderer"></i> World Renderer
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="server-monitor.html" class="block px-4 py-2">
+                                            <i class="fas fa-server icon-server-monitor"></i> Server Monitor
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="cache-checker.html" class="block px-4 py-2">
+                                            <i class="fas fa-id-card icon-cache"></i> Cache Checker
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="visitor-count">
                     <img src="https://api.visitorbadge.io/api/visitors?path=https%3A%2F%2Fgithub.com%2FxSkriptx%2FSkriptProxy&countColor=%23263759" />
-                </a>
+                </div>  
             </div>
         </div>
     </header>
@@ -346,7 +434,12 @@
         </div>
     </footer>
 
-    <script src="../js/script.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
+    
+    <script>
+  window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+</script>
+<script defer src="/_vercel/insights/script.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const renderWorldBtn = document.getElementById('renderWorldBtn');
@@ -391,7 +484,7 @@
                 }
                 downloadBtn.style.display = 'none';
                 
-                
+                // Use a proxy to avoid CORS issues
                 const url = `https://corsproxy.io/https://s3.amazonaws.com/world.growtopiagame.com/${worldName}.png`;
                 
                 try {
@@ -468,10 +561,3 @@
     </script>
 </body>
 </html>
-
-
-
-
-
-
-
