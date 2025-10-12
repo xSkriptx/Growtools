@@ -5,67 +5,106 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DAT Decoder - Growtools</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="../images/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="../css/style.css">
     <style>
-        /* Additional styles for the dropdown menu */
-        .dropdown {
-            position: relative;
-            display: inline-block;
+        .icon-dat-decoder { color: var(--tool-1) !important; }
+        .icon-data-mining { color: var(--tool-2) !important; }
+        .icon-rttex-converter { color: var(--tool-3) !important; }
+        .icon-account-checker { color: var(--tool-4) !important; }
+        .icon-server-monitor { color: var(--tool-6) !important; }
+        .icon-renderer { color: var(--tool-8) !important; }
+        .icon-cache { color: var(--tool-7) !important; }
+        
+        header {
+            position: relative; 
+            background-color: var(--darker); 
+            padding: 10px 0;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 1rem;
         }
         
-        .dropdown-content {
-            display: none;
-            position: absolute;
-            background-color: var(--darker);
-            min-width: 200px;
-            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-            z-index: 1;
-            border-radius: 6px;
-            overflow: hidden;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        .dropdown-content a {
-            color: var(--light);
-            padding: 12px 16px;
-            text-decoration: none;
-            display: block;
-            text-align: left;
-            font-size: 14px;
-        }
-        
-        .dropdown-content a:hover {
-            background-color: rgba(255, 255, 255, 0.05);
-        }
-        
-        .dropdown:hover .dropdown-content {
-            display: block;
-        }
-        
-        .dropdown:hover .dropbtn {
-            background: rgba(255, 255, 255, 0.05);
-        }
-        
-        .more-tools-btn {
+        .header-right-content {
             display: flex;
             align-items: center;
-            padding: 8px 12px;
-            border-radius: 6px;
-            cursor: pointer;
+            gap: 20px; 
+        }
+
+        .visitor-count {
+            list-style: none;
+            display: flex; 
+            align-items: center;
         }
         
-        .more-tools-btn i {
-            margin-left: 5px;
-            font-size: 12px;
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px; 
+        }
+        .logo-img {
+            height: 50px; 
+            width: auto;
+        }
+
+        .nav-link-custom {
+            color: var(--light) !important;
+            padding: 8px 12px !important;
+            border-radius: 6px !important;
+            transition: background-color 0.3s;
         }
         
-        @media (max-width: 1024px) {
-            .dropdown-content {
-                right: 0;
+        .nav-link-custom:hover {
+            background-color: rgba(255, 255, 255, 0.05) !important;
+        }
+        .nav-link-custom.active {
+            background-color: rgba(255, 255, 255, 0.05) !important;
+        }
+        
+        #dropdownNavbarLink {
+            color: var(--light) !important;
+            padding: 8px 12px !important;
+            border-radius: 6px !important;
+            transition: background-color 0.3s;
+        }
+
+        #dropdownNavbar {
+            background-color: var(--darker) !important;
+            border: 1px solid rgba(255, 255, 255, 0.1) !important;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.4) !important;
+        }
+
+        #dropdownNavbar a {
+            color: var(--light) !important;
+        }
+      
+        .nav-links-flowbite a i, #dropdownNavbarLink i {
+            margin-right: 5px;
+        }
+
+        .header-right-content button[data-collapse-toggle] {
+            display: none;
+        }
+        
+        @media (max-width: 768px) {
+            .visitor-count {
+                display: none;
+            }
+            .header-right-content button[data-collapse-toggle] {
+                display: inline-flex;
             }
         }
         
+        .dropdown, .dropdown-content, .more-tools-btn {
+            display: none !important; 
+        }
+
         .status-message {
             padding: 10px;
             margin: 10px 0;
@@ -98,101 +137,354 @@
             border: 1px solid rgba(255, 107, 107, 0.3);
         }
         .tool-header h1 {
-    color: var(--tool-1);
-    }
-
-    .tool-section h2 {
-        color: var(--tool-1);
-        border-bottom: 2px solid var(--tool-1);
-    }
-
-    .btn-primary {
-        background: linear-gradient(to right, var(--tool-1), #ff6b6b);
-    }
-
-    .btn-primary:hover {
-        background: linear-gradient(to right, #ff6b6b, var(--tool-1));
-    }     
-
-    .results-header h3 {
-        color: var(--tool-1);
-    }
-    .tool-section h3 {
-        color: var(--tool-1);
-        border-bottom: 2px solid var(--tool-1);
-        padding-bottom: 8px;
-        margin-top: 20px;
-        font-size: 1.2em;
-    }
-    .social-links a,
-        .social-links a:focus,
-        .social-links a:active,
-        .social-links a:hover {
-            -webkit-tap-highlight-color: transparent;
-            -webkit-touch-callout: none;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-            outline: none !important;
-            box-shadow: none !important;
-            border: none !important;
-            text-decoration: none !important;
-            display: inline-block;
-            color: var(--light);
-            transition: all 0.3s ease;
-            font-size: 20px;
-            margin-right: 15px;
-            background: none !important;
-            width: auto !important;
-            height: auto !important;
-            border-radius: 0 !important;
+            color: var(--tool-1);
+            font-weight: bold;
         }
 
-        .social-links a:hover {
-            color: var(--primary);
-            transform: translateY(-3px);
+        .tool-section h2 {
+            color: var(--tool-1);
+            border-bottom: 2px solid var(--tool-1);
+            font-weight: bold;
         }
 
-        /* Remove default focus styles in modern browsers */
-        .social-links a:focus:not(:focus-visible) {
-            outline: none !important;
+        .btn-primary {
+            background: linear-gradient(to right, var(--tool-1), #5d8cff);
         }
 
-        /* Add custom focus style for keyboard navigation only */
-        .social-links a:focus-visible {
-            outline: 2px solid var(--tool-3) !important;
-            outline-offset: 3px;
-            border-radius: 2px;
+        .btn-primary:hover {
+            background: linear-gradient(to right, #5d8cff, var(--tool-1));
+        }     
+
+        .results-header h3 {
+            color: var(--tool-1);
+            font-weight: bold;
         }
-        .logo {
-        display: flex;
-        align-items: center;
-        gap: 10px; /* space between logo and text */
+        .tool-section h3 {
+            color: var(--tool-1);
+            border-bottom: 2px solid var(--tool-1);
+            padding-bottom: 8px;
+            margin-top: 20px;
+            font-size: 1.2em;
+            font-weight: bold;
         }
+        .social-links a,
+            .social-links a:focus,
+            .social-links a:active,
+            .social-links a:hover {
+                -webkit-tap-highlight-color: transparent;
+                -webkit-touch-callout: none;
+                -webkit-user-select: none;
+                -moz-user-select: none;
+                -ms-user-select: none;
+                user-select: none;
+                outline: none !important;
+                box-shadow: none !important;
+                border: none !important;
+                text-decoration: none !important;
+                display: inline-block;
+                color: var(--light);
+                transition: all 0.3s ease;
+                font-size: 20px;
+                margin-right: 15px;
+                background: none !important;
+                width: auto !important;
+                height: auto !important;
+                border-radius: 0 !important;
+            }
 
-        .logo-img {
-        height: 50px;  /* make the logo bigger */
-        width: auto;
-        }
-        .nav-links a[href*="render-world"] i {
-        color: var(--tool-8);
-    }
-header {
-  position: relative; /* so child absolute positioning works */
-}
+            .social-links a:hover {
+                color: var(--primary);
+                transform: translateY(-3px);
+            }
 
-.visitor-count {
-  position: absolute;
-  top: 50%;
-  right: 20px;       /* adjust spacing from right edge */
-  transform: translateY(-50%); /* vertical centering */
-  list-style: none;
-}
+            .social-links a:focus:not(:focus-visible) {
+                outline: none !important;
+            }
 
+            .social-links a:focus-visible {
+                outline: 2px solid var(--tool-3) !important;
+                outline-offset: 3px;
+                border-radius: 2px;
+            }
+            .nav-links a[href*="render-world"] i {
+                color: var(--tool-8);
+            }
+            .results-header {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                flex-wrap: wrap; 
+            }
 
+            .results-header h3 {
+                flex-shrink: 0;
+                margin-right: 20px;
+            }
 
+            .search-container {
+                display: flex; 
+                gap: 10px; 
+                flex-grow: 1; 
+                max-width: 400px; 
+            }
 
+            #searchInput {
+                width: 100%;
+                padding: 8px 12px;
+                border-radius: 6px;
+                border: 1px solid var(--border-color);
+                background-color: var(--darker);
+                color: var(--light);
+                font-size: 14px;
+            }
+
+            #searchInput:focus {
+                outline: none;
+                border-color: var(--primary);
+                box-shadow: 0 0 0 2px rgba(91, 140, 255, 0.2);
+            }
+
+            .btn-search {
+                padding: 8px 15px;
+                border-radius: 6px;
+                border: none;
+                cursor: pointer;
+                background-color: var(--primary);
+                color: white;
+                font-weight: 600;
+                transition: background-color 0.3s ease;
+            }
+
+            .btn-search:hover {
+                background-color: #5d8cff;
+            }
+
+            .highlight {
+                background-color: #ffd700; 
+                color: black;
+                font-weight: bold;
+                padding: 2px 0;
+            }
+            .table-container {
+                overflow-x: auto;
+                border: 1px solid var(--border-color);
+                border-radius: 8px;
+            }
+
+            .item-table {
+                width: 100%;
+                border-collapse: collapse;
+                color: var(--light);
+            }
+
+            .item-table th,
+            .item-table td {
+                padding: 12px 15px;
+                border-bottom: 1px solid var(--border-color);
+                text-align: left;
+            }
+
+            .item-table thead {
+                background-color: var(--darker);
+                border-bottom: 2px solid var(--primary);
+            }
+
+            .item-table th {
+                font-weight: 600;
+                text-transform: uppercase;
+                font-size: 0.9em;
+                cursor: pointer;
+                position: relative;
+                user-select: none;
+            }
+
+            .item-table th:hover {
+                background-color: rgba(255, 255, 255, 0.05);
+            }
+
+            .item-table .sortable i {
+                margin-left: 8px;
+                font-size: 0.7em;
+                transition: transform 0.2s;
+            }
+
+            .item-table .sort-asc i {
+                transform: rotate(180deg);
+            }
+
+            .item-table .btn-table-action {
+                background-color: transparent;
+                border: 1px solid var(--primary);
+                color: var(--primary);
+                padding: 6px 12px;
+                border-radius: 4px;
+                cursor: pointer;
+                transition: background-color 0.3s ease, color 0.3s ease;
+            }
+
+            .item-table .btn-table-action:hover {
+                background-color: var(--primary);
+                color: white;
+            }
+
+            .item-table tr:nth-child(even) {
+                background-color: rgba(255, 255, 255, 0.02);
+            }
+            .pagination {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-top: 20px;
+                padding: 0 10px;
+            }
+
+            .pagination-btn {
+                background-color: var(--primary);
+                color: white;
+                border: none;
+                padding: 8px 16px;
+                border-radius: 4px;
+                cursor: pointer;
+                font-size: 14px;
+                transition: background-color 0.3s;
+            }
+
+            .pagination-btn:disabled {
+                background-color: var(--dark-3);
+                color: #888;
+                cursor: not-allowed;
+            }
+
+            .pagination-btn:hover:not(:disabled) {
+                background-color: #5d8cff;
+            }
+
+            .pagination-controls-new {
+                display: flex;
+                gap: 5px;
+                align-items: center;
+            }
+
+            .pagination-btn-nav,
+            .pagination-btn-page {
+                background-color: var(--dark-3);
+                color: var(--light);
+                border: 1px solid var(--border-color);
+                padding: 8px 12px;
+                border-radius: 6px;
+                cursor: pointer;
+                transition: background-color 0.2s ease, color 0.2s ease;
+            }
+
+            .pagination-btn-nav:hover,
+            .pagination-btn-page:hover {
+                background-color: rgba(255, 255, 255, 0.1);
+            }
+
+            .pagination-btn-page.active {
+                background-color: var(--primary);
+                color: white;
+                font-weight: bold;
+                border-color: var(--primary);
+            }
+
+            .pagination-btn-nav:disabled {
+                background-color: transparent;
+                color: #888;
+                cursor: not-allowed;
+                border-color: transparent;
+            }
+
+            .pagination-ellipsis {
+                color: var(--light);
+                padding: 8px 5px;
+            }
+
+            .modal-overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.7);
+                display: none;
+                justify-content: center;
+                align-items: center;
+                z-index: 1000;
+                animation: fadeIn 0.3s ease;
+            }
+
+            .modal-content {
+                background-color: var(--dark);
+                padding: 20px;
+                border-radius: 8px;
+                width: 90%;
+                max-width: 800px;
+                max-height: 80%;
+                overflow: hidden;
+                position: relative;
+                border: 1px solid var(--border-color);
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            }
+
+            .modal-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                border-bottom: 2px solid var(--primary);
+                padding-bottom: 10px;
+                margin-bottom: 20px;
+            }
+
+            .modal-header h2 {
+                margin: 0;
+                color: var(--light);
+            }
+
+            .modal-close {
+                background: none;
+                border: none;
+                color: var(--light);
+                font-size: 24px;
+                cursor: pointer;
+            }
+
+            .modal-body {
+                max-height: calc(80vh - 100px);
+                overflow-y: auto;
+            }
+
+            .modal-body .field-row {
+                margin-bottom: 15px;
+            }
+
+            .modal-body .field-label {
+                display: block;
+                color: var(--light);
+                font-size: 14px;
+                font-weight: 600;
+                margin-bottom: 5px;
+            }
+
+            .modal-body .field-input {
+                width: 100%;
+                background-color: var(--darker);
+                border: 1px solid var(--border-color);
+                padding: 10px;
+                border-radius: 4px;
+                color: var(--light);
+                font-size: 16px;
+            }
+
+            .modal-body .field-input:focus {
+                outline: none;
+                border-color: var(--primary);
+            }
+
+            @keyframes fadeIn {
+                from { opacity: 0; }
+                to { opacity: 1; }
+            }
     </style>
 </head>
 <body>
@@ -202,30 +494,76 @@ header {
                 <img src="../images/Water_Stone.png" alt="Growtools Logo" class="logo-img">
                 <span class="logo-text">Growtools</span>
             </div>
-            <ul class="nav-links">
-                <li><a href="../index.html" class="nav-link"><i class="fas fa-home"></i> Home</a></li>
-                <li><a href="dat-decoder.html" class="nav-link active"><i class="fas fa-code"></i> DAT Decoder</a></li>
-                <li><a href="data-mining.html" class="nav-link"><i class="fas fa-database"></i> Data Mining</a></li>
-                <li><a href="rttex-converter.html" class="nav-link"><i class="fas fa-exchange-alt"></i> RTTEX Converter</a></li>
+            
+            <div class="header-right-content">
+                <button data-collapse-toggle="navbar-dropdown" type="button" class="inline-flex items-center p-2 ms-3 w-10 h-10 justify-center text-sm rounded-lg md:hidden text-gray-400 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-600" aria-controls="navbar-dropdown" aria-expanded="false">
+                    <span class="sr-only">Open main menu</span>
+                    <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h15M1 7h15M1 13h15"/>
+                    </svg>
+                </button>
                 
-                <!-- Dropdown for additional tools -->
-                <li class="dropdown">
-                    <div class="more-tools-btn nav-link">
-                        <i class="fas fa-cubes"></i> More Tools <i class="fas fa-chevron-down"></i>
-                    </div>
-                    <div class="dropdown-content">
-                        <a href="account-checker.html"><i class="fas fa-user-shield"></i> Account Checker</a>
-                        <a href="render-world.html"><i class="fas fa-globe"></i> World Renderer</a>
-                        <a href="server-monitor.html"><i class="fas fa-server"></i> Server Monitor</a>
-                        <a href="cache-checker.html"><i class="fas fa-id-card"></i> Cache Checker</a>
-                    </div>
-                </li>
+                <div class="hidden w-full md:block md:w-auto" id="navbar-dropdown">
+                    <ul class="nav-links-flowbite flex flex-col font-medium p-4 mt-4 rounded-lg md:flex-row md:mt-0 md:text-sm md:border-0 md:space-x-8 md:rtl:space-x-reverse">
+                        <li>
+                            <a href="../index.html" class="nav-link-custom block">
+                                <i class="fas fa-home"></i> Home
+                            </a>
+                        </li>
+                        <li>
+                            <a href="dat-decoder.html" class="nav-link-custom active block" aria-current="page">
+                                <i class="fas fa-code icon-dat-decoder"></i> DAT Decoder
+                            </a>
+                        </li>
+                        <li>
+                            <a href="data-mining.html" class="nav-link-custom block">
+                                <i class="fas fa-database icon-data-mining"></i> Data Mining
+                            </a>
+                        </li>
+                        <li>
+                            <a href="rttex-converter.html" class="nav-link-custom block">
+                                <i class="fas fa-exchange-alt icon-rttex-converter"></i> RTTEX Converter
+                            </a>
+                        </li>
+                        
+                        <li>
+                            <button id="dropdownNavbarLink" data-dropdown-toggle="dropdownNavbar" class="flex items-center justify-between w-full py-2 px-3 rounded-lg md:border-0 md:p-0 md:w-auto">
+                                <i class="fas fa-cubes"></i> More Tools <i class="fas fa-chevron-down ms-3" style="font-size: 12px;"></i>
+                            </button>
+                            
+                            <div id="dropdownNavbar" class="z-10 hidden font-normal divide-y divide-gray-600 rounded-lg shadow w-56">
+                                <ul class="py-2 text-sm" aria-labelledby="dropdownNavbarLink">
+                                    <li>
+                                        <a href="account-checker.html" class="block px-4 py-2">
+                                            <i class="fas fa-user-shield icon-account-checker"></i> Account Checker
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="render-world.html" class="block px-4 py-2">
+                                            <i class="fas fa-globe icon-renderer"></i> World Renderer
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="server-monitor.html" class="block px-4 py-2">
+                                            <i class="fas fa-server icon-server-monitor"></i> Server Monitor
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="cache-checker.html" class="block px-4 py-2">
+                                            <i class="fas fa-id-card icon-cache"></i> Cache Checker
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
                 
                 <div class="visitor-count">
-                <a href="https://visitorbadge.io/status?path=https%3A%2F%2Fgithub.com%2FxSkriptx%2FSkriptProxy">
                     <img src="https://api.visitorbadge.io/api/visitors?path=https%3A%2F%2Fgithub.com%2FxSkriptx%2FSkriptProxy&countColor=%23263759" />
-                </a>
-            </div>  
+                </div>  
+            </div>
+            
         </div>
     </header>
 
@@ -259,12 +597,30 @@ header {
                         <div class="results-area">
                             <div class="results-header">
                                 <h3>Item Information</h3>
-                                <button class="btn btn-primary" id="copyResults">
-                                    <i class="fas fa-copy"></i> Copy
-                                </button>
+                                <div class="search-container">
+                                    <input type="text" id="searchInput" placeholder="Search..." class="form-control">
+                                    </div>
+                                </div>
+                            <div class="table-container">
+                                <table class="item-table" id="itemTable">
+                                    <thead>
+                                        <tr>
+                                            <th id="itemIdHeader" class="sortable">Item ID <i class="fas fa-sort"></i></th>
+                                            <th id="itemNameHeader" class="sortable">Item Name <i class="fas fa-sort"></i></th>
+                                            <th>Action Button</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="itemTableBody">
+                                        </tbody>
+                                </table>
+                                <div id="noResultsMessage" style="display: none; text-align: center; margin-top: 20px;">
+                                    No items found.
+                                </div>
                             </div>
-                            <div class="results-content" id="decodedResults">
-                                // Decoded results will appear here
+                            <div class="pagination">
+                                <span id="statusDisplay"></span>
+                                <div class="pagination-controls-new" id="paginationControls">
+                                    </div>
                             </div>
                         </div>
                     </div>
@@ -316,273 +672,636 @@ header {
     </div>
 </footer>
 
-    <script src="../js/script.js"></script>
-    <script>
-        // Constants for field types
-        const STRING = -1;
-        const STRING_XOR = -2;
+<div id="infoModal" class="modal-overlay">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2 id="modalTitle">Info Items</h2>
+            <button class="modal-close" id="closeModalBtn">&times;</button>
+        </div>
+        <div class="modal-body" id="modalBody">
+            </div>
+    </div>
+</div>
 
-        // Field definition function
-        function field(size, { version = 0 } = {}) {
-            return { size, version };
+<script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
+
+<script>
+    const STRING = -1;
+    const STRING_XOR = -2;
+
+    function field(size, { version = 0 } = {}) {
+        return { size, version };
+    }
+
+    function getGenericTemplate() {
+        return {
+            "id": field(4),
+            "properties": field(2),
+            "type": field(1),
+            "material": field(1),
+            "name": field(STRING_XOR),
+            "file_name": field(STRING),
+            "file_hash": field(4),
+            "visual_type": field(1),
+            "cook_time": field(4),
+            "tex_x": field(1),
+            "tex_y": field(1),
+            "storage_type": field(1),
+            "layer": field(1),
+            "collision_type": field(1),
+            "hardness": field(1),
+            "regen_time": field(4),
+            "clothing_type": field(1),
+            "rarity": field(2),
+            "max_hold": field(1),
+            "alt_file_path": field(STRING),
+            "alt_file_hash": field(4),
+            "anim_ms": field(4),
+            "pet_name": field(STRING, { version: 4 }),
+            "pet_prefix": field(STRING, { version: 4 }),
+            "pet_suffix": field(STRING, { version: 4 }),
+            "pet_ability": field(STRING, { version: 5 }),
+            "seed_base": field(1),
+            "seed_over": field(1),
+            "tree_base": field(1),
+            "tree_over": field(1),
+            "bg_col": field(4),
+            "fg_col": field(4),
+            "seed1": field(2),
+            "seed2": field(2),
+            "bloom_time": field(4),
+            "anim_type": field(4, { version: 7 }),
+            "anim_string": field(STRING, { version: 7 }),
+            "anim_tex": field(STRING, { version: 8 }),
+            "anim_string2": field(STRING, { version: 8 }),
+            "dlayer1": field(4, { version: 8 }),
+            "dlayer2": field(4, { version: 8 }),
+            "properties2": field(2, { version: 9 }),
+            "_unk": field(62, { version: 9 }),
+            "tile_range": field(4, { version: 10 }),
+            "pile_range": field(4, { version: 10 }),
+            "custom_punch": field(STRING, { version: 11 }),
+            "_unk2": field(13, { version: 12 }),
+            "clock_div": field(4, { version: 13 }),
+            "parent_id": field(4, { version: 14 }),
+            "_unk3": field(25, { version: 15 }),
+            "alt_sit_path": field(STRING, { version: 15 }),
+            "_unk4": field(STRING, { version: 16 }),
+            "_unk5": field(4, { version: 17 }),
+            "_unk6": field(4, { version: 18 }),
+            "_unk7": field(9, { version: 19 }),
+            "_unk8": field(1, { version: 20 }),
+            "_unk9": field(1, { version: 21 }),
+            "item_description": field(STRING, { version: 22 }),
+        };
+    }
+    function parseNumber(buffer, offset, size) {
+        let value = 0;
+        for (let i = 0; i < size; i++) {
+            value += buffer[offset + i] << (i * 8);
+        }
+        return { value, newOffset: offset + size };
+    }
+    function parseString(buffer, offset) {
+        const lengthResult = parseNumber(buffer, offset, 2);
+        const length = lengthResult.value;
+        const stringBytes = buffer.slice(lengthResult.newOffset, lengthResult.newOffset + length);
+        const str = new TextDecoder().decode(stringBytes);
+        return { value: str, newOffset: lengthResult.newOffset + length };
+    }
+    function decryptItemName(name, id) {
+        const key = "PBG892FXX982ABC*";
+        const keyLen = key.length;
+        let result = "";
+        
+        for (let i = 0; i < name.length; i++) {
+            const keyChar = key[(i + id) % keyLen];
+            result += String.fromCharCode(name.charCodeAt(i) ^ keyChar.charCodeAt(0));
+        }
+        
+        return result;
+    }
+    function parseItemsDat(buffer) {
+        let offset = 0;
+        
+        const versionResult = parseNumber(buffer, offset, 2);
+        const version = versionResult.value;
+        offset = versionResult.newOffset;
+        
+        if (version < 22) {
+            throw new Error(`Unsupported items.dat version: ${version}. This tool is optimized for version 22 and above. Please try with a newer file.`);
         }
 
-        // Get the generic template for DAT files
-        function getGenericTemplate() {
-            return {
-                "id": field(4),
-                "properties": field(2),
-                "type": field(1),
-                "material": field(1),
-                "name": field(STRING_XOR),
-                "file_name": field(STRING),
-                "file_hash": field(4),
-                "visual_type": field(1),
-                "cook_time": field(4),
-                "tex_x": field(1),
-                "tex_y": field(1),
-                "storage_type": field(1),
-                "layer": field(1),
-                "collision_type": field(1),
-                "hardness": field(1),
-                "regen_time": field(4),
-                "clothing_type": field(1),
-                "rarity": field(2),
-                "max_hold": field(1),
-                "alt_file_path": field(STRING),
-                "alt_file_hash": field(4),
-                "anim_ms": field(4),
-                "pet_name": field(STRING, { version: 4 }),
-                "pet_prefix": field(STRING, { version: 4 }),
-                "pet_suffix": field(STRING, { version: 4 }),
-                "pet_ability": field(STRING, { version: 5 }),
-                "seed_base": field(1),
-                "seed_over": field(1),
-                "tree_base": field(1),
-                "tree_over": field(1),
-                "bg_col": field(4),
-                "fg_col": field(4),
-                "seed1": field(2),
-                "seed2": field(2),
-                "bloom_time": field(4),
-                "anim_type": field(4, { version: 7 }),
-                "anim_string": field(STRING, { version: 7 }),
-                "anim_tex": field(STRING, { version: 8 }),
-                "anim_string2": field(STRING, { version: 8 }),
-                "dlayer1": field(4, { version: 8 }),
-                "dlayer2": field(4, { version: 8 }),
-                "properties2": field(2, { version: 9 }),
-                "_unk": field(62, { version: 9 }),
-                "tile_range": field(4, { version: 10 }),
-                "pile_range": field(4, { version: 10 }),
-                "custom_punch": field(STRING, { version: 11 }),
-                "_unk2": field(13, { version: 12 }),
-                "clock_div": field(4, { version: 13 }),
-                "parent_id": field(4, { version: 14 }),
-                "_unk3": field(25, { version: 15 }),
-                "alt_sit_path": field(STRING, { version: 15 }),
-                "_unk4": field(STRING, { version: 16 }),
-                "_unk5": field(4, { version: 17 }),
-                "_unk6": field(4, { version: 18 }),
-                "_unk7": field(9, { version: 19 }),
-                "_unk8": field(1, { version: 20 }),
-                "_unk9": field(1, { version: 21 }),
-                "_unk10": field(STRING, { version: 22 }), // Item's info
-            };
-        }
-
-        // Parse a number from the buffer
-        function parseNumber(buffer, offset, size) {
-            let value = 0;
-            for (let i = 0; i < size; i++) {
-                value += buffer[offset + i] << (i * 8);
-            }
-            return { value, newOffset: offset + size };
-        }
-
-        // Parse a string from the buffer
-        function parseString(buffer, offset) {
-            const lengthResult = parseNumber(buffer, offset, 2);
-            const length = lengthResult.value;
-            const stringBytes = buffer.slice(lengthResult.newOffset, lengthResult.newOffset + length);
-            const str = new TextDecoder().decode(stringBytes);
-            return { value: str, newOffset: lengthResult.newOffset + length };
-        }
-
-        // Decrypt item name using XOR cipher
-        function decryptItemName(name, id) {
-            const key = "PBG892FXX982ABC*";
-            const keyLen = key.length;
-            let result = "";
+        const itemCountResult = parseNumber(buffer, offset, 4);
+        const itemCount = itemCountResult.value;
+        offset = itemCountResult.newOffset;
+        
+        const template = getGenericTemplate();
+        const items = [];
+        
+        for (let i = 0; i < itemCount; i++) {
+            const item = {};
             
-            for (let i = 0; i < name.length; i++) {
-                const keyChar = key[(i + id) % keyLen];
-                result += String.fromCharCode(name.charCodeAt(i) ^ keyChar.charCodeAt(0));
-            }
-            
-            return result;
-        }
-
-        // Parse the items.dat file
-        function parseItemsDat(buffer) {
-            let offset = 0;
-            
-            // Read version
-            const versionResult = parseNumber(buffer, offset, 2);
-            const version = versionResult.value;
-            offset = versionResult.newOffset;
-            
-            // Read item count
-            const itemCountResult = parseNumber(buffer, offset, 4);
-            const itemCount = itemCountResult.value;
-            offset = itemCountResult.newOffset;
-            
-            const template = getGenericTemplate();
-            const items = [];
-            
-            for (let i = 0; i < itemCount; i++) {
-                const item = {};
-                
-                for (const [key, fieldInfo] of Object.entries(template)) {
-                    // Skip fields that are not in this version
-                    if (fieldInfo.version > version) {
-                        continue;
-                    }
-                    
-                    if (fieldInfo.size === STRING_XOR) {
-                        const strResult = parseString(buffer, offset);
-                        item[key] = decryptItemName(strResult.value, i);
-                        offset = strResult.newOffset;
-                    } else if (fieldInfo.size === STRING) {
-                        const strResult = parseString(buffer, offset);
-                        item[key] = strResult.value;
-                        offset = strResult.newOffset;
-                    } else {
-                        const numResult = parseNumber(buffer, offset, fieldInfo.size);
-                        item[key] = numResult.value;
-                        offset = numResult.newOffset;
-                    }
+            for (const [key, fieldInfo] of Object.entries(template)) {
+                if (fieldInfo.version > version) {
+                    continue;
                 }
                 
-                items.push(item);
+                if (fieldInfo.size === STRING_XOR) {
+                    const strResult = parseString(buffer, offset);
+                    item[key] = decryptItemName(strResult.value, i);
+                    offset = strResult.newOffset;
+                } else if (fieldInfo.size === STRING) {
+                    const strResult = parseString(buffer, offset);
+                    item[key] = strResult.value;
+                    offset = strResult.newOffset;
+                } else {
+                    const numResult = parseNumber(buffer, offset, fieldInfo.size);
+                    item[key] = numResult.value;
+                    offset = numResult.newOffset;
+                }
             }
             
-            return { version, itemCount, items };
+            items.push(item);
         }
-
-        // Format the decoded results for display
-        function formatResults(result) {
-            let output = `DAT File Version: ${result.version}\n`;
-            output += `Item Count: ${result.itemCount}\n\n`;
-            
-            output += "Items:\n";
-            output += "------\n\n";
-            
-            // Display all items
-            result.items.forEach((item, index) => {
-                output += `Item ${index} (ID: ${item.id || 'N/A'}):\n`;
-                
-                // Display all available fields
-                for (const [field, value] of Object.entries(item)) {
-                    output += `  ${field}: ${value}\n`;
-                }
-                
-                output += '\n';
-            });
-            
-            return output;
-        }
-
-        // Show status message
-        function showStatus(message, type) {
-            const statusArea = document.getElementById('statusArea');
+        
+        return { version, itemCount, items };
+    }
+    function showStatus(message, type) {
+        const statusArea = document.getElementById('statusArea');
+        if (statusArea) {
             statusArea.innerHTML = `<div class="status-message status-${type}">${message}</div>`;
+        } else {
+            console.error('Error: statusArea element not found!');
         }
-
-        // Clear status message
-        function clearStatus() {
-            const statusArea = document.getElementById('statusArea');
+    }
+    function clearStatus() {
+        const statusArea = document.getElementById('statusArea');
+        if (statusArea) {
             statusArea.innerHTML = '';
         }
+    }
+    function renderTable(items) {
+        const tableBody = document.getElementById('itemTableBody');
+        const noResultsMessage = document.getElementById('noResultsMessage');
+        
+        if (!tableBody || !noResultsMessage) {
+            console.error("Error: One or more table elements not found.");
+            return;
+        }
 
-        // DAT Decoder specific functionality
-        document.addEventListener('DOMContentLoaded', function() {
-            const decodeBtn = document.getElementById('decodeBtn');
-            const copyBtn = document.getElementById('copyResults');
-            const fileInput = document.getElementById('datFile');
-            const resultsArea = document.getElementById('decodedResults');
+        tableBody.innerHTML = '';
+        if (items.length === 0) {
+            noResultsMessage.style.display = 'block';
+            return;
+        }
+        noResultsMessage.style.display = 'none';
+
+        items.forEach(item => {
+            const row = document.createElement('tr');
             
-            // Handle file selection
-            fileInput.addEventListener('change', function() {
-                if (fileInput.files.length) {
-                    const file = fileInput.files[0];
-                    showStatus(`Uploading ${file.name}...`, 'uploading');
-                    
-                    // Simulate upload process
-                    setTimeout(() => {
-                        showStatus(`File "${file.name}" successfully uploaded! Ready to decode.`, 'success');
-                    }, 1000);
+            const idCell = document.createElement('td');
+            idCell.textContent = item.id || 'N/A';
+            row.appendChild(idCell);
+
+            const nameCell = document.createElement('td');
+            nameCell.textContent = item.name || 'N/A';
+            row.appendChild(nameCell);
+
+            const actionCell = document.createElement('td');
+            const actionBtn = document.createElement('button');
+            actionBtn.className = 'btn-table-action';
+            actionBtn.textContent = 'Info';
+            actionBtn.onclick = () => {
+                showModal(item);
+            };
+            actionCell.appendChild(actionBtn);
+            row.appendChild(actionCell);
+
+            tableBody.appendChild(row);
+        });
+    }
+    function sortTable(columnIndex, table, header) {
+        const isAscending = header.classList.toggle('sort-asc');
+        const rows = Array.from(table.tBodies[0].rows);
+
+        table.querySelectorAll('th.sortable').forEach(th => {
+            th.classList.remove('sort-asc', 'sort-desc');
+        });
+        
+        if (isAscending) {
+            header.classList.add('sort-asc');
+        } else {
+            header.classList.add('sort-desc');
+        }
+
+        const sortedRows = rows.sort((a, b) => {
+            const cellA = a.cells[columnIndex].textContent;
+            const cellB = b.cells[columnIndex].textContent;
+            const modifier = isAscending ? 1 : -1;
+
+            if (!isNaN(cellA) && !isNaN(cellB)) {
+                return modifier * (cellA - cellB);
+            } else {
+                return modifier * cellA.localeCompare(cellB);
+            }
+        });
+
+        sortedRows.forEach(row => table.tBodies[0].appendChild(row));
+    }
+ 
+    function filterAndRender(query) {
+        if (decodedItems.length === 0) return; 
+
+        const filteredItems = decodedItems.filter(item => {
+            const idText = (item.id || '').toString().toLowerCase();
+            const nameText = (item.name || '').toLowerCase();
+            const filterText = query.toLowerCase();
+            return idText.includes(filterText) || nameText.includes(filterText);
+        });
+
+        currentFilteredItems = filteredItems;
+        currentPage = 1;
+        renderPage();
+    }
+    function renderPage() {
+        const tableBody = document.getElementById('itemTableBody');
+        const noResultsMessage = document.getElementById('noResultsMessage');
+
+        if (!tableBody || !noResultsMessage) return; 
+
+        tableBody.innerHTML = '';
+        const noResultsMessageElement = document.getElementById('noResultsMessage');
+
+        if (currentFilteredItems.length === 0) {
+            noResultsMessageElement.style.display = 'block';
+            updatePaginationControls(0);
+            return;
+        }
+
+        noResultsMessageElement.style.display = 'none';
+
+        const startIndex = (currentPage - 1) * itemsPerPage;
+        const endIndex = startIndex + itemsPerPage;
+        const itemsToRender = currentFilteredItems.slice(startIndex, endIndex);
+
+        renderTable(itemsToRender);
+        updatePaginationControls(currentFilteredItems.length);
+    }
+    
+
+    function updatePaginationControls(totalItems) {
+        const paginationControls = document.getElementById('paginationControls');
+        const statusDisplay = document.getElementById('statusDisplay');
+        
+        if (!paginationControls || !statusDisplay) {
+            console.error("Error: Pagination elements not found.");
+            return;
+        }
+
+        paginationControls.innerHTML = '';
+        const totalPages = Math.ceil(totalItems / itemsPerPage);
+        
+        if (totalItems > 0) {
+            const prevBtn = document.createElement('button');
+            prevBtn.className = 'pagination-btn-nav';
+            prevBtn.innerHTML = '<i class="fas fa-chevron-left"></i> Previous';
+            prevBtn.disabled = currentPage === 1;
+            prevBtn.addEventListener('click', () => {
+                if (currentPage > 1) {
+                    currentPage--;
+                    renderPage();
                 }
             });
-            
-            decodeBtn.addEventListener('click', function() {
-                if (!fileInput.files.length) {
-                    resultsArea.textContent = 'Please select a DAT file first.';
-                    return;
+            paginationControls.appendChild(prevBtn);
+
+            const maxPagesToShow = 5;
+            let startPage, endPage;
+
+            if (totalPages <= maxPagesToShow) {
+                startPage = 1;
+                endPage = totalPages;
+            } else {
+                if (currentPage <= 3) {
+                    startPage = 1;
+                    endPage = 5;
+                } else if (currentPage + 2 >= totalPages) {
+                    startPage = totalPages - 4;
+                    endPage = totalPages;
+                } else {
+                    startPage = currentPage - 2;
+                    endPage = currentPage + 2;
+                }
+            }
+
+            if (startPage > 1) {
+                const firstPageBtn = document.createElement('button');
+                firstPageBtn.className = 'pagination-btn-page';
+                firstPageBtn.textContent = '1';
+                firstPageBtn.addEventListener('click', () => {
+                    currentPage = 1;
+                    renderPage();
+                });
+                paginationControls.appendChild(firstPageBtn);
+                const ellipsis = document.createElement('span');
+                ellipsis.className = 'pagination-ellipsis';
+                ellipsis.textContent = '...';
+                paginationControls.appendChild(ellipsis);
+            }
+
+            for (let i = startPage; i <= endPage; i++) {
+                const pageBtn = document.createElement('button');
+                pageBtn.className = `pagination-btn-page ${i === currentPage ? 'active' : ''}`;
+                pageBtn.textContent = i;
+                pageBtn.addEventListener('click', () => {
+                    currentPage = i;
+                    renderPage();
+                }
+                );
+                paginationControls.appendChild(pageBtn);
+            }
+
+            if (endPage < totalPages) {
+                const ellipsis = document.createElement('span');
+                ellipsis.className = 'pagination-ellipsis';
+                ellipsis.textContent = '...';
+                paginationControls.appendChild(ellipsis);
+                const lastPageBtn = document.createElement('button');
+                lastPageBtn.className = 'pagination-btn-page';
+                lastPageBtn.textContent = totalPages;
+                lastPageBtn.addEventListener('click', () => {
+                    currentPage = totalPages;
+                    renderPage();
+                });
+                paginationControls.appendChild(lastPageBtn);
+            }
+
+            const nextBtn = document.createElement('button');
+            nextBtn.className = 'pagination-btn-nav';
+            nextBtn.innerHTML = 'Next <i class="fas fa-chevron-right"></i>';
+            nextBtn.disabled = currentPage === totalPages;
+            nextBtn.addEventListener('click', () => {
+                if (currentPage < totalPages) {
+                    currentPage++;
+                    renderPage();
+                }
+            });
+            paginationControls.appendChild(nextBtn);
+        }
+
+        if (totalItems > 0) {
+            const startEntry = (currentPage - 1) * itemsPerPage + 1;
+            const endEntry = Math.min(currentPage * itemsPerPage, totalItems);
+            statusDisplay.textContent = `Showing ${startEntry} to ${endEntry} of ${totalItems} entries`;
+        } else {
+            statusDisplay.textContent = 'Showing 0 entries';
+        }
+    }
+    
+    function showModal(item) {
+        const modal = document.getElementById('infoModal');
+        const modalBody = document.getElementById('modalBody');
+        
+        modalBody.innerHTML = ''; 
+        modalBody.scrollTop = 0;
+
+        document.body.style.overflow = 'hidden';
+
+        const fieldMapping = {
+            "id": "Item ID",
+            "properties": "Editable Type",
+            "material": "Item Category",
+            "type": "Action Type",
+            "hit_sound_type": "Hit Sound Type",
+            "name": "Name",
+            "file_name": "Texture",
+            "file_hash": "Texture Hash",
+            "visual_type": "Item Kind",
+            "cook_time": "Val1",
+            "tex_x": "Texture X",
+            "tex_y": "Texture Y",
+            "storage_type": "Spread Types",
+            "layer": "Is Stripey Wallpaper",
+            "collision_type": "Collision Type",
+            "hardness": "Break Hits",
+            "regen_time": "Grow Time",
+            "clothing_type": "Clothing Type",
+            "rarity": "Rarity",
+            "max_hold": "Max Amount",
+            "alt_file_path": "Extra File",
+            "alt_file_hash": "Extra File Hash",
+            "anim_ms": "Audio Volume",
+            "pet_name": "Pet Name",
+            "pet_prefix": "Pet Prefix",
+            "pet_suffix": "Pet Suffix",
+            "pet_ability": "Pet Ability",
+            "seed_base": "Seed Base",
+            "seed_over": "Seed Overlay",
+            "tree_base": "Tree Base",
+            "tree_over": "Tree Leaves",
+            "bg_col": "bg col",
+            "fg_col": "fg col",
+            "seed1": "Seed 1",
+            "seed2": "Seed 2",
+            "bloom_time": "Bloom Time",
+            "anim_type": "Anim Type",
+            "anim_string": "Anim String",
+            "anim_tex": "Anim Tex",
+            "anim_string2": "Anim String 2",
+            "dlayer1": "Dlayer 1",
+            "dlayer2": "Dlayer 2",
+            "properties2": "Properties 2",
+            "_unk": "Unknown Data (62 bytes)",
+            "tile_range": "Tile Range",
+            "pile_range": "Pile Range",
+            "custom_punch": "Custom Punch",
+            "_unk2": "Unknown Data (13 bytes)",
+            "clock_div": "Clock Div",
+            "parent_id": "Parent ID",
+            "_unk3": "Unknown Data (25 bytes)",
+            "alt_sit_path": "Alt Sit Path",
+            "_unk4": "Unknown Data (string)",
+            "_unk5": "Unknown Data (4 bytes)",
+            "_unk6": "Unknown Data (4 bytes)",
+            "_unk7": "Unknown Data (9 bytes)",
+            "_unk8": "Unknown Data (1 byte)",
+            "_unk9": "Unknown Data (1 byte)",
+            "item_description": "Item Description",
+        };
+        
+        const desiredOrder = ["name", "id", "item_description", "file_name"];
+        const remainingKeys = Object.keys(item).filter(key => !desiredOrder.includes(key));
+        const orderedKeys = [...desiredOrder, ...remainingKeys];
+
+        for (const key of orderedKeys) {
+            if (item.hasOwnProperty(key)) {
+                const labelText = fieldMapping[key] || key.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+                let value = item[key];
+                
+                const fieldRow = document.createElement('div');
+                fieldRow.className = 'field-row';
+                
+                const label = document.createElement('label');
+                label.className = 'field-label';
+                
+                let type;
+                if (typeof value === 'number') {
+                    type = 'int';
+                } else if (typeof value === 'string' || value instanceof String) {
+                    type = 'string';
+                } else if (Array.isArray(value)) {
+                    type = 'hexadecimal';
+                    value = Array.from(value).map(byte => ('0' + byte.toString(16)).slice(-2)).join(' ');
+                } else {
+                    type = 'unknown';
                 }
                 
-                // Show decoding status
-                showStatus('Decoding file... This may take a while for large files.', 'decoding');
-                
-                // Show loading state
-                decodeBtn.innerHTML = '<span class="loading"></span> Decoding...';
-                decodeBtn.disabled = true;
-                
+                label.textContent = `${labelText} (${type})`;
+                fieldRow.appendChild(label);
+
+                const input = document.createElement('input');
+                input.className = 'field-input';
+                input.type = 'text';
+                input.value = value;
+                input.readOnly = true;
+                fieldRow.appendChild(input);
+
+                modalBody.appendChild(fieldRow);
+            }
+        }
+        
+        modal.style.display = 'flex';
+    }
+
+    let decodedItems = [];
+    let currentFilteredItems = [];
+    let currentPage = 1;
+    const itemsPerPage = 10;
+    
+    document.addEventListener('DOMContentLoaded', function() {
+        const decodeBtn = document.getElementById('decodeBtn');
+        const fileInput = document.getElementById('datFile');
+        const searchInput = document.getElementById('searchInput');
+        const tableHeaders = document.querySelectorAll('.sortable');
+        const itemTable = document.getElementById('itemTable');
+        const infoModal = document.getElementById('infoModal');
+        const closeModalBtn = document.getElementById('closeModalBtn');
+
+        function hideModal() {
+            infoModal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        function resetModalScrollAndHide() {
+            const modalBody = document.getElementById('modalBody');
+            if (modalBody) {
+                modalBody.scrollTop = 0; 
+            }
+            hideModal();
+        }
+
+        closeModalBtn.addEventListener('click', resetModalScrollAndHide);
+
+        window.addEventListener('click', (e) => {
+            if (e.target === infoModal) {
+                resetModalScrollAndHide();
+            }
+        });
+
+        fileInput.addEventListener('change', function() {
+            if (fileInput.files.length) {
                 const file = fileInput.files[0];
-                const reader = new FileReader();
-                
-                reader.onload = function(e) {
-                    try {
-                        const arrayBuffer = e.target.result;
-                        const buffer = new Uint8Array(arrayBuffer);
-                        const result = parseItemsDat(buffer);
-                        resultsArea.textContent = formatResults(result);
-                        showStatus('File successfully decoded!', 'success');
-                    } catch (error) {
-                        console.error('Error decoding DAT file:', error);
-                        resultsArea.textContent = `Error decoding file: ${error.message}\n\nThis might not be a valid Growtopia items.dat file.`;
-                        showStatus('Error decoding file. Please check if it\'s a valid items.dat file.', 'error');
-                    } finally {
-                        // Reset button
-                        decodeBtn.innerHTML = '<i class="fas fa-cog"></i> Decode File';
-                        decodeBtn.disabled = false;
-                    }
-                };
-                
-                reader.onerror = function() {
-                    resultsArea.textContent = 'Error reading file. Please try again.';
-                    showStatus('Error reading file. Please try again.', 'error');
+                showStatus(`Uploading ${file.name}...`, 'uploading');
+                setTimeout(() => {
+                    showStatus(`File "${file.name}" successfully uploaded! Ready to decode.`, 'success');
+                }, 1000);
+            }
+        });
+
+        decodeBtn.addEventListener('click', function() {
+            if (!fileInput.files.length) {
+                showStatus('Please select a DAT file first.', 'error');
+                return;
+            }
+            
+            showStatus('Decoding file... This may take a while for large files.', 'decoding');
+            
+            decodeBtn.innerHTML = '<span class="loading"></span> Decoding...';
+            decodeBtn.disabled = true;
+            
+            const file = fileInput.files[0];
+            const reader = new FileReader();
+            
+            reader.onload = function(e) {
+                try {
+                    const arrayBuffer = e.target.result;
+                    const buffer = new Uint8Array(arrayBuffer);
+                    const result = parseItemsDat(buffer);
+                    
+                    decodedItems = result.items;
+                    filterAndRender(searchInput.value);
+                    
+                    showStatus('File successfully decoded!', 'success');
+                } catch (error) {
+                    console.error('Error decoding DAT file:', error);
+                    showStatus(`Error decoding file: ${error.message}`, 'error');
+                    
+                    const tableBody = document.getElementById('itemTableBody');
+                    if(tableBody) tableBody.innerHTML = '';
+                    updatePaginationControls(0);
+                    
+                } finally {
                     decodeBtn.innerHTML = '<i class="fas fa-cog"></i> Decode File';
                     decodeBtn.disabled = false;
-                };
-                
-                reader.readAsArrayBuffer(file);
-            });
+                }
+            };
             
-            copyBtn.addEventListener('click', function() {
-                navigator.clipboard.writeText(resultsArea.textContent)
-                    .then(() => {
-                        const originalText = copyBtn.innerHTML;
-                        copyBtn.innerHTML = '<i class="fas fa-check"></i> Copied!';
-                        setTimeout(() => {
-                            copyBtn.innerHTML = originalText;
-                        }, 2000);
-                    })
-                    .catch(err => {
-                        console.error('Failed to copy: ', err);
-                    });
+            reader.onerror = function() {
+                showStatus('Error reading file. Please try again.', 'error');
+                decodeBtn.innerHTML = '<i class="fas fa-cog"></i> Decode File';
+                decodeBtn.disabled = false;
+            };
+            
+            reader.readAsArrayBuffer(file);
+        });
+
+        searchInput.addEventListener('input', function() {
+            filterAndRender(searchInput.value);
+        });
+
+        tableHeaders.forEach((header, index) => {
+            header.addEventListener('click', () => {
+                const isAscending = header.classList.toggle('sort-asc');
+                const sortKey = header.id === 'itemIdHeader' ? 'id' : 'name';
+                const modifier = isAscending ? 1 : -1;
+
+                currentFilteredItems.sort((a, b) => {
+                    const valueA = a[sortKey] || '';
+                    const valueB = b[sortKey] || '';
+
+                    if (typeof valueA === 'number' && typeof valueB === 'number') {
+                        return modifier * (valueA - valueB);
+                    } else {
+                        return modifier * String(valueA).localeCompare(String(valueB));
+                    }
+                });
+                
+                tableHeaders.forEach(th => {
+                    if (th !== header) {
+                        th.classList.remove('sort-asc', 'sort-desc');
+                    }
+                });
+                if (isAscending) {
+                    header.classList.add('sort-asc');
+                } else {
+                    header.classList.add('sort-desc');
+                }
+
+                currentPage = 1;
+                renderPage();
             });
         });
-    </script>
+    });
+</script>
 </body>
 </html>
