@@ -5,69 +5,106 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Server Monitor - Growtools</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="../images/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="../css/style.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        /* Additional styles for the dropdown menu */
-        .dropdown {
-            position: relative;
-            display: inline-block;
+        .icon-dat-decoder { color: var(--tool-1) !important; }
+        .icon-data-mining { color: var(--tool-2) !important; }
+        .icon-rttex-converter { color: var(--tool-3) !important; }
+        .icon-account-checker { color: var(--tool-4) !important; }
+        .icon-server-monitor { color: var(--tool-6) !important; }
+        .icon-renderer { color: var(--tool-8) !important; }
+        .icon-cache { color: var(--tool-7) !important; }
+        
+        header {
+            position: relative; 
+            background-color: var(--darker); 
+            padding: 10px 0;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 1rem;
         }
         
-        .dropdown-content {
-            display: none;
-            position: absolute;
-            background-color: var(--darker);
-            min-width: 200px;
-            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-            z-index: 1;
-            border-radius: 6px;
-            overflow: hidden;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        .dropdown-content a {
-            color: var(--light);
-            padding: 12px 16px;
-            text-decoration: none;
-            display: block;
-            text-align: left;
-            font-size: 14px;
-        }
-        
-        .dropdown-content a:hover {
-            background-color: rgba(255, 255, 255, 0.05);
-        }
-        
-        .dropdown:hover .dropdown-content {
-            display: block;
-        }
-        
-        .dropdown:hover .dropbtn {
-            background: rgba(255, 255, 255, 0.05);
-        }
-        
-        .more-tools-btn {
+        .header-right-content {
             display: flex;
             align-items: center;
-            padding: 8px 12px;
-            border-radius: 6px;
-            cursor: pointer;
+            gap: 20px; 
+        }
+
+        .visitor-count {
+            list-style: none;
+            display: flex; 
+            align-items: center;
         }
         
-        .more-tools-btn i {
-            margin-left: 5px;
-            font-size: 12px;
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px; 
         }
         
-        @media (max-width: 1024px) {
-            .dropdown-content {
-                right: 0;
+        .logo-img {
+            height: 50px; 
+            width: auto;
+        }
+
+        .logo-text {
+             color: var(--light); 
+             white-space: nowrap;
+        }
+        
+        .nav-link-custom {
+            color: var(--light) !important;
+            padding: 8px 12px !important;
+            border-radius: 6px !important;
+            transition: background-color 0.3s;
+        }
+        
+        .nav-link-custom:hover {
+            background-color: rgba(255, 255, 255, 0.05) !important;
+        }
+        
+        #dropdownNavbarLink {
+            color: var(--light) !important;
+            padding: 8px 12px !important;
+            border-radius: 6px !important;
+            transition: background-color 0.3s;
+        }
+        
+        #dropdownNavbar {
+            background-color: var(--darker) !important;
+            border: 1px solid rgba(255, 255, 255, 0.1) !important;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.4) !important;
+        }
+
+        .nav-links-flowbite a i, #dropdownNavbarLink i {
+            margin-right: 5px;
+        }
+
+        .header-right-content button[data-collapse-toggle] {
+            display: none;
+        }
+        
+        @media (max-width: 768px) {
+            .visitor-count {
+                display: none;
+            }
+            .header-right-content button[data-collapse-toggle] {
+                display: inline-flex;
             }
         }
+       
+        .dropdown, .dropdown-content, .more-tools-btn, .nav-links {
+            display: none !important; 
+        }
         
-        /* Server Monitor specific styles */
         .tool-header h1 {
             color: var(--tool-6);
         }
@@ -99,7 +136,6 @@
             font-size: 1.2em;
         }
         
-        /* Status indicators */
         .status-indicator {
             display: inline-block;
             width: 12px;
@@ -135,7 +171,6 @@
             100% { opacity: 1; }
         }
         
-        /* Server status card */
         .server-status-card {
             background: var(--dark);
             border-radius: 8px;
@@ -196,7 +231,6 @@
             display: block;
         }
         
-        /* History chart */
         .chart-container {
             position: relative;
             height: 300px;
@@ -204,7 +238,6 @@
             margin-top: 20px;
         }
         
-        /* Last updated */
         .last-updated {
             text-align: right;
             font-size: 12px;
@@ -212,7 +245,6 @@
             margin-top: 10px;
         }
         
-        /* Status message styles */
         .status-message {
             padding: 10px;
             margin: 10px 0;
@@ -239,14 +271,12 @@
             border: 1px solid rgba(255, 107, 107, 0.3);
         }
         
-        /* Control buttons */
         .control-buttons {
             display: flex;
             gap: 10px;
             margin-top: 20px;
         }
         
-        /* History table */
         .history-table {
             width: 100%;
             border-collapse: collapse;
@@ -303,73 +333,94 @@
             transform: translateY(-3px);
         }
 
-        /* Remove default focus styles in modern browsers */
         .social-links a:focus:not(:focus-visible) {
             outline: none !important;
         }
 
-        /* Add custom focus style for keyboard navigation only */
         .social-links a:focus-visible {
             outline: 2px solid var(--tool-3) !important;
             outline-offset: 3px;
             border-radius: 2px;
         }
-        .logo {
-        display: flex;
-        align-items: center;
-        gap: 10px; /* space between logo and text */
-        }
-
-        .logo-img {
-        height: 50px;  /* make the logo bigger */
-        width: auto;
-        }
-        header {
-  position: relative; /* so child absolute positioning works */
-}
-
-.visitor-count {
-  position: absolute;
-  top: 50%;
-  right: 20px;       /* adjust spacing from right edge */
-  transform: translateY(-50%); /* vertical centering */
-  list-style: none;
-}
-
-
     </style>
 </head>
 <body>
     <header>
         <div class="container header-content">
             <div class="logo">
-                <img src="../images/Water_Stone.png" alt="Growtools Logo" class="logo-img">
-                <span class="logo-text">Growtools</span>
+                <a href="../index.html" class="logo">
+                    <img src="../images/Water_Stone.png" alt="Growtools Logo" class="logo-img">
+                    <span class="logo-text">Growtools</span>
+                </a>
             </div>
 
-            <ul class="nav-links">
-                <li><a href="../index.html" class="nav-link"><i class="fas fa-home"></i> Home</a></li>
-                <li><a href="dat-decoder.html" class="nav-link"><i class="fas fa-code"></i> DAT Decoder</a></li>
-                <li><a href="data-mining.html" class="nav-link"><i class="fas fa-database"></i> Data Mining</a></li>
-                <li><a href="rttex-converter.html" class="nav-link"><i class="fas fa-exchange-alt"></i> RTTEX Converter</a></li>
+            <div class="header-right-content">
+                <button data-collapse-toggle="navbar-dropdown" type="button" class="inline-flex items-center p-2 ms-3 w-10 h-10 justify-center text-sm rounded-lg md:hidden text-gray-400 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-600" aria-controls="navbar-dropdown" aria-expanded="false">
+                    <span class="sr-only">Open main menu</span>
+                    <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h15M1 7h15M1 13h15"/>
+                    </svg>
+                </button>
                 
-                <!-- Dropdown for additional tools -->
-                <li class="dropdown">
-                    <div class="more-tools-btn nav-link">
-                        <i class="fas fa-cubes"></i> More Tools <i class="fas fa-chevron-down"></i>
-                    </div>
-                    <div class="dropdown-content">
-                        <a href="account-checker.html"><i class="fas fa-user-shield"></i> Account Checker</a>
-                        <a href="render-world.html"><i class="fas fa-globe"></i> World Renderer</a>
-                        <a href="server-monitor.html" class="active"><i class="fas fa-server"></i> Server Monitor</a>
-                        <a href="cache-checker.html"><i class="fas fa-id-card"></i> Cache Checker</a>
-                    </div>
-                </li>
-            </ul>
-            <div class="visitor-count">
-                <a href="https://visitorbadge.io/status?path=https%3A%2F%2Fgithub.com%2FxSkriptx%2FSkriptProxy">
+                <div class="hidden w-full md:block md:w-auto" id="navbar-dropdown">
+                    <ul class="nav-links-flowbite flex flex-col font-medium p-4 mt-4 rounded-lg md:flex-row md:mt-0 md:text-sm md:border-0 md:space-x-8 md:rtl:space-x-reverse">
+                        <li>
+                            <a href="../index.html" class="nav-link-custom block">
+                                <i class="fas fa-home"></i> Home
+                            </a>
+                        </li>
+                        <li>
+                            <a href="dat-decoder.html" class="nav-link-custom block">
+                                <i class="fas fa-code icon-dat-decoder"></i> DAT Decoder
+                            </a>
+                        </li>
+                        <li>
+                            <a href="data-mining.html" class="nav-link-custom block">
+                                <i class="fas fa-database icon-data-mining"></i> Data Mining
+                            </a>
+                        </li>
+                        <li>
+                            <a href="rttex-converter.html" class="nav-link-custom block">
+                                <i class="fas fa-exchange-alt icon-rttex-converter"></i> RTTEX Converter
+                            </a>
+                        </li>
+                        
+                        <li>
+                            <button id="dropdownNavbarLink" data-dropdown-toggle="dropdownNavbar" class="flex items-center justify-between w-full py-2 px-3 rounded-lg md:border-0 md:p-0 md:w-auto">
+                                <i class="fas fa-cubes"></i> More Tools <i class="fas fa-chevron-down ms-3" style="font-size: 12px;"></i>
+                            </button>
+                            
+                            <div id="dropdownNavbar" class="z-10 hidden font-normal divide-y divide-gray-600 rounded-lg shadow w-56">
+                                <ul class="py-2 text-sm" aria-labelledby="dropdownNavbarLink">
+                                    <li>
+                                        <a href="account-checker.html" class="block px-4 py-2">
+                                            <i class="fas fa-user-shield icon-account-checker"></i> Account Checker
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="render-world.html" class="block px-4 py-2">
+                                            <i class="fas fa-globe icon-renderer"></i> World Renderer
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="server-monitor.html" class="nav-link-custom active block px-4 py-2" aria-current="page">
+                                            <i class="fas fa-server icon-server-monitor"></i> Server Monitor
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="cache-checker.html" class="block px-4 py-2">
+                                            <i class="fas fa-id-card icon-cache"></i> Cache Checker
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="visitor-count">
                     <img src="https://api.visitorbadge.io/api/visitors?path=https%3A%2F%2Fgithub.com%2FxSkriptx%2FSkriptProxy&countColor=%23263759" />
-                </a>
+                </div>  
             </div>
         </div>
     </header>
@@ -388,7 +439,6 @@
                         <p>Real-time monitoring of Growtopia server status and player count.</p>
                         
                         <div id="serverStatusArea">
-                            <!-- Server status will be displayed here -->
                             <div class="server-status-card" id="serverStatusCard">
                                 <div class="server-status-content">
                                     <div class="server-status-info">
@@ -455,8 +505,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <!-- Status history will be populated here -->
-                                </tbody>
+                                    </tbody>
                             </table>
                         </div>
                     </div>
@@ -548,9 +597,10 @@
         </div>
     </footer>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
+
     <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // DOM elements
     const statusIndicator = document.getElementById('statusIndicator');
     const statusText = document.getElementById('statusText');
     const statusDetails = document.getElementById('statusDetails');
@@ -563,7 +613,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const lastUpdated = document.getElementById('lastUpdated');
     const statusHistoryTable = document.getElementById('statusHistoryTable').querySelector('tbody');
     
-    // Add maintenance counter element
     const maintenanceCounter = document.createElement('div');
     maintenanceCounter.id = 'maintenanceCounter';
     maintenanceCounter.style.marginTop = '15px';
@@ -575,11 +624,9 @@ document.addEventListener('DOMContentLoaded', function() {
     maintenanceCounter.innerHTML = '<strong>Maintenance Events: </strong><span id="maintenanceCount">0</span>';
     document.querySelector('.tool-section').appendChild(maintenanceCounter);
 
-    // Chart setup
     const ctx = document.getElementById('serverHistoryChart').getContext('2d');
     let serverHistoryChart;
     
-    // Server status history
     let serverHistory = JSON.parse(localStorage.getItem('serverHistory')) || [];
     let maintenanceCount = parseInt(localStorage.getItem('maintenanceCount')) || 0;
     function resetMaintenanceIfNewDay() {
@@ -597,7 +644,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 }
 
-// Call it once on load
 resetMaintenanceIfNewDay();
 
 setInterval(resetMaintenanceIfNewDay, 60000);
@@ -605,7 +651,6 @@ setInterval(resetMaintenanceIfNewDay, 60000);
     let refreshInterval;
     let lastServerStatus = null;
     
-    // Initialize the chart
     function initChart() {
         const labels = serverHistory.map(entry => {
             const date = new Date(entry.timestamp);
@@ -667,7 +712,6 @@ setInterval(resetMaintenanceIfNewDay, 60000);
                             color: '#8a9bb0',
                             maxRotation: 0,
                             callback: function(value, index) {
-                                // Show every 3rd label to avoid crowding
                                 return index % 3 === 0 ? this.getLabelForValue(value) : '';
                             }
                         }
@@ -677,7 +721,6 @@ setInterval(resetMaintenanceIfNewDay, 60000);
         });
     }
     
-    // Update the chart with new data
     function updateChart() {
         if (!serverHistoryChart) return;
         
@@ -693,11 +736,9 @@ setInterval(resetMaintenanceIfNewDay, 60000);
         serverHistoryChart.update();
     }
     
-    // Update status history table
     function updateStatusHistoryTable() {
         statusHistoryTable.innerHTML = '';
         
-        // Show only the last 10 entries (most recent first)
         const recentHistory = [...serverHistory].reverse().slice(0, 10);
         
         recentHistory.forEach(entry => {
@@ -738,17 +779,14 @@ setInterval(resetMaintenanceIfNewDay, 60000);
         });
     }
     
-    // Show status message
     function showStatus(message, type = 'success') {
         statusArea.innerHTML = `<div class="status-message status-${type}">${message}</div>`;
     }
     
-    // Clear status message
     function clearStatus() {
         statusArea.innerHTML = '';
     }
     
-    // Check server status
     async function checkServerStatus() {
         showStatus('Checking server status...', 'checking');
         checkNowBtn.disabled = true;
@@ -756,8 +794,7 @@ setInterval(resetMaintenanceIfNewDay, 60000);
         const startTime = Date.now();
         
         try {
-            // Use a proxy to avoid CORS issues
-            const response = await fetch('https://corsproxy.io/https://www.growtopiagame.com/detail', {
+            const response = await fetch('https://corsproxy.io/https://growtopiagame.com/detail', {
                 method: 'GET',
                 headers: {
                     'Accept': 'application/json',
@@ -770,7 +807,6 @@ setInterval(resetMaintenanceIfNewDay, 60000);
                 const text = await response.text();
                 
                 try {
-                    // Extract JSON from response (it's embedded in HTML)
                     const start = text.indexOf('{');
                     const end = text.lastIndexOf('}') + 1;
                     
@@ -781,7 +817,6 @@ setInterval(resetMaintenanceIfNewDay, 60000);
                         const onlineUsers = parseInt(data.online_user) || 0;
                         let status, maintenance;
                         
-                        // Determine status based on player count
                         if (onlineUsers > 1000) {
                             status = "Online";
                             maintenance = false;
@@ -793,7 +828,6 @@ setInterval(resetMaintenanceIfNewDay, 60000);
                             maintenance = true;
                         }
                         
-                        // Check for maintenance event (transition from online to offline)
                         if (lastServerStatus === "Online" && (status === "Maintenance" || status === "Offline")) {
                             maintenanceCount++;
                             localStorage.setItem('maintenanceCount', maintenanceCount);
@@ -803,10 +837,8 @@ setInterval(resetMaintenanceIfNewDay, 60000);
                         
                         lastServerStatus = status;
                         
-                        // Update UI
                         updateServerStatus(status, onlineUsers, maintenance, responseTime);
                         
-                        // Add to history
                         addToHistory({
                             timestamp: Date.now(),
                             status: status,
@@ -844,9 +876,7 @@ setInterval(resetMaintenanceIfNewDay, 60000);
         }
     }
     
-    // Update server status display
     function updateServerStatus(status, players, maintenance, responseTime) {
-        // Update status indicator
         statusIndicator.className = 'status-indicator';
         
         if (status === "Online") {
@@ -871,39 +901,30 @@ setInterval(resetMaintenanceIfNewDay, 60000);
             serverStatusCard.className = 'server-status-card server-status-error';
         }
         
-        // Update player count
         playerCount.textContent = players.toLocaleString();
         
-        // Update last updated time
         lastUpdated.textContent = `Last updated: ${new Date().toLocaleTimeString()} (${responseTime}ms)`;
         
-        // Update maintenance counter
         document.getElementById('maintenanceCount').textContent = maintenanceCount;
     }
     
-    // Add status to history
     function addToHistory(entry) {
         serverHistory.push(entry);
         
-        // Keep only the last 100 entries
         if (serverHistory.length > 100) {
             serverHistory = serverHistory.slice(-100);
         }
         
-        // Save to localStorage
         localStorage.setItem('serverHistory', JSON.stringify(serverHistory));
         
-        // Update UI
         updateChart();
         updateStatusHistoryTable();
     }
     
-    // Clear history
     function clearHistory() {
         serverHistory = [];
         localStorage.removeItem('serverHistory');
         
-        // Update UI
         if (serverHistoryChart) {
             serverHistoryChart.destroy();
         }
@@ -914,7 +935,6 @@ setInterval(resetMaintenanceIfNewDay, 60000);
         setTimeout(clearStatus, 2000);
     }
     
-    // Toggle auto refresh
     function toggleAutoRefresh() {
         autoRefreshEnabled = !autoRefreshEnabled;
         
@@ -931,13 +951,11 @@ setInterval(resetMaintenanceIfNewDay, 60000);
         setTimeout(clearStatus, 2000);
     }
     
-    // Start auto refresh
     function startAutoRefresh() {
-        stopAutoRefresh(); // Clear any existing interval
-        refreshInterval = setInterval(checkServerStatus, 120000); // 2 minutes (120 seconds)
+        stopAutoRefresh();
+        refreshInterval = setInterval(checkServerStatus, 10000);
     }
     
-    // Stop auto refresh
     function stopAutoRefresh() {
         if (refreshInterval) {
             clearInterval(refreshInterval);
@@ -945,17 +963,14 @@ setInterval(resetMaintenanceIfNewDay, 60000);
         }
     }
     
-    // Event listeners
     checkNowBtn.addEventListener('click', checkServerStatus);
     autoRefreshToggle.addEventListener('click', toggleAutoRefresh);
     clearHistoryBtn.addEventListener('click', clearHistory);
     
-    // Initialize
     initChart();
     updateStatusHistoryTable();
     document.getElementById('maintenanceCount').textContent = maintenanceCount;
     
-    // Load last status from history if available
     if (serverHistory.length > 0) {
         const lastEntry = serverHistory[serverHistory.length - 1];
         updateServerStatus(
@@ -966,16 +981,17 @@ setInterval(resetMaintenanceIfNewDay, 60000);
         );
         lastServerStatus = lastEntry.status;
     } else {
-        // No history, check server status
         checkServerStatus();
     }
     
-    // Start auto refresh
     startAutoRefresh();
     
-    // Clean up on page unload
     window.addEventListener('beforeunload', stopAutoRefresh);
 });
 </script>
+<script>
+  window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+</script>
+<script defer src="/_vercel/insights/script.js"></script>
 </body>
 </html>
