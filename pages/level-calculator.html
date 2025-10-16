@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Level Calculator - Growtools</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="../images/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        .icon-dat-decoder { color: var(--tool-1) !important; }
+        .icon-data-mining { color: var(--tool-2) !important; }
+        .icon-rttex-converter { color: var(--tool-3) !important; }
+        .icon-account-checker { color: var(--tool-4) !important; }
+        .icon-server-monitor { color: var(--tool-6) !important; }
+        .icon-renderer { color: var(--tool-8) !important; }
+        .icon-cache { color: var(--tool-7) !important; }
+        .icon-level-calculator { color: var(--tool-5) !important; }
+        
+        header {
+            position: relative; 
+            background-color: var(--darker); 
+            padding: 10px 0;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 1rem;
+        }
+        
+        .header-right-content {
+            display: flex;
+            align-items: center;
+            gap: 20px; 
+        }
+
+        .visitor-count {
+            list-style: none;
+            display: flex; 
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px; 
+        }
+        
+        .logo-img {
+            height: 50px; 
+            width: auto;
+        }
+
+        .logo-text {
+             color: var(--light); 
+             white-space: nowrap;
+        }
+        
+        .nav-link-custom {
+            color: var(--light) !important;
+            padding: 8px 12px !important;
+            border-radius: 6px !important;
+            transition: background-color 0.3s;
+        }
+        
+        .nav-link-custom:hover {
+            background-color: rgba(255, 255, 255, 0.05) !important;
+        }
+        
+        .nav-link-custom.active {
+            background-color: rgba(255, 255, 255, 0.05) !important;
+        }
+        
+        #dropdownNavbarLink {
+            color: var(--light) !important;
+            padding: 8px 12px !important;
+            border-radius: 6px !important;
+            transition: background-color 0.3s;
+        }
+
+        #dropdownNavbarLink:hover {
+            background-color: rgba(255, 255, 255, 0.05) !important;
+            color: var(--light) !important;
+        }
+        
+        #dropdownNavbar {
+            background-color: var(--darker) !important;
+            border: 1px solid rgba(255, 255, 255, 0.1) !important;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.4) !important;
+        }
+
+        #dropdownNavbar a {
+            color: var(--light) !important;
+        }
+
+        #dropdownNavbar a:hover {
+            background-color: rgba(255, 255, 255, 0.05) !important;
+            color: var(--light) !important;
+        }
+
+        .nav-links-flowbite a i, #dropdownNavbarLink i {
+            margin-right: 5px;
+        }
+
+        .header-right-content button[data-collapse-toggle] {
+            display: none;
+        }
+        
+        @media (max-width: 768px) {
+            .visitor-count {
+                display: none;
+            }
+            .header-right-content button[data-collapse-toggle] {
+                display: inline-flex;
+            }
+        }
+        
+        .dropdown, .dropdown-content, .more-tools-btn, .nav-links {
+            display: none !important; 
+        }
+        
+        .tool-header h1 {
+            color: var(--tool-5);
+        }
+        
+        .tool-section h2 {
+            color: var(--tool-5);
+            border-bottom: 2px solid var(--tool-5);
+        }
+        
+        .level-btn {
+            background: linear-gradient(to right, var(--tool-5), #c0392b);
+            color: white;
+        }
+        
+        .level-btn:hover {
+            background: linear-gradient(to right, #c0392b, var(--tool-5));
+        }
+        
+        .results-header h3 {
+            color: var(--tool-5);
+        }
+        
+        .tool-section h3 {
+            color: var(--tool-5);
+            border-bottom: 2px solid var(--tool-5);
+            padding-bottom: 8px;
+            margin-top: 20px;
+            font-size: 1.2em;
+        }
+        
+        .calculator-form {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 0;
+        }
+        
+        .xp-breakdown {
+            margin-top: 20px;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .xp-breakdown-header {
+            background: var(--dark);
+            padding: 12px 15px;
+            font-weight: 600;
+            color: var(--lighter);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .xp-breakdown-content {
+            max-height: 300px;
+            overflow-y: auto;
+            background: var(--darkest);
+        }
+        
+        .xp-level {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .xp-level:nth-child(even) {
+            background: rgba(255, 255, 255, 0.02);
+        }
+        
+        .xp-level:last-child {
+            border-bottom: none;
+        }
+        
+        .xp-level-current {
+            background: rgba(231, 76, 60, 0.1);
+            border-left: 3px solid var(--tool-5);
+        }
+        
+        .xp-level-target {
+            background: rgba(46, 204, 113, 0.1);
+            border-left: 3px solid var(--success);
+        }
+        
+        .xp-total {
+            background: var(--dark);
+            padding: 15px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--lighter);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .xp-total span {
+            color: var(--tool-5);
+        }
+        
+        .status-message {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            text-align: center;
+            font-weight: 500;
+        }
+        
+        .status-calculating {
+            background-color: rgba(231, 76, 60, 0.1);
+            color: var(--tool-5);
+            border: 1px solid rgba(231, 76, 60, 0.3);
+        }
+        
+        .status-success {
+            background-color: rgba(93, 218, 130, 0.1);
+            color: var(--success);
+            border: 1px solid rgba(93, 218, 130, 0.3);
+        }
+        
+        .status-error {
+            background-color: rgba(255, 107, 107, 0.1);
+            color: var(--danger);
+            border: 1px solid rgba(255, 107, 107, 0.3);
+        }
+        
+        .social-links a,
+        .social-links a:focus,
+        .social-links a:active,
+        .social-links a:hover {
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            outline: none !important;
+            box-shadow: none !important;
+            border: none !important;
+            text-decoration: none !important;
+            display: inline-block;
+            color: var(--light);
+            transition: all 0.3s ease;
+            font-size: 20px;
+            margin-right: 15px;
+            background: none !important;
+            width: auto !important;
+            height: auto !important;
+            border-radius: 0 !important;
+        }
+
+        .social-links a:hover {
+            color: var(--primary);
+            transform: translateY(-3px);
+        }
+
+        .social-links a:focus:not(:focus-visible) {
+            outline: none !important;
+        }
+
+        .social-links a:focus-visible {
+            outline: 2px solid var(--tool-3) !important;
+            outline-offset: 3px;
+            border-radius: 2px;
+        }
+        
+        .level-info {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+            font-size: 14px;
+            color: #8a9bb0;
+        }
+        
+        .level-info span {
+            font-weight: 600;
+            color: var(--lighter);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-content">
+            <div class="logo">
+                <a href="../index.html" class="logo">
+                    <img src="../images/Water_Stone.png" alt="Growtools Logo" class="logo-img">
+                    <span class="logo-text">Growtools</span>
+                </a>
+            </div>
+
+            <div class="header-right-content">
+                <button data-collapse-toggle="navbar-dropdown" type="button" class="inline-flex items-center p-2 ms-3 w-10 h-10 justify-center text-sm rounded-lg md:hidden text-gray-400 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-600" aria-controls="navbar-dropdown" aria-expanded="false">
+                    <span class="sr-only">Open main menu</span>
+                    <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h15M1 7h15M1 13h15"/>
+                    </svg>
+                </button>
+                
+                <div class="hidden w-full md:block md:w-auto" id="navbar-dropdown">
+                    <ul class="nav-links-flowbite flex flex-col font-medium p-4 mt-4 rounded-lg md:flex-row md:mt-0 md:text-sm md:border-0 md:space-x-8 md:rtl:space-x-reverse">
+                        <li>
+                            <a href="../index.html" class="nav-link-custom block">
+                                <i class="fas fa-home"></i> Home
+                            </a>
+                        </li>
+                        <li>
+                            <a href="dat-decoder.html" class="nav-link-custom block">
+                                <i class="fas fa-code icon-dat-decoder"></i> DAT Decoder
+                            </a>
+                        </li>
+                        <li>
+                            <a href="data-mining.html" class="nav-link-custom block">
+                                <i class="fas fa-database icon-data-mining"></i> Data Mining
+                            </a>
+                        </li>
+                        <li>
+                            <a href="rttex-converter.html" class="nav-link-custom block">
+                                <i class="fas fa-exchange-alt icon-rttex-converter"></i> RTTEX Converter
+                            </a>
+                        </li>
+                        
+                        <li>
+                            <button id="dropdownNavbarLink" data-dropdown-toggle="dropdownNavbar" class="flex items-center justify-between w-full py-2 px-3 rounded-lg md:border-0 md:p-0 md:w-auto">
+                                <i class="fas fa-cubes"></i> More Tools <i class="fas fa-chevron-down ms-3" style="font-size: 12px;"></i>
+                            </button>
+                            
+                            <div id="dropdownNavbar" class="z-10 hidden font-normal divide-y divide-gray-600 rounded-lg shadow w-56">
+                                <ul class="py-2 text-sm" aria-labelledby="dropdownNavbarLink">
+                                    <li>
+                                        <a href="account-checker.html" class="block px-4 py-2">
+                                            <i class="fas fa-user-shield icon-account-checker"></i> Account Checker
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="render-world.html" class="block px-4 py-2">
+                                            <i class="fas fa-globe icon-renderer"></i> World Renderer
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="server-monitor.html" class="block px-4 py-2">
+                                            <i class="fas fa-server icon-server-monitor"></i> Server Monitor
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="cache-checker.html" class="block px-4 py-2">
+                                            <i class="fas fa-id-card icon-cache"></i> Cache Checker
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="level-calculator.html" class="nav-link-custom active block px-4 py-2" aria-current="page">
+                                            <i class="fas fa-calculator icon-level-calculator"></i> Level Calculator
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="visitor-count">
+                    <img src="https://api.visitorbadge.io/api/visitors?path=https%3A%2F%2Fgithub.com%2FxSkriptx%2FSkriptProxy&countColor=%23263759" />
+                </div>  
+            </div>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="content-area">
+            <div class="container tool-container">
+                <div class="tool-header">
+                    <h1><i class="fas fa-calculator"></i> Level Calculator</h1>
+                    <p>Calculate the XP needed to reach your target level in Growtopia</p>
+                </div>
+                
+                <div class="tool-content">
+                    <div class="tool-section">
+                        <h2>Calculate XP Requirements</h2>
+                        <p>Enter your current level, current XP, and target level to calculate how much XP you need.</p>
+                        
+                        <div class="calculator-form">
+                            <div class="form-group">
+                                <label for="currentLevel">Current Level</label>
+                                <input type="number" id="currentLevel" class="form-control" min="1" max="125" value="1" autocomplete="off">
+                                <div class="level-info">
+                                    <span>Min: 1</span>
+                                    <span>Max: 125</span>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="currentXP">Current XP</label>
+                                <input type="number" id="currentXP" class="form-control" min="0" value="0" autocomplete="off">
+                                <div class="level-info">
+                                    <span>XP in current level</span>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="targetLevel">Target Level</label>
+                                <input type="number" id="targetLevel" class="form-control" min="2" max="125" value="10" autocomplete="off">
+                                <div class="level-info">
+                                    <span>Min: 2</span>
+                                    <span>Max: 125</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div id="statusArea"></div>
+                        
+                        <button class="btn level-btn" id="calculateBtn">
+                            <i class="fas fa-calculator"></i> Calculate XP
+                        </button>
+                    </div>
+                    
+                    <div class="tool-section">
+                        <h2>Calculation Results</h2>
+                        <div class="results-area">
+                            <div class="results-header">
+                                <h3>XP Breakdown</h3>
+                            </div>
+                            
+                            <div id="resultArea">
+                                <div class="status-message status-success">
+                                    Enter your level information and click "Calculate XP" to see results.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tool-content">
+                    <div class="tool-section">
+                        <h2>About Level Calculation</h2>
+                        <p>This calculator uses the official Growtopia leveling formula to determine how much XP you need to reach your target level.</p>
+                        
+                        <h3>How It Works</h3>
+                        <p>The XP required for each level follows the formula: <code>50 × (level² + 2)</code>. The calculator sums up the XP required for all levels between your current level and target level, then subtracts your current XP.</p>
+                        
+                        <h3>Example</h3>
+                        <p>If you're at level 5 with 500 XP and want to reach level 10:</p>
+                        <ul>
+                            <li>XP needed for level 6: 50 × (6² + 2) = 1,900 XP</li>
+                            <li>XP needed for level 7: 50 × (7² + 2) = 2,550 XP</li>
+                            <li>XP needed for level 8: 50 × (8² + 2) = 3,300 XP</li>
+                            <li>XP needed for level 9: 50 × (9² + 2) = 4,150 XP</li>
+                            <li>XP needed for level 10: 50 × (10² + 2) = 5,100 XP</li>
+                            <li>Total XP needed: 1,900 + 2,550 + 3,300 + 4,150 + 5,100 = 17,000 XP</li>
+                            <li>Minus your current XP: 17,000 - 500 = 16,500 XP needed</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>About Growtools</h3>
+                    <p>A collection of powerful utilities designed to help Growtopia players get the most out of their game experience.</p>
+                    <div class="social-links">
+                        <a href="https://discord.gg/HSdayEQKwe" target="_blank"><i class="fab fa-discord"></i></a>
+                        <a href="https://www.youtube.com/channel/UCvoRNyYeWnmb1TojljTkdbA" target="_blank"><i class="fab fa-youtube"></i></a>
+                        <a href="https://github.com/xSkriptx/Growtools" target="_blank"><i class="fab fa-github"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h3>Tools</h3>
+                    <a href="dat-decoder.html"><i class="fas fa-code"></i> DAT Decoder</a>
+                    <a href="data-mining.html"><i class="fas fa-database"></i> Data Mining</a>
+                    <a href="rttex-converter.html"><i class="fas fa-exchange-alt"></i> RTTEX Converter</a>
+                    <a href="account-checker.html"><i class="fas fa-user-shield"></i> Account Checker</a>
+                    <a href="level-calculator.html"><i class="fas fa-calculator"></i> Level Calculator</a>
+                </div>
+                <div class="footer-section">
+                    <h3>Support</h3>
+                    <a href="https://discord.gg/HSdayEQKwe" target="_blank"><i class="fas fa-envelope"></i> Contact Us</a>
+                    <a href="https://discord.gg/HSdayEQKwe" target="_blank"><i class="fas fa-question-circle"></i> FAQ</a>
+                    <a href="https://discord.gg/HSdayEQKwe" target="_blank"><i class="fas fa-bug"></i> Report Bug</a>
+                    <a href="https://discord.gg/HSdayEQKwe" target="_blank"><i class="fas fa-lightbulb"></i> Feature Request</a>
+                </div>
+            </div>
+            <div class="copyright">
+                &copy; 2025 Growtools. Not affiliated with Growtopia or Ubisoft. All Growtopia content is property of Ubisoft Entertainment.
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const calculateBtn = document.getElementById('calculateBtn');
+            const currentLevelInput = document.getElementById('currentLevel');
+            const currentXPInput = document.getElementById('currentXP');
+            const targetLevelInput = document.getElementById('targetLevel');
+            const statusArea = document.getElementById('statusArea');
+            const resultArea = document.getElementById('resultArea');
+            
+
+            function showStatus(message, type = 'success') {
+                statusArea.innerHTML = `<div class="status-message status-${type}">${message}</div>`;
+            }
+
+            function clearStatus() {
+                statusArea.innerHTML = '';
+            }
+
+            function calculateXP(inputs) {
+                'use strict';
+                var level = inputs.clvl;
+                var totalXp = 0;
+                var txp = 0;
+
+                while (level < inputs.tlvl) {
+                    totalXp = totalXp + 50 * (Math.pow(level, 2) + 2);
+                    level = level + 1;
+                }
+
+                totalXp = totalXp - inputs.xp;
+
+                return {
+                    about: "This page is not affiliated with Ubisoft Entertainment or Growtopia.",
+                    txp: totalXp,
+                };
+            }
+            
+
+            function formatNumber(num) {
+                return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            }
+            
+
+            function calculateAndDisplay() {
+                const currentLevel = parseInt(currentLevelInput.value);
+                const currentXP = parseInt(currentXPInput.value);
+                const targetLevel = parseInt(targetLevelInput.value);
+
+                if (isNaN(currentLevel) || currentLevel < 1 || currentLevel > 125) {
+                    showStatus('Please enter a valid current level between 1 and 125', 'error');
+                    return;
+                }
+                
+                if (isNaN(currentXP) || currentXP < 0) {
+                    showStatus('Please enter a valid current XP value (0 or higher)', 'error');
+                    return;
+                }
+                
+                if (isNaN(targetLevel) || targetLevel < 2 || targetLevel > 125) {
+                    showStatus('Please enter a valid target level between 2 and 125', 'error');
+                    return;
+                }
+                
+                if (currentLevel >= targetLevel) {
+                    showStatus('Target level must be higher than current level', 'error');
+                    return;
+                }
+                
+                showStatus('Calculating XP requirements...', 'calculating');
+                calculateBtn.disabled = true;
+                calculateBtn.innerHTML = '<span class="loading"></span> Calculating...';
+                
+      
+                const result = calculateXP({
+                    clvl: currentLevel,
+                    xp: currentXP,
+                    tlvl: targetLevel
+                });
+                
+    
+                let breakdownHTML = '';
+                let level = currentLevel;
+                let totalXP = 0;
+                
+                while (level < targetLevel) {
+                    const levelXP = 50 * (Math.pow(level, 2) + 2);
+                    totalXP += levelXP;
+                    
+                    let levelClass = '';
+                    if (level === currentLevel) {
+                        levelClass = 'xp-level-current';
+                    } else if (level === targetLevel - 1) {
+                        levelClass = 'xp-level-target';
+                    }
+                    
+                    breakdownHTML += `
+                        <div class="xp-level ${levelClass}">
+                            <div>Level ${level} → ${level + 1}</div>
+                            <div>${formatNumber(levelXP)} XP</div>
+                        </div>
+                    `;
+                    
+                    level++;
+                }
+                
+                resultArea.innerHTML = `
+                    <div class="xp-breakdown">
+                        <div class="xp-breakdown-header">XP Required Per Level</div>
+                        <div class="xp-breakdown-content">
+                            ${breakdownHTML}
+                        </div>
+                        <div class="xp-total">
+                            Total XP needed: <span>${formatNumber(result.txp)}</span>
+                        </div>
+                    </div>
+                    <div class="status-message status-success" style="margin-top: 15px;">
+                        ${result.about}
+                    </div>
+                `;
+                
+                showStatus('Calculation complete!', 'success');
+                setTimeout(clearStatus, 3000);
+                
+                calculateBtn.disabled = false;
+                calculateBtn.innerHTML = '<i class="fas fa-calculator"></i> Calculate XP';
+            }
+            
+  
+            calculateBtn.addEventListener('click', calculateAndDisplay);
+            
+
+            [currentLevelInput, currentXPInput, targetLevelInput].forEach(input => {
+                input.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        calculateAndDisplay();
+                    }
+                });
+            });
+
+            showStatus('Enter your level information and click "Calculate XP"', 'success');
+        });
+    </script>
+    
+    <script>
+        window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+    </script>
+    <script defer src="/_vercel/insights/script.js"></script>
+</body>
+</html>
