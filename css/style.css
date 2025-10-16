@@ -154,7 +154,107 @@ header {
 .nav-links a[href*="render-checker"] i {
     color: var(--tool-8);
 }
+.tool-card[data-tool="level-calculator"] .tool-icon {
+    background: linear-gradient(135deg, var(--tool-5), #c0392b);
+}
 
+.tool-card[data-tool="level-calculator"] .tool-title {
+    color: var(--tool-5);
+}
+
+.tool-card[data-tool="level-calculator"] .tool-btn {
+    background: linear-gradient(to right, var(--tool-5), #c0392b);
+}
+
+/* Level Calculator specific styles */
+.level-btn {
+    background: linear-gradient(to right, var(--tool-5), #c0392b);
+    color: white;
+}
+
+.level-btn:hover {
+    background: linear-gradient(to right, #c0392b, var(--tool-5));
+}
+
+.calculator-form {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.xp-breakdown {
+    margin-top: 20px;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.xp-breakdown-header {
+    background: var(--dark);
+    padding: 12px 15px;
+    font-weight: 600;
+    color: var(--lighter);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.xp-breakdown-content {
+    max-height: 300px;
+    overflow-y: auto;
+    background: var(--darkest);
+}
+
+.xp-level {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 15px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.xp-level:nth-child(even) {
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.xp-level:last-child {
+    border-bottom: none;
+}
+
+.xp-level-current {
+    background: rgba(231, 76, 60, 0.1);
+    border-left: 3px solid var(--tool-5);
+}
+
+.xp-level-target {
+    background: rgba(46, 204, 113, 0.1);
+    border-left: 3px solid var(--success);
+}
+
+.xp-total {
+    background: var(--dark);
+    padding: 15px;
+    text-align: center;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--lighter);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.xp-total span {
+    color: var(--tool-5);
+}
+
+.level-info {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+    font-size: 14px;
+    color: #8a9bb0;
+}
+
+.level-info span {
+    font-weight: 600;
+    color: var(--lighter);
+}
 .visitor-count {
     background: rgba(91, 140, 255, 0.1);
     padding: 5px 10px;
