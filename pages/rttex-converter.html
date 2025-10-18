@@ -55,7 +55,7 @@
         }
 
         .logo-text {
-             color: var(--light); 
+             color: var(--light) !important; 
              white-space: nowrap;
         }
         
@@ -354,6 +354,104 @@
             width: 100%;
         }
         .icon-level-calculator { color: var(--tool-5) !important; }
+
+        .custom-tiles-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .custom-tiles-content {
+            background-color: var(--darkest);
+            border-radius: 8px;
+            padding: 20px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+        }
+        
+        .custom-tiles-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 10px;
+        }
+        
+        .custom-tiles-header h3 {
+            color: var(--tool-3);
+            margin: 0;
+        }
+        
+        .close-modal {
+            background: none;
+            border: none;
+            color: var(--light);
+            font-size: 24px;
+            cursor: pointer;
+        }
+        
+        .tile-presets {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .tile-preset {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            padding: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .tile-preset:hover {
+            background: rgba(155, 89, 182, 0.2);
+            border-color: var(--tool-3);
+        }
+        
+        .tile-preset.active {
+            background: rgba(155, 89, 182, 0.3);
+            border-color: var(--tool-3);
+        }
+        
+        .custom-inputs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .custom-inputs input {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            padding: 8px;
+            color: var(--light);
+        }
+        
+        .modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+        
+        .tile-size-display {
+            margin-top: 10px;
+            font-size: 0.9em;
+            color: rgba(255, 255, 255, 0.7);
+        }
     </style>
 </head>
 <body>
@@ -486,6 +584,22 @@
                                         <option value="true">Force Opaque</option>
                                     </select>
                                 </div>
+                                
+                                <div class="conversion-option form-group">
+                                    <label for="isCosmetics">Is Player Cosmetics</label>
+                                    <select id="isCosmetics" class="form-control">
+                                        <option value="false">No (Full Images)</option>
+                                        <option value="true">Yes (Tiled Images)</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="conversion-option form-group">
+                                    <label for="isPlayerParticles">Player Particles</label>
+                                    <select id="isPlayerParticles" class="form-control">
+                                        <option value="false">No (Use Cosmetics Setting)</option>
+                                        <option value="true">Yes (Custom Tiles)</option>
+                                    </select>
+                                </div>
                             </div>
                             
                             <button class="btn rttex-btn" id="convertBtn">
@@ -505,7 +619,8 @@
                                     </button>
                                 </div>
                                 <div id="convertedFiles">
-                                    </div>
+                                    <p class="text-center">No converted files yet. Upload files and click "Convert Files" to see results here.</p>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -523,6 +638,43 @@
             </div>
         </div>
     </main>
+
+    <div class="converting-overlay" id="convertingOverlay" style="display: none;">
+        <div class="converting-spinner"></div>
+        <div>Converting files... Please wait</div>
+    </div>
+
+    <div class="custom-tiles-modal" id="customTilesModal">
+        <div class="custom-tiles-content">
+            <div class="custom-tiles-header">
+                <h3>Custom Tile Size</h3>
+                <button class="close-modal" id="closeModal">&times;</button>
+            </div>
+            
+            <div class="tile-presets">
+                <div class="tile-preset" data-width="32" data-height="32">32×32 (Default)</div>
+                <div class="tile-preset" data-width="16" data-height="16">16×16</div>
+                <div class="tile-preset" data-width="64" data-height="64">64×64</div>
+                <div class="tile-preset" data-width="128" data-height="128">128×128</div>
+                <div class="tile-preset" data-width="8" data-height="8">8×8</div>
+                <div class="tile-preset" data-width="24" data-height="24">24×24</div>
+            </div>
+            
+            <div class="custom-inputs">
+                <input type="number" id="customWidth" placeholder="Width" min="1" max="1024">
+                <input type="number" id="customHeight" placeholder="Height" min="1" max="1024">
+            </div>
+            
+            <div class="tile-size-display" id="tileSizeDisplay">
+                Selected size: 32×32
+            </div>
+            
+            <div class="modal-actions">
+                <button class="btn" id="cancelCustomTiles">Cancel</button>
+                <button class="btn rttex-btn" id="applyCustomTiles">Apply</button>
+            </div>
+        </div>
+    </div>
 
     <footer>
         <div class="container">
@@ -558,8 +710,6 @@
         </div>
     </footer>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
-
     <script>
 document.addEventListener('DOMContentLoaded', () => {
   const fileInput = document.getElementById('rttexFiles');
@@ -571,25 +721,24 @@ document.addEventListener('DOMContentLoaded', () => {
   const statusArea = document.getElementById('statusArea');
   const conversionType = document.getElementById('conversionType');
   const forceOpaqueEl = document.getElementById('forceOpaque');
+  const isCosmeticsEl = document.getElementById('isCosmetics');
+  const isPlayerParticlesEl = document.getElementById('isPlayerParticles');
+  const convertingOverlay = document.getElementById('convertingOverlay');
 
-  let isCosmeticsEl = document.getElementById('isCosmetics');
-  if (!isCosmeticsEl) {
-    const cosmeticsOption = document.createElement('div');
-    cosmeticsOption.className = 'conversion-option form-group';
-    cosmeticsOption.innerHTML = `
-      <label for="isCosmetics">Is Player Cosmetics</label>
-      <select id="isCosmetics" class="form-control">
-        <option value="false">No (Full Images)</option>
-        <option value="true">Yes (Tiled Images)</option>
-      </select>
-    `;
-    document.querySelector('.conversion-options').appendChild(cosmeticsOption);
-    isCosmeticsEl = document.getElementById('isCosmetics');
-  }
+  const customTilesModal = document.getElementById('customTilesModal');
+  const closeModal = document.getElementById('closeModal');
+  const cancelCustomTiles = document.getElementById('cancelCustomTiles');
+  const applyCustomTiles = document.getElementById('applyCustomTiles');
+  const customWidth = document.getElementById('customWidth');
+  const customHeight = document.getElementById('customHeight');
+  const tileSizeDisplay = document.getElementById('tileSizeDisplay');
+  const tilePresets = document.querySelectorAll('.tile-preset');
 
   let uploadedFiles = [];
   let convertedFileData = [];
   let createdObjectURLs = [];
+  let customTileSize = { width: 32, height: 32 };
+  let isConverting = false;
 
   function ensurePako() {
     if (window.pako) return Promise.resolve();
@@ -605,7 +754,10 @@ document.addEventListener('DOMContentLoaded', () => {
   function showStatus(msg, type = 'success') {
     statusArea.innerHTML = `<div class="status-message status-${type}">${msg}</div>`;
   }
-  function clearStatus() { statusArea.innerHTML = ''; }
+  
+  function clearStatus() { 
+    statusArea.innerHTML = ''; 
+  }
 
   function formatFileSize(bytes) {
     if (bytes === 0) return '0 Bytes';
@@ -620,6 +772,7 @@ document.addEventListener('DOMContentLoaded', () => {
     createdObjectURLs.push(url);
     return url;
   }
+  
   function revokeAllURLs() {
     for (const u of createdObjectURLs) URL.revokeObjectURL(u);
     createdObjectURLs = [];
@@ -704,7 +857,7 @@ document.addEventListener('DOMContentLoaded', () => {
     return out;
   }
 
-  async function decodeRTTEXBufferComplete(arrayBuffer, opts={forceOpaque:false,tileSize:32, isCosmetics:false}){
+  async function decodeRTTEXBufferComplete(arrayBuffer, opts={forceOpaque:false,tileSize:32, isCosmetics:false, isPlayerParticles:false, customTileWidth:32, customTileHeight:32}){
     let u8 = new Uint8Array(arrayBuffer);
     if(u8.length>=6 && asciiEquals(u8,0,'RTPACK')) u8=decompressIfRTPACK(u8);
     if(!(u8.length>=6 && asciiEquals(u8,0,'RTTXTR'))){
@@ -726,182 +879,311 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if(channels===4){
       for(let y=0;y<height;y++){
-        const srcRow=height-1-y;
-        const srcOff=srcRow*width*4;
-        const dstOff=y*width*4;
-        rgba.set(pixelBytes.subarray(srcOff,srcOff+width*4),dstOff);
+        for(let x=0;x<width;x++){
+          const src=(y*width+x)*4;
+          const dst=((height-1-y)*width+x)*4;
+          rgba[dst]=pixelBytes[src];
+          rgba[dst+1]=pixelBytes[src+1];
+          rgba[dst+2]=pixelBytes[src+2];
+          rgba[dst+3]=pixelBytes[src+3];
+        }
       }
     }else if(channels===3){
       for(let y=0;y<height;y++){
-        const srcRow=height-1-y;
-        const srcOff=srcRow*width*3;
-        const dstOff=y*width*4;
         for(let x=0;x<width;x++){
-          const s=srcOff+x*3; const d=dstOff+x*4;
-          rgba[d]=pixelBytes[s]||0;
-          rgba[d+1]=pixelBytes[s+1]||0;
-          rgba[d+2]=pixelBytes[s+2]||0;
-          rgba[d+3]=255;
+          const src=(y*width+x)*3;
+          const dst=((height-1-y)*width+x)*4;
+          rgba[dst]=pixelBytes[src];
+          rgba[dst+1]=pixelBytes[src+1];
+          rgba[dst+2]=pixelBytes[src+2];
+          rgba[dst+3]=255;
         }
       }
-    }else{
-      for(let i=0;i<rgba.length;i+=4){rgba[i]=0;rgba[i+1]=0;rgba[i+2]=0;rgba[i+3]=0;}
     }
 
-    if(channels===4 && opts.forceOpaque){
-      for(let i=0;i<rgba.length;i+=4){
-        if(rgba[i+3]!==0) rgba[i+3]=255;
-        else {rgba[i]=255;rgba[i+1]=255;rgba[i+2]=255;rgba[i+3]=0;}
-      }
-    }
+    if(opts.forceOpaque) for(let i=3;i<rgba.length;i+=4) rgba[i]=255;
 
     const canvas=document.createElement('canvas');
     canvas.width=width; canvas.height=height;
-    canvas.getContext('2d').putImageData(new ImageData(rgba,width,height),0,0);
-    const mainBlob=await new Promise(r=>canvas.toBlob(r,'image/png'));
-    const mainURL=makeURL(mainBlob);
+    const ctx=canvas.getContext('2d');
+    const imgData=new ImageData(rgba,width,height);
+    ctx.putImageData(imgData,0,0);
 
-    const tiles=[];
+    const blob=await new Promise(res=>canvas.toBlob(res,'image/png'));
+    const tiles = [];
 
-    if(opts.isCosmetics){
-      const tileSize=opts.tileSize||32;
-      for(let ty=0;ty<Math.ceil(height/tileSize);ty++){
-        for(let tx=0;tx<Math.ceil(width/tileSize);tx++){
-          const tCanvas=document.createElement('canvas');
-          tCanvas.width=tileSize; tCanvas.height=tileSize;
-          tCanvas.getContext('2d').drawImage(canvas,tx*tileSize,ty*tileSize,tileSize,tileSize,0,0,tileSize,tileSize);
-          const tBlob=await new Promise(r=>tCanvas.toBlob(r,'image/png'));
-          tiles.push({x:tx,y:ty,blob:tBlob,url:makeURL(tBlob),name:`tile_${tx}_${ty}.png`});
+    if (opts.isCosmetics || opts.isPlayerParticles) {
+      const tileWidth = opts.isPlayerParticles ? opts.customTileWidth : opts.tileSize;
+      const tileHeight = opts.isPlayerParticles ? opts.customTileHeight : opts.tileSize;
+      
+      if (width % tileWidth === 0 && height % tileHeight === 0) {
+        const cols = width / tileWidth;
+        const rows = height / tileHeight;
+        
+        for (let row = 0; row < rows; row++) {
+          for (let col = 0; col < cols; col++) {
+            const tileCanvas = document.createElement('canvas');
+            tileCanvas.width = tileWidth;
+            tileCanvas.height = tileHeight;
+            const tileCtx = tileCanvas.getContext('2d');
+            tileCtx.drawImage(canvas, col * tileWidth, row * tileHeight, tileWidth, tileHeight, 0, 0, tileWidth, tileHeight);
+            
+            const tileBlob = await new Promise(res => tileCanvas.toBlob(res, 'image/png'));
+            tiles.push({
+              blob: tileBlob,
+              url: makeURL(tileBlob),
+              name: `tile_${row}_${col}.png`,
+              width: tileWidth,
+              height: tileHeight
+            });
+          }
         }
       }
-    } else {
-      tiles.push({x:0,y:0,blob:mainBlob,url:mainURL,name:'image.png'});
     }
 
-    return {url:mainURL,blob:mainBlob,mime:'image/png',note:`decoded ${width}x${height} (channels=${channels})`,width,height,tiles};
+    return {url:makeURL(blob),blob,mime:'image/png',note:'decoded',width,height,tiles};
   }
 
-  async function pngToRTPACKBlob(arrayBuffer){
-    if(!window.pako) throw new Error('pako required');
-    const img=await loadImageFromBlob(new Blob([arrayBuffer],{type:'image/png'}));
-    const c=document.createElement('canvas'); c.width=img.width;c.height=img.height;
-    const ctx=c.getContext('2d'); ctx.drawImage(img,0,0);
-    const rawFlipped=flipImageDataToRawRGBAflipped(ctx.getImageData(0,0,img.width,img.height));
-    return await packPngToRTPACKFromArrayBuffer(arrayBuffer,img.width,img.height,rawFlipped);
+  async function encodePNGToRTTEX(arrayBuffer, opts={}){
+    const blob=new Blob([arrayBuffer],{type:'image/png'});
+    const img=await loadImageFromBlob(blob);
+    const canvas=document.createElement('canvas');
+    canvas.width=img.width; canvas.height=img.height;
+    const ctx=canvas.getContext('2d');
+    ctx.drawImage(img,0,0);
+    const imageData=ctx.getImageData(0,0,img.width,img.height);
+    const rawRGBAflipped=flipImageDataToRawRGBAflipped(imageData);
+    const rttxBlob=await packPngToRTPACKFromArrayBuffer(arrayBuffer,img.width,img.height,rawRGBAflipped);
+    return {url:makeURL(rttxBlob),blob:rttxBlob,mime:'application/octet-stream',note:'encoded',width:img.width,height:img.height,tiles:[]};
   }
 
   function addFileToList(file){
-    if(uploadedFiles.some(f=>f.name===file.name && f.size===file.size)){ showStatus(`File "${file.name}" already added`,'error'); setTimeout(()=>clearStatus(),1200); return; }
+    if(uploadedFiles.some(f=>f.name===file.name && f.size===file.size)){ 
+      showStatus(`File "${file.name}" already added`,'error'); 
+      setTimeout(()=>clearStatus(),1200); 
+      return; 
+    }
     uploadedFiles.push(file);
-    const item=document.createElement('div'); item.className='file-item';
-    item.innerHTML=`<div class="file-name">${file.name}</div><div class="file-size">${formatFileSize(file.size)}</div><div class="file-remove" title="Remove">✖</div>`;
+    const item=document.createElement('div'); 
+    item.className='file-item';
+    item.innerHTML=`
+      <div class="file-name">${file.name}</div>
+      <div class="file-size">${formatFileSize(file.size)}</div>
+      <div class="file-remove" title="Remove">✖</div>
+    `;
     item.querySelector('.file-remove').addEventListener('click',()=>{
       uploadedFiles=uploadedFiles.filter(f=>!(f.name===file.name && f.size===file.size));
       item.remove();
-      showStatus(`Removed ${file.name}`,'success'); setTimeout(()=>clearStatus(),1200);
+      showStatus(`Removed ${file.name}`,'success'); 
+      setTimeout(()=>clearStatus(),1200);
     });
     fileList.appendChild(item);
-    showStatus(`Added ${file.name}`,'success'); setTimeout(()=>clearStatus(),1200);
+    showStatus(`Added ${file.name}`,'success'); 
+    setTimeout(()=>clearStatus(),1200);
   }
 
-  fileInput.addEventListener('change',e=>{
-    for(const f of Array.from(e.target.files)){
-      const lname=f.name.toLowerCase();
-      if(!lname.endsWith('.rttex') && !lname.endsWith('.png')){ showStatus(`Skipped "${f.name}" (unsupported)`,'error'); continue; }
+  function downloadBlob(blob, filename) { 
+    const a = document.createElement('a'); 
+    a.href = URL.createObjectURL(blob); 
+    a.download = filename; 
+    document.body.appendChild(a); 
+    a.click(); 
+    document.body.removeChild(a); 
+  }
+
+  function openCustomTilesModal() {
+    customTilesModal.style.display = 'flex';
+    customWidth.value = customTileSize.width;
+    customHeight.value = customTileSize.height;
+    updateTileSizeDisplay();
+    
+
+    tilePresets.forEach(preset => preset.classList.remove('active'));
+
+    for (const preset of tilePresets) {
+      const width = parseInt(preset.getAttribute('data-width'));
+      const height = parseInt(preset.getAttribute('data-height'));
+      if (width === customTileSize.width && height === customTileSize.height) {
+        preset.classList.add('active');
+        break;
+      }
+    }
+  }
+
+  function closeCustomTilesModal() {
+    customTilesModal.style.display = 'none';
+  }
+
+  function updateTileSizeDisplay() {
+    tileSizeDisplay.textContent = `Selected size: ${customTileSize.width}×${customTileSize.height}`;
+  }
+
+  function applyCustomTileSize() {
+    const width = parseInt(customWidth.value) || 32;
+    const height = parseInt(customHeight.value) || 32;
+    
+
+    if (width < 1 || width > 1024 || height < 1 || height > 1024) {
+      alert('Width and height must be between 1 and 1024');
+      return;
+    }
+    
+    customTileSize = { width, height };
+    updateTileSizeDisplay();
+    closeCustomTilesModal();
+  }
+
+
+  fileInput.addEventListener('change', e => {
+    for(const f of Array.from(e.target.files)) {
+      const lname = f.name.toLowerCase();
+      if(!lname.endsWith('.rttex') && !lname.endsWith('.png')) { 
+        showStatus(`Skipped "${f.name}" (unsupported)`,'error'); 
+        continue; 
+      }
       addFileToList(f);
     }
-    fileInput.value='';
+    fileInput.value = '';
   });
 
-  dropZone.addEventListener('dragover',e=>{e.preventDefault(); dropZone.style.borderColor='var(--tool-3)';});
-  dropZone.addEventListener('dragleave',e=>{dropZone.style.borderColor='rgba(255,255,255,0.1)';});
-  dropZone.addEventListener('drop',e=>{e.preventDefault(); dropZone.style.borderColor='rgba(255,255,255,0.1)';
-    for(const f of Array.from(e.dataTransfer.files||[])){
-      const lname=f.name.toLowerCase();
-      if(!lname.endsWith('.rttex') && !lname.endsWith('.png')){ showStatus(`Skipped "${f.name}" (unsupported)`,'error'); continue; }
+  dropZone.addEventListener('dragover', e => {
+    e.preventDefault(); 
+    dropZone.style.borderColor = 'var(--tool-3)';
+  });
+  
+  dropZone.addEventListener('dragleave', e => {
+    dropZone.style.borderColor = 'rgba(255,255,255,0.1)';
+  });
+  
+  dropZone.addEventListener('drop', e => {
+    e.preventDefault(); 
+    dropZone.style.borderColor = 'rgba(255,255,255,0.1)';
+    for(const f of Array.from(e.dataTransfer.files || [])) {
+      const lname = f.name.toLowerCase();
+      if(!lname.endsWith('.rttex') && !lname.endsWith('.png')) { 
+        showStatus(`Skipped "${f.name}" (unsupported)`,'error'); 
+        continue; 
+      }
       addFileToList(f);
     }
-    fileInput.value='';
+    fileInput.value = '';
   });
-  dropZone.addEventListener('click',e=>{ if(!e.target.closest('label') && e.target.tagName!=='INPUT') fileInput.click(); });
+  
+  dropZone.addEventListener('click', e => { 
+    if(!e.target.closest('label') && e.target.tagName !== 'INPUT') 
+      fileInput.click(); 
+  });
 
-  function downloadBlob(blob,filename){ const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=filename; document.body.appendChild(a); a.click(); a.remove(); }
+  convertBtn.addEventListener('click', async () => {
+    if (isConverting) {
+      showStatus('Conversion in progress. Please wait...', 'error');
+      return;
+    }
+    
+    if(uploadedFiles.length === 0) { 
+      showStatus('Select files first', 'error'); 
+      return; 
+    }
+    
+    try { 
+      await ensurePako(); 
+    } catch(e) { 
+      showStatus('Failed to load zlib', 'error'); 
+      return; 
+    }
 
-  convertBtn.addEventListener('click',async()=>{
-    if(uploadedFiles.length===0){ showStatus('Select files first','error'); return; }
-    try{ await ensurePako(); }catch(e){ showStatus('Failed to load zlib','error'); return; }
+    convertedFiles.innerHTML = ''; 
+    convertedFileData = []; 
+    revokeAllURLs();
 
-    convertedFiles.innerHTML=''; convertedFileData=[]; revokeAllURLs();
-    showStatus(`Converting ${uploadedFiles.length} file(s)...`,'decoding'); convertBtn.disabled=true;
+    isConverting = true;
+    convertBtn.disabled = true;
+    convertBtn.innerHTML = '<i class="fas fa-cog fa-spin"></i> Converting...';
+    convertingOverlay.style.display = 'flex';
+    
+    showStatus(`Converting ${uploadedFiles.length} file(s)...`, 'decoding');
 
-    const doForceOpaque=(forceOpaqueEl && forceOpaqueEl.value==='true');
-    const mode=conversionType.value||'rttex_to_png';
-    const isCosmetics = isCosmeticsEl && isCosmeticsEl.value==='true';
+    const doForceOpaque = (forceOpaqueEl && forceOpaqueEl.value === 'true');
+    const mode = conversionType.value || 'rttex_to_png';
+    const isCosmetics = isCosmeticsEl && isCosmeticsEl.value === 'true';
+    const isPlayerParticles = isPlayerParticlesEl && isPlayerParticlesEl.value === 'true';
 
-    for(const file of uploadedFiles){
-      const name=file.name; const lname=name.toLowerCase(); const ab=await file.arrayBuffer();
-      try{
-        if(lname.endsWith('.rttex') && mode==='rttex_to_png'){
-          const res=await decodeRTTEXBufferComplete(ab,{forceOpaque:doForceOpaque, tileSize:32, isCosmetics:isCosmetics});
-          
-          if(res.tiles.length>0){
-            const card=document.createElement('div'); 
-            card.className = 'result-card';
-            card.innerHTML=`<div style="margin-bottom:8px"><strong>${name}</strong></div>`;
+    for(const file of uploadedFiles) {
+      const name = file.name; 
+      const lname = name.toLowerCase(); 
+      const ab = await file.arrayBuffer();
+      try {
+        if(lname.endsWith('.rttex') && mode === 'rttex_to_png') {
+          const res = await decodeRTTEXBufferComplete(ab, {
+            forceOpaque: doForceOpaque, 
+            tileSize: 32, 
+            isCosmetics: isCosmetics,
+            isPlayerParticles: isPlayerParticles,
+            customTileWidth: customTileSize.width,
+            customTileHeight: customTileSize.height
+          });
+
+          const card = document.createElement('div'); 
+          card.className = 'result-card';
+  
+          const mainContainer = document.createElement('div');
+          mainContainer.className = 'main-image-container';
+          mainContainer.innerHTML = `
+            <h4>${name}</h4>
+            <img src="${res.url}" alt="${name}">
+            <div style="margin-top: 10px;">
+              <button class="btn rttex-btn download-main-btn" data-blob-url="${res.url}" data-filename="${name.replace(/\.rttex$/i, '.png')}">
+                <i class="fas fa-download"></i> Download Full Image
+              </button>
+            </div>
+          `;
+          card.appendChild(mainContainer);
+
+          if (res.tiles && res.tiles.length > 0) {
+            const tilesHeader = document.createElement('h4');
+            tilesHeader.textContent = 'Tiles:';
+            card.appendChild(tilesHeader);
             
-            const grid=document.createElement('div'); 
-            grid.style.display='grid'; 
-            grid.style.gap=isCosmetics?'6px':'15px';
-            grid.style.gridTemplateColumns=isCosmetics?'repeat(auto-fill, 64px)':'repeat(auto-fill, minmax(135px, 1fr))';
-
-            for(const t of res.tiles){
-              const tileCard=document.createElement('div'); 
-              tileCard.style.width=isCosmetics?'64px':'290%'; 
-              tileCard.style.minHeight=isCosmetics?'64px':'200px';
-              tileCard.style.position='relative'; 
-              tileCard.style.overflow='hidden'; 
-              tileCard.style.borderRadius='6px'; 
-              tileCard.style.background='rgba(0,0,0,0.2)';
-              
-              const img=document.createElement('img'); 
-              img.src=t.url; 
-              img.style.width='100%'; 
-              img.style.height='100%'; 
-              img.style.objectFit='contain'; 
-              tileCard.appendChild(img);
-              
-              const dlBtn=document.createElement('button'); 
-              dlBtn.className='btn rttex-btn'; 
-              dlBtn.style.position='absolute'; 
-              dlBtn.style.right='2px'; 
-              dlBtn.style.bottom='4px'; 
-              dlBtn.style.padding='2px 8px'; 
-              dlBtn.style.fontSize='15px'; 
-              dlBtn.innerHTML='⬇'; 
-              dlBtn.title=t.name; 
-              dlBtn.addEventListener('click',()=>downloadBlob(t.blob,t.name));
-              
-              tileCard.appendChild(dlBtn); 
-              grid.appendChild(tileCard); 
-              convertedFileData.push({name:t.name,blob:t.blob,type:'image/png'});
+            const tileGrid = document.createElement('div');
+            tileGrid.className = 'tile-grid';
+            
+            for (const tile of res.tiles) {
+              const tileContainer = document.createElement('div');
+              tileContainer.className = 'tile-container';
+              tileContainer.innerHTML = `
+                <img src="${tile.url}" alt="${tile.name}" style="width: 100px; height: 100px; object-fit: contain;">
+                <button class="tile-download-btn" data-blob-url="${tile.url}" data-filename="${tile.name}">
+                  <i class="fas fa-download"></i>
+                </button>
+              `;
+              tileGrid.appendChild(tileContainer);
             }
             
-            card.appendChild(grid); 
-            convertedFiles.appendChild(card);
-          } 
-        } else if(lname.endsWith('.png') && mode==='png_to_rttex'){
-          const blob=await pngToRTPACKBlob(ab);
-          const outName=name.replace(/\.png$/i,'.rttex');
-          const container=document.createElement('div'); 
+            card.appendChild(tileGrid);
+          }
+          
+          convertedFiles.appendChild(card);
+          convertedFileData.push(res);
+        } else if(lname.endsWith('.png') && mode === 'png_to_rttex') {
+          const blob = await packPngToRTPACKFromArrayBuffer(ab);
+          const outName = name.replace(/\.png$/i, '.rttex');
+          const container = document.createElement('div'); 
           container.className = 'result-file';
-          container.innerHTML=`<div style="margin-bottom:10px"><strong>${outName}</strong></div>`;
-          const dl=document.createElement('button'); 
-          dl.className = 'btn rttex-btn';
-          dl.innerHTML='⬇ Download RTTEX'; 
-          dl.addEventListener('click',()=>downloadBlob(blob,outName)); 
-          container.appendChild(dl);
+          container.innerHTML = `
+            <div style="margin-bottom: 10px">
+              <strong>${outName}</strong>
+            </div>
+            <button class="btn rttex-btn download-rttex-btn" data-blob-url="${makeURL(blob)}" data-filename="${outName}">
+              <i class="fas fa-download"></i> Download RTTEX
+            </button>
+          `;
           convertedFiles.appendChild(container); 
-          convertedFileData.push({name:outName,blob,type:'application/octet-stream'});
+          convertedFileData.push({
+            name: outName,
+            blob: blob,
+            type: 'application/octet-stream',
+            url: makeURL(blob)
+          });
         }
       } catch(err) { 
         console.error(err); 
@@ -909,28 +1191,88 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
 
-    showStatus('Conversion finished','success'); 
-    convertBtn.disabled=false;
+
+    document.querySelectorAll('.download-main-btn, .download-rttex-btn, .tile-download-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        const blobUrl = this.getAttribute('data-blob-url');
+        const filename = this.getAttribute('data-filename');
+        
+        const a = document.createElement('a');
+        a.href = blobUrl;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+      });
+    });
+
+    isConverting = false;
+    convertBtn.disabled = false;
+    convertBtn.innerHTML = '<i class="fas fa-cog"></i> Convert Files';
+    convertingOverlay.style.display = 'none';
+    
+    showStatus('Conversion finished', 'success'); 
   });
 
-  downloadAllBtn.addEventListener('click',async()=>{
-    if(!convertedFileData.length){ showStatus('No files to download','error'); return; }
-    for(const f of convertedFileData) downloadBlob(f.blob,f.name);
-    showStatus('Downloads started','success');
+  downloadAllBtn.addEventListener('click', async () => {
+    if(!convertedFileData.length) { 
+      showStatus('No files to download', 'error'); 
+      return; 
+    }
+    for(const f of convertedFileData) {
+      downloadBlob(f.blob, f.name);
+    }
+    showStatus('Downloads started', 'success');
   });
 
-  showStatus('Ready — select or drag .rttex/.png files','success');
-  forceOpaqueEl.parentElement.style.display=conversionType.value==='rttex_to_png'?'block':'none';
-  conversionType.addEventListener('change',()=>{ 
-    forceOpaqueEl.parentElement.style.display=conversionType.value==='rttex_to_png'?'block':'none'; 
+  isPlayerParticlesEl.addEventListener('change', function() {
+    if (this.value === 'true') {
+      openCustomTilesModal();
+    }
+  });
+
+  closeModal.addEventListener('click', closeCustomTilesModal);
+  cancelCustomTiles.addEventListener('click', closeCustomTilesModal);
+  applyCustomTiles.addEventListener('click', applyCustomTileSize);
+
+  tilePresets.forEach(preset => {
+    preset.addEventListener('click', function() {
+      tilePresets.forEach(p => p.classList.remove('active'));
+      this.classList.add('active');
+      
+      const width = parseInt(this.getAttribute('data-width'));
+      const height = parseInt(this.getAttribute('data-height'));
+      customWidth.value = width;
+      customHeight.value = height;
+      customTileSize = { width, height };
+      updateTileSizeDisplay();
+    });
+  });
+
+  customWidth.addEventListener('input', function() {
+    tilePresets.forEach(p => p.classList.remove('active'));
+    customTileSize.width = parseInt(this.value) || 32;
+    updateTileSizeDisplay();
+  });
+
+  customHeight.addEventListener('input', function() {
+    tilePresets.forEach(p => p.classList.remove('active'));
+    customTileSize.height = parseInt(this.value) || 32;
+    updateTileSizeDisplay();
+  });
+
+  window.addEventListener('click', function(event) {
+    if (event.target === customTilesModal) {
+      closeCustomTilesModal();
+    }
+  });
+
+  showStatus('Ready — select or drag .rttex/.png files', 'success');
+  forceOpaqueEl.parentElement.style.display = conversionType.value === 'rttex_to_png' ? 'block' : 'none';
+  conversionType.addEventListener('change', () => { 
+    forceOpaqueEl.parentElement.style.display = conversionType.value === 'rttex_to_png' ? 'block' : 'none'; 
   });
 });
-</script>
-
-<script>
-  window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
-</script>
-<script defer src="/_vercel/insights/script.js"></script>
-
+    </script>
 </body>
 </html>
