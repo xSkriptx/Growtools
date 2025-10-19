@@ -501,34 +501,34 @@
                             </button>
                             
                             <div id="dropdownNavbar" class="z-10 hidden font-normal divide-y divide-gray-600 rounded-lg shadow w-56">
-                                <ul class="py-2 text-sm" aria-labelledby="dropdownNavbarLink">
-                                    <li>
-                                        <a href="account-checker.html" class="block px-4 py-2">
-                                            <i class="fas fa-user-shield icon-account-checker"></i> Account Checker
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="render-world.html" class="block px-4 py-2">
-                                            <i class="fas fa-globe icon-renderer"></i> World Renderer
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="server-monitor.html" class="block px-4 py-2">
-                                            <i class="fas fa-server icon-server-monitor"></i> Server Monitor
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="cache-checker.html" class="block px-4 py-2">
-                                            <i class="fas fa-id-card icon-cache"></i> Cache Checker
-                                        </a>
-                                    </li>
-                                     <li>
-                                        <a href="level-calculator.html" class="block px-4 py-2">
-                                            <i class="fas fa-calculator icon-level-calculator"></i> Level Calculator
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
+                              <ul class="py-2 text-sm" aria-labelledby="dropdownNavbarLink">
+                                  <li>
+                                      <a href="account-checker.html" class="block px-4 py-2">
+                                          <i class="fas fa-user-shield icon-account-checker"></i> Account Checker
+                                      </a>
+                                  </li>
+                                  <li>
+                                      <a href="render-world.html" class="block px-4 py-2">
+                                          <i class="fas fa-globe icon-renderer"></i> World Renderer
+                                      </a>
+                                  </li>
+                                  <li>
+                                      <a href="server-monitor.html" class="block px-4 py-2">
+                                          <i class="fas fa-server icon-server-monitor"></i> Server Monitor
+                                      </a>
+                                  </li>
+                                  <li>
+                                      <a href="cache-checker.html" class="block px-4 py-2">
+                                          <i class="fas fa-id-card icon-cache"></i> Cache Checker
+                                      </a>
+                                  </li>
+                                  <li>
+                                      <a href="level-calculator.html" class="block px-4 py-2">
+                                          <i class="fas fa-calculator icon-level-calculator"></i> Level Calculator
+                                      </a>
+                                  </li>
+                              </ul>
+                          </div>
                         </li>
                     </ul>
                 </div>
@@ -1274,5 +1274,20 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
     </script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+          // Load saved weather on page load
+          const savedWeather = localStorage.getItem('selectedWeather');
+          if (savedWeather) {
+              // Remove all weather classes
+              document.body.className = document.body.className.replace(/\bweather-\S+/g, '');
+              
+              if (savedWeather !== 'default') {
+                  document.body.classList.add(`weather-${savedWeather}`);
+              }
+          }
+      });
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
 </body>
 </html>
