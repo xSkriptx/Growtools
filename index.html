@@ -340,6 +340,78 @@
                 
                 <div class="visitor-count">
                     <img src="https://api.visitorbadge.io/api/visitors?path=https%3A%2F%2Fgithub.com%2FxSkriptx%2FSkriptProxy&countColor=%23263759" />
+                </div>
+                <div class="weather-selector">
+                    <button id="weatherToggleBtn" class="weather-toggle-btn">
+                        <i class="fas fa-cloud-sun"></i> Weather
+                    </button>
+                    <div id="weatherDropdown" class="weather-dropdown">
+                        <div class="weather-option" data-weather="default">
+                            <img src="images/Weather_Machine_-_Clear_Skies.png" alt="Default">
+                            <span>Default</span>
+                        </div>
+                        <div class="weather-option" data-weather="apocalypse">
+                            <img src="images/Weather_Machine_-_Apocalypse.png" alt="Apocalypse">
+                            <span>Apocalypse</span>
+                        </div>
+                        <div class="weather-option" data-weather="comet">
+                            <img src="images/Weather_Machine_-_Comet.png" alt="Comet">
+                            <span>Comet</span>
+                        </div>
+                        <div class="weather-option" data-weather="arid">
+                            <img src="images/Weather_Machine_-_Arid.png" alt="Arid">
+                            <span>Arid</span>
+                        </div>
+                        <div class="weather-option" data-weather="autumn">
+                            <img src="images/Weather_Machine_-_Autumn.png" alt="Autumn">
+                            <span>Autumn</span>
+                        </div>
+                        <div class="weather-option" data-weather="balloonwarz">
+                            <img src="images/Weather_Machine_-_Balloon_Warz.png" alt="Balloon Warz">
+                            <span>Balloon Warz</span>
+                        </div>
+                        <div class="weather-option" data-weather="black_hole">
+                            <img src="images/Weather_Machine_-_Black_Hole.png" alt="Black Hole">
+                            <span>Black Hole</span>
+                        </div>
+                        <div class="weather-option" data-weather="celebrity">
+                            <img src="images/Weather_Machine_-_Celebrity_Hills.png" alt="Celebrity">
+                            <span>Celebrity</span>
+                        </div>
+                        <div class="weather-option" data-weather="crack_in_reality">
+                            <img src="images/Weather_Machine_-_Crack_In_Reality.png" alt="Crack In Reality">
+                            <span>Crack In Reality</span>
+                        </div>
+                        <div class="weather-option" data-weather="dark_mountains">
+                            <img src="images/Weather_Machine_-_Dark_Mountains.png" alt="Dark Mountains">
+                            <span>Dark Mountains</span>
+                        </div>
+                        <div class="weather-option" data-weather="emerald">
+                            <img src="images/Weather_Machine_-_Emerald_City.png" alt="Emerald">
+                            <span>Emerald</span>
+                        </div>
+                        <div class="weather-option" data-weather="draconic">
+                            <img src="images/Draconic_Weather_Machine_-_Dragons_Keep.png" alt="Draconic">
+                            <span>Draconic</span>
+                        </div>
+                        <div class="weather-option" data-weather="frozen">
+                            <img src="images/Weather_Machine_-_Frozen_Cliffs.png" alt="Frozen">
+                            <span>Frozen</span>
+                        </div>
+                        <div class="weather-option" data-weather="party">
+                            <img src="images/Weather_Machine_-_Party.png" alt="Party">
+                            <span>Party</span>
+                        </div>
+                        <div class="weather-option" data-weather="neptune">
+                            <img src="images/Neptunes_Weather_Machine_-_Atlantis.png" alt="Neptune">
+                            <span>Neptune</span>
+                        </div>
+                        <div class="weather-option" data-weather="pinuski">
+                            <img src="images/Weather_Machine_-_Pinuski.png" alt="Pinuski">
+                            <span>Pinuski</span>
+                        </div>
+                    </div>
+                </div>
                 </div>  
             </div>
         </div>
@@ -603,5 +675,56 @@
         window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
     </script>
     <script defer src="/_vercel/insights/script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const weatherToggleBtn = document.getElementById('weatherToggleBtn');
+            const weatherDropdown = document.getElementById('weatherDropdown');
+            const weatherOptions = document.querySelectorAll('.weather-option');
+            
+            // Toggle dropdown
+            weatherToggleBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                weatherDropdown.classList.toggle('show');
+            });
+            
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function() {
+                weatherDropdown.classList.remove('show');
+            });
+            
+            // Weather selection
+            weatherOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    const weather = this.getAttribute('data-weather');
+                    setWeather(weather);
+                    weatherDropdown.classList.remove('show');
+                });
+            });
+            
+            // Set weather function
+            function setWeather(weather) {
+                // Remove all weather classes
+                document.body.className = document.body.className.replace(/\bweather-\S+/g, '');
+                
+                if (weather !== 'default') {
+                    document.body.classList.add(`weather-${weather}`);
+                }
+                
+                // Save to localStorage
+                localStorage.setItem('selectedWeather', weather);
+            }
+            
+            // Load saved weather on page load
+            const savedWeather = localStorage.getItem('selectedWeather');
+            if (savedWeather) {
+                setWeather(savedWeather);
+            }
+            
+            // Prevent dropdown from closing when clicking inside it
+            weatherDropdown.addEventListener('click', function(e) {
+                e.stopPropagation();
+            });
+        });
+    </script>
 </body>
 </html>
