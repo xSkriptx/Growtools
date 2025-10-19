@@ -257,6 +257,316 @@
         transform: translateY(-2px);
         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
         }
+
+        /* Weather Selector Styles */
+        .weather-selector {
+            position: relative;
+            display: inline-block;
+        }
+
+        .weather-toggle-btn {
+            background: rgba(91, 140, 255, 0.1);
+            border: 1px solid rgba(91, 140, 255, 0.3);
+            color: var(--light);
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 14px;
+        }
+
+        .weather-toggle-btn:hover {
+            background: rgba(91, 140, 255, 0.2);
+            transform: translateY(-1px);
+        }
+
+        .weather-dropdown {
+            display: none;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: var(--darker);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 15px;
+            width: 300px;
+            max-height: 400px;
+            overflow-y: auto;
+            z-index: 1000;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+        }
+
+        .weather-dropdown.show {
+            display: block;
+        }
+
+        .weather-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+
+        .weather-option {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 8px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .weather-option:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: scale(1.05);
+        }
+
+        .weather-option img {
+            width: 50px;
+            height: 50px;
+            object-fit: contain;
+            margin-bottom: 5px;
+        }
+
+        .weather-option span {
+            font-size: 11px;
+            text-align: center;
+            color: var(--light);
+            font-weight: 500;
+        }
+
+        /* Weather-specific background images */
+        body.weather-apocalypse {
+            background-image: url('images/Apocalypse.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+        }
+
+        body.weather-comet {
+            background-image: url('images/Comet.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+        }
+
+        body.weather-arid {
+            background-image: url('images/Arid.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+        }
+
+        body.weather-autumn {
+            background-image: url('images/Autumn.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+        }
+
+        body.weather-balloonwarz {
+            background-image: url('images/BalloonWarz.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+        }
+
+        body.weather-black_hole {
+            background-image: url('images/Black_Hole.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+        }
+
+        body.weather-celebrity {
+            background-image: url('images/Celebrity.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+        }
+
+        body.weather-crack_in_reality {
+            background-image: url('images/Crack_In_Reality.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+        }
+
+        body.weather-dark_mountains {
+            background-image: url('images/Dark_Mountains.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+        }
+
+        body.weather-emerald {
+            background-image: url('images/Emerald.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+        }
+
+        body.weather-draconic {
+            background-image: url('images/Draconic.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+        }
+
+        body.weather-frozen {
+            background-image: url('images/Frozen.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+        }
+
+        body.weather-party {
+            background-image: url('images/Party.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+        }
+
+        body.weather-neptune {
+            background-image: url('images/Neptune.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+        }
+
+        body.weather-pinuski {
+            background-image: url('images/Pinuski.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+        }
+
+        /* Update button colors based on weather theme */
+        body.weather-apocalypse .btn,
+        body.weather-apocalypse .tool-btn,
+        body.weather-apocalypse .btn-primary {
+            background: linear-gradient(to right, #8B0000, #DC143C) !important;
+        }
+
+        body.weather-comet .btn,
+        body.weather-comet .tool-btn,
+        body.weather-comet .btn-primary {
+            background: linear-gradient(to right, #4A4A4A, #696969) !important;
+        }
+
+        body.weather-arid .btn,
+        body.weather-arid .tool-btn,
+        body.weather-arid .btn-primary {
+            background: linear-gradient(to right, #D2691E, #CD853F) !important;
+        }
+
+        body.weather-autumn .btn,
+        body.weather-autumn .tool-btn,
+        body.weather-autumn .btn-primary {
+            background: linear-gradient(to right, #8B4513, #D2691E) !important;
+        }
+
+        body.weather-balloonwarz .btn,
+        body.weather-balloonwarz .tool-btn,
+        body.weather-balloonwarz .btn-primary {
+            background: linear-gradient(to right, #FF69B4, #9370DB) !important;
+        }
+
+        body.weather-black_hole .btn,
+        body.weather-black_hole .tool-btn,
+        body.weather-black_hole .btn-primary {
+            background: linear-gradient(to right, #2F4F4F, #696969) !important;
+        }
+
+        body.weather-celebrity .btn,
+        body.weather-celebrity .tool-btn,
+        body.weather-celebrity .btn-primary {
+            background: linear-gradient(to right, #FFD700, #FFA500) !important;
+        }
+
+        body.weather-crack_in_reality .btn,
+        body.weather-crack_in_reality .tool-btn,
+        body.weather-crack_in_reality .btn-primary {
+            background: linear-gradient(to right, #4B0082, #8A2BE2) !important;
+        }
+
+        body.weather-dark_mountains .btn,
+        body.weather-dark_mountains .tool-btn,
+        body.weather-dark_mountains .btn-primary {
+            background: linear-gradient(to right, #2F4F4F, #708090) !important;
+        }
+
+        body.weather-emerald .btn,
+        body.weather-emerald .tool-btn,
+        body.weather-emerald .btn-primary {
+            background: linear-gradient(to right, #008000, #32CD32) !important;
+        }
+
+        body.weather-draconic .btn,
+        body.weather-draconic .tool-btn,
+        body.weather-draconic .btn-primary {
+            background: linear-gradient(to right, #DC143C, #FF4500) !important;
+        }
+
+        body.weather-frozen .btn,
+        body.weather-frozen .tool-btn,
+        body.weather-frozen .btn-primary {
+            background: linear-gradient(to right, #4682B4, #87CEEB) !important;
+        }
+
+        body.weather-party .btn,
+        body.weather-party .tool-btn,
+        body.weather-party .btn-primary {
+            background: linear-gradient(to right, #FF1493, #00BFFF) !important;
+        }
+
+        body.weather-neptune .btn,
+        body.weather-neptune .tool-btn,
+        body.weather-neptune .btn-primary {
+            background: linear-gradient(to right, #000080, #4169E1) !important;
+        }
+
+        body.weather-pinuski .btn,
+        body.weather-pinuski .tool-btn,
+        body.weather-pinuski .btn-primary {
+            background: linear-gradient(to right, #228B22, #32CD32) !important;
+        }
+
+        /* Make content areas slightly transparent to show background */
+        body:not(.weather-default) .tool-content,
+        body:not(.weather-default) .results-area,
+        body:not(.weather-default) .tool-card {
+            background: rgba(13, 19, 27, 0.85) !important;
+            backdrop-filter: blur(5px);
+        }
+
+        body:not(.weather-default) .tool-container {
+            background: rgba(13, 19, 27, 0.9) !important;
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            margin: 20px auto;
+            padding: 30px;
+        }
     </style>
 </head>
 <body>
@@ -346,69 +656,71 @@
                         <i class="fas fa-cloud-sun"></i> Weather
                     </button>
                     <div id="weatherDropdown" class="weather-dropdown">
-                        <div class="weather-option" data-weather="default">
-                            <img src="images/Weather_Machine_-_Clear_Skies.png" alt="Default">
-                            <span>Default</span>
-                        </div>
-                        <div class="weather-option" data-weather="apocalypse">
-                            <img src="images/Weather_Machine_-_Apocalypse.png" alt="Apocalypse">
-                            <span>Apocalypse</span>
-                        </div>
-                        <div class="weather-option" data-weather="comet">
-                            <img src="images/Weather_Machine_-_Comet.png" alt="Comet">
-                            <span>Comet</span>
-                        </div>
-                        <div class="weather-option" data-weather="arid">
-                            <img src="images/Weather_Machine_-_Arid.png" alt="Arid">
-                            <span>Arid</span>
-                        </div>
-                        <div class="weather-option" data-weather="autumn">
-                            <img src="images/Weather_Machine_-_Autumn.png" alt="Autumn">
-                            <span>Autumn</span>
-                        </div>
-                        <div class="weather-option" data-weather="balloonwarz">
-                            <img src="images/Weather_Machine_-_Balloon_Warz.png" alt="Balloon Warz">
-                            <span>Balloon Warz</span>
-                        </div>
-                        <div class="weather-option" data-weather="black_hole">
-                            <img src="images/Weather_Machine_-_Black_Hole.png" alt="Black Hole">
-                            <span>Black Hole</span>
-                        </div>
-                        <div class="weather-option" data-weather="celebrity">
-                            <img src="images/Weather_Machine_-_Celebrity_Hills.png" alt="Celebrity">
-                            <span>Celebrity</span>
-                        </div>
-                        <div class="weather-option" data-weather="crack_in_reality">
-                            <img src="images/Weather_Machine_-_Crack_In_Reality.png" alt="Crack In Reality">
-                            <span>Crack In Reality</span>
-                        </div>
-                        <div class="weather-option" data-weather="dark_mountains">
-                            <img src="images/Weather_Machine_-_Dark_Mountains.png" alt="Dark Mountains">
-                            <span>Dark Mountains</span>
-                        </div>
-                        <div class="weather-option" data-weather="emerald">
-                            <img src="images/Weather_Machine_-_Emerald_City.png" alt="Emerald">
-                            <span>Emerald</span>
-                        </div>
-                        <div class="weather-option" data-weather="draconic">
-                            <img src="images/Draconic_Weather_Machine_-_Dragons_Keep.png" alt="Draconic">
-                            <span>Draconic</span>
-                        </div>
-                        <div class="weather-option" data-weather="frozen">
-                            <img src="images/Weather_Machine_-_Frozen_Cliffs.png" alt="Frozen">
-                            <span>Frozen</span>
-                        </div>
-                        <div class="weather-option" data-weather="party">
-                            <img src="images/Weather_Machine_-_Party.png" alt="Party">
-                            <span>Party</span>
-                        </div>
-                        <div class="weather-option" data-weather="neptune">
-                            <img src="images/Neptunes_Weather_Machine_-_Atlantis.png" alt="Neptune">
-                            <span>Neptune</span>
-                        </div>
-                        <div class="weather-option" data-weather="pinuski">
-                            <img src="images/Weather_Machine_-_Pinuski.png" alt="Pinuski">
-                            <span>Pinuski</span>
+                        <div class="weather-grid">
+                            <div class="weather-option" data-weather="default">
+                                <img src="images/Weather_Machine_-_Clear_Skies.png" alt="Default">
+                                <span>Default</span>
+                            </div>
+                            <div class="weather-option" data-weather="apocalypse">
+                                <img src="images/Weather_Machine_-_Apocalypse.png" alt="Apocalypse">
+                                <span>Apocalypse</span>
+                            </div>
+                            <div class="weather-option" data-weather="comet">
+                                <img src="images/Weather_Machine_-_Comet.png" alt="Comet">
+                                <span>Comet</span>
+                            </div>
+                            <div class="weather-option" data-weather="arid">
+                                <img src="images/Weather_Machine_-_Arid.png" alt="Arid">
+                                <span>Arid</span>
+                            </div>
+                            <div class="weather-option" data-weather="autumn">
+                                <img src="images/Weather_Machine_-_Autumn.png" alt="Autumn">
+                                <span>Autumn</span>
+                            </div>
+                            <div class="weather-option" data-weather="balloonwarz">
+                                <img src="images/Weather_Machine_-_Balloon_Warz.png" alt="Balloon Warz">
+                                <span>Balloon Warz</span>
+                            </div>
+                            <div class="weather-option" data-weather="black_hole">
+                                <img src="images/Weather_Machine_-_Black_Hole.png" alt="Black Hole">
+                                <span>Black Hole</span>
+                            </div>
+                            <div class="weather-option" data-weather="celebrity">
+                                <img src="images/Weather_Machine_-_Celebrity_Hills.png" alt="Celebrity">
+                                <span>Celebrity</span>
+                            </div>
+                            <div class="weather-option" data-weather="crack_in_reality">
+                                <img src="images/Weather_Machine_-_Crack_In_Reality.png" alt="Crack In Reality">
+                                <span>Crack In Reality</span>
+                            </div>
+                            <div class="weather-option" data-weather="dark_mountains">
+                                <img src="images/Weather_Machine_-_Dark_Mountains.png" alt="Dark Mountains">
+                                <span>Dark Mountains</span>
+                            </div>
+                            <div class="weather-option" data-weather="emerald">
+                                <img src="images/Weather_Machine_-_Emerald_City.png" alt="Emerald">
+                                <span>Emerald</span>
+                            </div>
+                            <div class="weather-option" data-weather="draconic">
+                                <img src="images/Draconic_Weather_Machine_-_Dragons_Keep.png" alt="Draconic">
+                                <span>Draconic</span>
+                            </div>
+                            <div class="weather-option" data-weather="frozen">
+                                <img src="images/Weather_Machine_-_Frozen_Cliffs.png" alt="Frozen">
+                                <span>Frozen</span>
+                            </div>
+                            <div class="weather-option" data-weather="party">
+                                <img src="images/Weather_Machine_-_Party.png" alt="Party">
+                                <span>Party</span>
+                            </div>
+                            <div class="weather-option" data-weather="neptune">
+                                <img src="images/Neptunes_Weather_Machine_-_Atlantis.png" alt="Neptune">
+                                <span>Neptune</span>
+                            </div>
+                            <div class="weather-option" data-weather="pinuski">
+                                <img src="images/Weather_Machine_-_Pinuski.png" alt="Pinuski">
+                                <span>Pinuski</span>
+                            </div>
                         </div>
                     </div>
                 </div>
