@@ -302,6 +302,129 @@
             font-weight: 600;
             color: var(--lighter);
         }
+        
+        /* Ghost Jar Calculator Styles */
+        .ghost-jar-section {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .ghost-jar-items {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .ghost-jar-item {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        
+        .ghost-jar-item:hover {
+            background: rgba(255, 255, 255, 0.08);
+        }
+        
+        .ghost-jar-item.selected {
+            background: rgba(231, 76, 60, 0.15);
+            border-color: var(--tool-5);
+        }
+        
+        .ghost-jar-checkbox {
+            width: 24px;
+            height: 24px;
+            margin-right: 10px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+        
+        .ghost-jar-checkbox.unselected {
+            background-image: url('../images/ButtonGUI.png');
+        }
+        
+        .ghost-jar-checkbox.selected {
+            background-image: url('../images/SelectedGUI.png');
+        }
+        
+        .ghost-jar-icon {
+            width: 40px;
+            height: 40px;
+            margin-right: 10px;
+            border-radius: 6px;
+            overflow: hidden;
+            background: rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .ghost-jar-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+        
+        .ghost-jar-info {
+            flex: 1;
+        }
+        
+        .ghost-jar-name {
+            font-weight: 600;
+            margin-bottom: 3px;
+        }
+        
+        .ghost-jar-xp {
+            font-size: 12px;
+            color: #8a9bb0;
+        }
+        
+        .ghost-jar-results {
+            margin-top: 20px;
+            padding: 15px;
+            background: var(--darkest);
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .ghost-jar-result-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .ghost-jar-result-item:last-child {
+            border-bottom: none;
+        }
+        
+        .ghost-jar-result-label {
+            color: #8a9bb0;
+        }
+        
+        .ghost-jar-result-value {
+            font-weight: 600;
+            color: var(--lighter);
+        }
+        
+        .ghost-jar-result-highlight {
+            color: var(--tool-5);
+            font-size: 18px;
+        }
+        
+        .ghost-jar-note {
+            margin-top: 10px;
+            font-size: 12px;
+            color: #8a9bb0;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
@@ -452,6 +575,119 @@
                             </div>
                         </div>
                     </div>
+                    
+                    <!-- Ghost Jar Calculator Section -->
+                    <div class="tool-section ghost-jar-section">
+                        <h2>Ghost Jar Calculator</h2>
+                        <p>Select items to calculate how many ghost jars you need to reach your target level.</p>
+                        
+                        <div class="ghost-jar-items">
+                            <div class="ghost-jar-item" data-item="ghost-dragon-charm" data-xp="180">
+                                <div class="ghost-jar-checkbox unselected"></div>
+                                <div class="ghost-jar-icon">
+                                    <img src="../images/Ghost_Dragon_Charm.png" alt="Ghost Dragon Charm">
+                                </div>
+                                <div class="ghost-jar-info">
+                                    <div class="ghost-jar-name">Ghost Dragon Charm</div>
+                                    <div class="ghost-jar-xp">+180 XP per ghost</div>
+                                </div>
+                            </div>
+                            
+                            <div class="ghost-jar-item" data-item="coconut-tart" data-xp="50">
+                                <div class="ghost-jar-checkbox unselected"></div>
+                                <div class="ghost-jar-icon">
+                                    <img src="../images/Coconut_Tart.png" alt="Coconut Tart">
+                                </div>
+                                <div class="ghost-jar-info">
+                                    <div class="ghost-jar-name">Coconut Tart</div>
+                                    <div class="ghost-jar-xp">+50 XP per ghost</div>
+                                </div>
+                            </div>
+                            
+                            <div class="ghost-jar-item" data-item="gingerbread-cookie" data-xp="30">
+                                <div class="ghost-jar-checkbox unselected"></div>
+                                <div class="ghost-jar-icon">
+                                    <img src="../images/Gingerbread_Cookie.png" alt="Gingerbread Cookie">
+                                </div>
+                                <div class="ghost-jar-info">
+                                    <div class="ghost-jar-name">Gingerbread Cookie</div>
+                                    <div class="ghost-jar-xp">+30 XP per ghost</div>
+                                </div>
+                            </div>
+                            
+                            <div class="ghost-jar-item" data-item="biotronic-brain-enhancer" data-xp="30">
+                                <div class="ghost-jar-checkbox unselected"></div>
+                                <div class="ghost-jar-icon">
+                                    <img src="../images/Biotronic_Brain_Enhancer.png" alt="Biotronic Brain Enhancer">
+                                </div>
+                                <div class="ghost-jar-info">
+                                    <div class="ghost-jar-name">Biotronic Brain Enhancer</div>
+                                    <div class="ghost-jar-xp">+30 XP per ghost</div>
+                                </div>
+                            </div>
+                            
+                            <div class="ghost-jar-item" data-item="ancestral-totem" data-multiplier="1.05">
+                                <div class="ghost-jar-checkbox unselected"></div>
+                                <div class="ghost-jar-icon">
+                                    <img src="../images/Ancestral_Totem_Of_Wisdom.png" alt="Ancestral Totem of Wisdom">
+                                </div>
+                                <div class="ghost-jar-info">
+                                    <div class="ghost-jar-name">Ancestral Totem of Wisdom</div>
+                                    <div class="ghost-jar-xp">5% double XP chance</div>
+                                </div>
+                            </div>
+                            
+                            <div class="ghost-jar-item" data-item="wisdom-ring" data-multiplier="1.1">
+                                <div class="ghost-jar-checkbox unselected"></div>
+                                <div class="ghost-jar-icon">
+                                    <img src="../images/Wisdom_Ring.png" alt="Wisdom Ring">
+                                </div>
+                                <div class="ghost-jar-info">
+                                    <div class="ghost-jar-name">Wisdom Ring</div>
+                                    <div class="ghost-jar-xp">10% double XP chance</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="ghost-jar-reference">
+                            <div class="ghost-jar-item">
+                                <div class="ghost-jar-icon">
+                                    <img src="../images/Ghost_Jar.png" alt="Ghost Jar">
+                                </div>
+                                <div class="ghost-jar-info">
+                                    <div class="ghost-jar-name">Ghost Jar (Base)</div>
+                                    <div class="ghost-jar-xp">230 XP per ghost jar</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div id="ghostJarResults" class="ghost-jar-results" style="display: none;">
+                            <h4>Ghost Jar Requirements</h4>
+                            <div class="ghost-jar-result-item">
+                                <div class="ghost-jar-result-label">Base XP per ghost jar:</div>
+                                <div class="ghost-jar-result-value" id="baseXpPerGhost">230</div>
+                            </div>
+                            <div class="ghost-jar-result-item">
+                                <div class="ghost-jar-result-label">Bonus XP from items:</div>
+                                <div class="ghost-jar-result-value" id="bonusXp">0</div>
+                            </div>
+                            <div class="ghost-jar-result-item">
+                                <div class="ghost-jar-result-label">XP multiplier:</div>
+                                <div class="ghost-jar-result-value" id="xpMultiplier">1.00x</div>
+                            </div>
+                            <div class="ghost-jar-result-item">
+                                <div class="ghost-jar-result-label">Average XP per ghost jar:</div>
+                                <div class="ghost-jar-result-value" id="avgXpPerGhost">230</div>
+                            </div>
+                            <div class="ghost-jar-result-item">
+                                <div class="ghost-jar-result-label">Ghost jars needed:</div>
+                                <div class="ghost-jar-result-value ghost-jar-result-highlight" id="ghostJarsNeeded">0</div>
+                            </div>
+                            <div class="ghost-jar-note">
+                                Note: Calculations are approximate and may vary based on actual gameplay.
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 
                 <div class="tool-content">
@@ -523,7 +759,18 @@
             const targetLevelInput = document.getElementById('targetLevel');
             const statusArea = document.getElementById('statusArea');
             const resultArea = document.getElementById('resultArea');
+            const ghostJarResults = document.getElementById('ghostJarResults');
+            const ghostJarItems = document.querySelectorAll('.ghost-jar-item');
             
+            let totalXPNeeded = 0;
+            let selectedItems = {
+                'ghost-dragon-charm': false,
+                'coconut-tart': false,
+                'gingerbread-cookie': false,
+                'biotronic-brain-enhancer': false,
+                'ancestral-totem': false,
+                'wisdom-ring': false
+            };
 
             function showStatus(message, type = 'success') {
                 statusArea.innerHTML = `<div class="status-message status-${type}">${message}</div>`;
@@ -552,12 +799,61 @@
                 };
             }
             
-
             function formatNumber(num) {
                 return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
             }
             
-
+            function calculateGhostJars() {
+                if (totalXPNeeded <= 0) return;
+                
+                // Base XP per ghost jar (230 XP as mentioned)
+                let baseXp = 230;
+                let bonusXp = 0;
+                let multiplier = 1.0;
+                
+                // Calculate bonus XP from selected items
+                if (selectedItems['ghost-dragon-charm']) {
+                    bonusXp += 180;
+                }
+                
+                if (selectedItems['coconut-tart']) {
+                    bonusXp += 50;
+                }
+                
+                if (selectedItems['gingerbread-cookie']) {
+                    bonusXp += 30;
+                }
+                
+                if (selectedItems['biotronic-brain-enhancer']) {
+                    bonusXp += 30;
+                }
+                
+                // Calculate XP multipliers
+                if (selectedItems['ancestral-totem']) {
+                    multiplier *= 1.05;
+                }
+                
+                if (selectedItems['wisdom-ring']) {
+                    multiplier *= 1.1;
+                }
+                
+                // Calculate average XP per ghost jar
+                const avgXpPerGhost = (baseXp + bonusXp) * multiplier;
+                
+                // Calculate ghost jars needed
+                const ghostJarsNeeded = Math.ceil(totalXPNeeded / avgXpPerGhost);
+                
+                // Update the UI
+                document.getElementById('baseXpPerGhost').textContent = baseXp;
+                document.getElementById('bonusXp').textContent = bonusXp;
+                document.getElementById('xpMultiplier').textContent = multiplier.toFixed(2) + 'x';
+                document.getElementById('avgXpPerGhost').textContent = Math.round(avgXpPerGhost);
+                document.getElementById('ghostJarsNeeded').textContent = formatNumber(ghostJarsNeeded);
+                
+                // Show the results
+                ghostJarResults.style.display = 'block';
+            }
+            
             function calculateAndDisplay() {
                 const currentLevel = parseInt(currentLevelInput.value);
                 const currentXP = parseInt(currentXPInput.value);
@@ -587,14 +883,16 @@
                 calculateBtn.disabled = true;
                 calculateBtn.innerHTML = '<span class="loading"></span> Calculating...';
                 
-      
+                // Calculate XP
                 const result = calculateXP({
                     clvl: currentLevel,
                     xp: currentXP,
                     tlvl: targetLevel
                 });
                 
-    
+                totalXPNeeded = result.txp;
+                
+                // Display XP breakdown
                 let breakdownHTML = '';
                 let level = currentLevel;
                 let totalXP = 0;
@@ -635,6 +933,9 @@
                     </div>
                 `;
                 
+                // Calculate ghost jars if any items are selected or not
+                calculateGhostJars();
+                
                 showStatus('Calculation complete!', 'success');
                 setTimeout(clearStatus, 3000);
                 
@@ -642,10 +943,35 @@
                 calculateBtn.innerHTML = '<i class="fas fa-calculator"></i> Calculate XP';
             }
             
-  
+            // Event listeners for ghost jar items
+            ghostJarItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    const itemId = this.getAttribute('data-item');
+                    selectedItems[itemId] = !selectedItems[itemId];
+                    
+                    const checkbox = this.querySelector('.ghost-jar-checkbox');
+                    
+                    if (selectedItems[itemId]) {
+                        this.classList.add('selected');
+                        checkbox.classList.remove('unselected');
+                        checkbox.classList.add('selected');
+                    } else {
+                        this.classList.remove('selected');
+                        checkbox.classList.remove('selected');
+                        checkbox.classList.add('unselected');
+                    }
+                    
+                    // Recalculate ghost jars if we have XP data
+                    if (totalXPNeeded > 0) {
+                        calculateGhostJars();
+                    }
+                });
+            });
+            
+            // Event listeners for calculate button
             calculateBtn.addEventListener('click', calculateAndDisplay);
             
-
+            // Event listeners for Enter key
             [currentLevelInput, currentXPInput, targetLevelInput].forEach(input => {
                 input.addEventListener('keypress', function(e) {
                     if (e.key === 'Enter') {
@@ -662,5 +988,19 @@
         window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
     </script>
     <script defer src="/_vercel/insights/script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load saved weather on page load
+            const savedWeather = localStorage.getItem('selectedWeather');
+            if (savedWeather) {
+                // Remove all weather classes
+                document.body.className = document.body.className.replace(/\bweather-\S+/g, '');
+                
+                if (savedWeather !== 'default') {
+                    document.body.classList.add(`weather-${savedWeather}`);
+                }
+            }
+        });
+    </script>
 </body>
 </html>
