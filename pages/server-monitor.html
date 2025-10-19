@@ -999,5 +999,19 @@ setInterval(resetMaintenanceIfNewDay, 60000);
   window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
 </script>
 <script defer src="/_vercel/insights/script.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Load saved weather on page load
+        const savedWeather = localStorage.getItem('selectedWeather');
+        if (savedWeather) {
+            // Remove all weather classes
+            document.body.className = document.body.className.replace(/\bweather-\S+/g, '');
+            
+            if (savedWeather !== 'default') {
+                document.body.classList.add(`weather-${savedWeather}`);
+            }
+        }
+    });
+</script>
 </body>
 </html>
