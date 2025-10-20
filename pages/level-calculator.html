@@ -582,14 +582,14 @@
                         <p>Select items to calculate how many ghost jars you need to reach your target level.</p>
                         
                         <div class="ghost-jar-items">
-                            <div class="ghost-jar-item" data-item="ghost-dragon-charm" data-xp="180">
+                            <div class="ghost-jar-item" data-item="ghost-dragon-charm" data-xp="200">
                                 <div class="ghost-jar-checkbox unselected"></div>
                                 <div class="ghost-jar-icon">
                                     <img src="../images/Ghost_Dragon_Charm.png" alt="Ghost Dragon Charm">
                                 </div>
                                 <div class="ghost-jar-info">
                                     <div class="ghost-jar-name">Ghost Dragon Charm</div>
-                                    <div class="ghost-jar-xp">+180 XP per ghost</div>
+                                    <div class="ghost-jar-xp">+200 XP per ghost</div>
                                 </div>
                             </div>
                             
@@ -600,7 +600,7 @@
                                 </div>
                                 <div class="ghost-jar-info">
                                     <div class="ghost-jar-name">Coconut Tart</div>
-                                    <div class="ghost-jar-xp">+30 XP per ghost</div>
+                                    <div class="ghost-jar-xp">+50 XP per ghost</div>
                                 </div>
                             </div>
                             
@@ -656,7 +656,7 @@
                                 </div>
                                 <div class="ghost-jar-info">
                                     <div class="ghost-jar-name">Ghost Jar (Base)</div>
-                                    <div class="ghost-jar-xp">20 XP per ghost jar</div>
+                                    <div class="ghost-jar-xp">1 XP per ghost jar</div>
                                 </div>
                             </div>
                         </div>
@@ -806,19 +806,19 @@
             function calculateGhostJars() {
                 if (totalXPNeeded <= 0) return;
                 
-                // Base XP per ghost jar (20 XP as mentioned)
-                let baseXp = 20;
+                // Base XP per ghost jar (1 XP as mentioned)
+                let baseXp = 1;
                 let bonusXp = 0;
                 let multiplier = 1.0;
                 let tripleChance = 0;
                 
                 // Calculate bonus XP from selected items
                 if (selectedItems['ghost-dragon-charm']) {
-                    bonusXp += 180;
+                    bonusXp += 200;
                 }
                 
                 if (selectedItems['coconut-tart']) {
-                    bonusXp += 30;
+                    bonusXp += 50;
                 }
                 
                 // Calculate triple XP chance from gingerbread cookie
@@ -1008,4 +1008,5 @@
     </script>
 </body>
 </html>
+
 
