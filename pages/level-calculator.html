@@ -600,29 +600,29 @@
                                 </div>
                                 <div class="ghost-jar-info">
                                     <div class="ghost-jar-name">Coconut Tart</div>
-                                    <div class="ghost-jar-xp">+50 XP per ghost</div>
+                                    <div class="ghost-jar-xp">+30 XP per ghost</div>
                                 </div>
                             </div>
                             
-                            <div class="ghost-jar-item" data-item="gingerbread-cookie" data-xp="30">
+                            <div class="ghost-jar-item" data-item="gingerbread-cookie" data-triple="0.1">
                                 <div class="ghost-jar-checkbox unselected"></div>
                                 <div class="ghost-jar-icon">
                                     <img src="../images/Gingerbread_Cookie.png" alt="Gingerbread Cookie">
                                 </div>
                                 <div class="ghost-jar-info">
                                     <div class="ghost-jar-name">Gingerbread Cookie</div>
-                                    <div class="ghost-jar-xp">+30 XP per ghost</div>
+                                    <div class="ghost-jar-xp">10% triple XP chance</div>
                                 </div>
                             </div>
                             
-                            <div class="ghost-jar-item" data-item="biotronic-brain-enhancer" data-xp="30">
+                            <div class="ghost-jar-item" data-item="biotronic-brain-enhancer" data-multiplier="1.5">
                                 <div class="ghost-jar-checkbox unselected"></div>
                                 <div class="ghost-jar-icon">
                                     <img src="../images/Biotronic_Brain_Enhancer.png" alt="Biotronic Brain Enhancer">
                                 </div>
                                 <div class="ghost-jar-info">
                                     <div class="ghost-jar-name">Biotronic Brain Enhancer</div>
-                                    <div class="ghost-jar-xp">+30 XP per ghost</div>
+                                    <div class="ghost-jar-xp">50% more XP (average)</div>
                                 </div>
                             </div>
                             
@@ -656,7 +656,7 @@
                                 </div>
                                 <div class="ghost-jar-info">
                                     <div class="ghost-jar-name">Ghost Jar (Base)</div>
-                                    <div class="ghost-jar-xp">230 XP per ghost jar</div>
+                                    <div class="ghost-jar-xp">20 XP per ghost jar</div>
                                 </div>
                             </div>
                         </div>
@@ -665,7 +665,7 @@
                             <h4>Ghost Jar Requirements</h4>
                             <div class="ghost-jar-result-item">
                                 <div class="ghost-jar-result-label">Base XP per ghost jar:</div>
-                                <div class="ghost-jar-result-value" id="baseXpPerGhost">230</div>
+                                <div class="ghost-jar-result-value" id="baseXpPerGhost">0</div>
                             </div>
                             <div class="ghost-jar-result-item">
                                 <div class="ghost-jar-result-label">Bonus XP from items:</div>
@@ -677,7 +677,7 @@
                             </div>
                             <div class="ghost-jar-result-item">
                                 <div class="ghost-jar-result-label">Average XP per ghost jar:</div>
-                                <div class="ghost-jar-result-value" id="avgXpPerGhost">230</div>
+                                <div class="ghost-jar-result-value" id="avgXpPerGhost">0</div>
                             </div>
                             <div class="ghost-jar-result-item">
                                 <div class="ghost-jar-result-label">Ghost jars needed:</div>
@@ -806,10 +806,11 @@
             function calculateGhostJars() {
                 if (totalXPNeeded <= 0) return;
                 
-                // Base XP per ghost jar (230 XP as mentioned)
-                let baseXp = 230;
+                // Base XP per ghost jar (20 XP as mentioned)
+                let baseXp = 20;
                 let bonusXp = 0;
                 let multiplier = 1.0;
+                let tripleChance = 0;
                 
                 // Calculate bonus XP from selected items
                 if (selectedItems['ghost-dragon-charm']) {
@@ -817,28 +818,31 @@
                 }
                 
                 if (selectedItems['coconut-tart']) {
-                    bonusXp += 50;
+                    bonusXp += 30;
                 }
                 
+                // Calculate triple XP chance from gingerbread cookie
                 if (selectedItems['gingerbread-cookie']) {
-                    bonusXp += 30;
-                }
-                
-                if (selectedItems['biotronic-brain-enhancer']) {
-                    bonusXp += 30;
+                    tripleChance = 0.1; // 10% chance for triple XP
                 }
                 
                 // Calculate XP multipliers
+                if (selectedItems['biotronic-brain-enhancer']) {
+                    multiplier *= 1.5; // 50% more XP on average
+                }
+                
                 if (selectedItems['ancestral-totem']) {
-                    multiplier *= 1.05;
+                    multiplier *= 1.05; // 5% double XP chance
                 }
                 
                 if (selectedItems['wisdom-ring']) {
-                    multiplier *= 1.1;
+                    multiplier *= 1.1; // 10% double XP chance
                 }
                 
-                // Calculate average XP per ghost jar
-                const avgXpPerGhost = (baseXp + bonusXp) * multiplier;
+                // Calculate average XP per ghost jar including triple XP chance
+                // Triple XP means 3x the total XP (base + bonus)
+                const tripleMultiplier = 1 + (tripleChance * 2); // 10% triple chance = 1.2x multiplier on average
+                const avgXpPerGhost = (baseXp + bonusXp) * multiplier * tripleMultiplier;
                 
                 // Calculate ghost jars needed
                 const ghostJarsNeeded = Math.ceil(totalXPNeeded / avgXpPerGhost);
@@ -846,7 +850,7 @@
                 // Update the UI
                 document.getElementById('baseXpPerGhost').textContent = baseXp;
                 document.getElementById('bonusXp').textContent = bonusXp;
-                document.getElementById('xpMultiplier').textContent = multiplier.toFixed(2) + 'x';
+                document.getElementById('xpMultiplier').textContent = (multiplier * tripleMultiplier).toFixed(2) + 'x';
                 document.getElementById('avgXpPerGhost').textContent = Math.round(avgXpPerGhost);
                 document.getElementById('ghostJarsNeeded').textContent = formatNumber(ghostJarsNeeded);
                 
@@ -863,95 +867,106 @@
                     showStatus('Please enter a valid current level between 1 and 125', 'error');
                     return;
                 }
-                
+
                 if (isNaN(currentXP) || currentXP < 0) {
-                    showStatus('Please enter a valid current XP value (0 or higher)', 'error');
+                    showStatus('Please enter a valid current XP (0 or higher)', 'error');
                     return;
                 }
-                
+
                 if (isNaN(targetLevel) || targetLevel < 2 || targetLevel > 125) {
                     showStatus('Please enter a valid target level between 2 and 125', 'error');
                     return;
                 }
-                
-                if (currentLevel >= targetLevel) {
+
+                if (targetLevel <= currentLevel) {
                     showStatus('Target level must be higher than current level', 'error');
                     return;
                 }
-                
+
+                clearStatus();
                 showStatus('Calculating XP requirements...', 'calculating');
-                calculateBtn.disabled = true;
-                calculateBtn.innerHTML = '<span class="loading"></span> Calculating...';
-                
-                // Calculate XP
-                const result = calculateXP({
-                    clvl: currentLevel,
-                    xp: currentXP,
-                    tlvl: targetLevel
-                });
-                
-                totalXPNeeded = result.txp;
-                
-                // Display XP breakdown
-                let breakdownHTML = '';
-                let level = currentLevel;
-                let totalXP = 0;
-                
-                while (level < targetLevel) {
-                    const levelXP = 50 * (Math.pow(level, 2) + 2);
-                    totalXP += levelXP;
-                    
-                    let levelClass = '';
-                    if (level === currentLevel) {
-                        levelClass = 'xp-level-current';
-                    } else if (level === targetLevel - 1) {
-                        levelClass = 'xp-level-target';
+
+                setTimeout(() => {
+                    const inputs = {
+                        clvl: currentLevel,
+                        xp: currentXP,
+                        tlvl: targetLevel
+                    };
+
+                    const result = calculateXP(inputs);
+                    totalXPNeeded = result.txp;
+
+                    if (totalXPNeeded < 0) {
+                        showStatus('You have more XP than needed for your target level!', 'success');
+                        resultArea.innerHTML = `
+                            <div class="status-message status-success">
+                                You already have enough XP to reach level ${targetLevel}!
+                            </div>
+                        `;
+                        ghostJarResults.style.display = 'none';
+                        return;
                     }
-                    
-                    breakdownHTML += `
-                        <div class="xp-level ${levelClass}">
-                            <div>Level ${level} → ${level + 1}</div>
-                            <div>${formatNumber(levelXP)} XP</div>
+
+                    showStatus('Calculation complete!', 'success');
+
+                    let xpBreakdown = '';
+                    let currentLevelXP = 0;
+
+                    for (let level = currentLevel; level < targetLevel; level++) {
+                        const levelXP = 50 * (Math.pow(level, 2) + 2);
+                        currentLevelXP += levelXP;
+                        
+                        let levelClass = 'xp-level';
+                        if (level === currentLevel) {
+                            levelClass += ' xp-level-current';
+                        } else if (level === targetLevel - 1) {
+                            levelClass += ' xp-level-target';
+                        }
+                        
+                        xpBreakdown += `
+                            <div class="${levelClass}">
+                                <div>Level ${level} → ${level + 1}</div>
+                                <div>${formatNumber(levelXP)} XP</div>
+                            </div>
+                        `;
+                    }
+
+                    resultArea.innerHTML = `
+                        <div class="xp-breakdown">
+                            <div class="xp-breakdown-header">XP Breakdown by Level</div>
+                            <div class="xp-breakdown-content">
+                                ${xpBreakdown}
+                            </div>
+                            <div class="xp-total">
+                                Total XP Needed: <span>${formatNumber(totalXPNeeded)}</span>
+                            </div>
                         </div>
                     `;
                     
-                    level++;
-                }
-                
-                resultArea.innerHTML = `
-                    <div class="xp-breakdown">
-                        <div class="xp-breakdown-header">XP Required Per Level</div>
-                        <div class="xp-breakdown-content">
-                            ${breakdownHTML}
-                        </div>
-                        <div class="xp-total">
-                            Total XP needed: <span>${formatNumber(result.txp)}</span>
-                        </div>
-                    </div>
-                    <div class="status-message status-success" style="margin-top: 15px;">
-                        ${result.about}
-                    </div>
-                `;
-                
-                // Calculate ghost jars if any items are selected or not
-                calculateGhostJars();
-                
-                showStatus('Calculation complete!', 'success');
-                setTimeout(clearStatus, 3000);
-                
-                calculateBtn.disabled = false;
-                calculateBtn.innerHTML = '<i class="fas fa-calculator"></i> Calculate XP';
+                    // Calculate ghost jars if any items are selected
+                    let hasSelectedItems = Object.values(selectedItems).some(value => value);
+                    if (hasSelectedItems) {
+                        calculateGhostJars();
+                    } else {
+                        ghostJarResults.style.display = 'none';
+                    }
+                }, 500);
             }
+
+            calculateBtn.addEventListener('click', calculateAndDisplay);
             
-            // Event listeners for ghost jar items
+            // Add event listeners for ghost jar items
             ghostJarItems.forEach(item => {
                 item.addEventListener('click', function() {
                     const itemId = this.getAttribute('data-item');
-                    selectedItems[itemId] = !selectedItems[itemId];
+                    const isSelected = !selectedItems[itemId];
                     
+                    // Toggle selection
+                    selectedItems[itemId] = isSelected;
+                    
+                    // Update UI
                     const checkbox = this.querySelector('.ghost-jar-checkbox');
-                    
-                    if (selectedItems[itemId]) {
+                    if (isSelected) {
                         this.classList.add('selected');
                         checkbox.classList.remove('unselected');
                         checkbox.classList.add('selected');
@@ -967,39 +982,14 @@
                     }
                 });
             });
-            
-            // Event listeners for calculate button
-            calculateBtn.addEventListener('click', calculateAndDisplay);
-            
-            // Event listeners for Enter key
+
+            // Add input validation
             [currentLevelInput, currentXPInput, targetLevelInput].forEach(input => {
-                input.addEventListener('keypress', function(e) {
-                    if (e.key === 'Enter') {
-                        calculateAndDisplay();
-                    }
+                input.addEventListener('input', function() {
+                    clearStatus();
+                    ghostJarResults.style.display = 'none';
                 });
             });
-
-            showStatus('Enter your level information and click "Calculate XP"', 'success');
-        });
-    </script>
-    
-    <script>
-        window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
-    </script>
-    <script defer src="/_vercel/insights/script.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Load saved weather on page load
-            const savedWeather = localStorage.getItem('selectedWeather');
-            if (savedWeather) {
-                // Remove all weather classes
-                document.body.className = document.body.className.replace(/\bweather-\S+/g, '');
-                
-                if (savedWeather !== 'default') {
-                    document.body.classList.add(`weather-${savedWeather}`);
-                }
-            }
         });
     </script>
 </body>
