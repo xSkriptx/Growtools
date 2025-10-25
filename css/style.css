@@ -18,6 +18,23 @@
     --tool-6: #1abc9c;
     --tool-7: #3498db;
     --tool-8: #d35400;
+    --tool-9: #1abc9c;
+}
+.tool-card[data-tool="admin-checker"] .tool-icon {
+    background: linear-gradient(135deg, var(--tool-9), #16a085);
+}
+
+.tool-card[data-tool="admin-checker"] .tool-title {
+    color: var(--tool-9);
+}
+
+.tool-card[data-tool="admin-checker"] .tool-btn {
+    background: linear-gradient(to right, var(--tool-9), #16a085);
+}
+
+.tool-card[data-tool="admin-checker"] .tool-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 }
 /* Weather Selector Styles */
 .weather-selector {
@@ -332,6 +349,22 @@ body:not(.weather-default) .tool-container {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
+}
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    background-color: var(--darkest);
+    color: var(--light);
+    line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
 }
 
 body {
