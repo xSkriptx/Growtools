@@ -1,0 +1,1106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Checker - Growtools</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="../images/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        .icon-dat-decoder { color: var(--tool-1) !important; }
+        .icon-data-mining { color: var(--tool-2) !important; }
+        .icon-rttex-converter { color: var(--tool-3) !important; }
+        .icon-admin-checker { color: var(--tool-9) !important; }
+        .icon-account-checker { color: var(--tool-4) !important; }
+        .icon-server-monitor { color: var(--tool-6) !important; }
+        .icon-renderer { color: var(--tool-8) !important; }
+        .icon-cache { color: var(--tool-7) !important; }
+        .icon-level-calculator { color: var(--tool-5) !important; }
+        
+        :root {
+            --tool-9: #1abc9c;
+        }
+        
+        header {
+            position: relative; 
+            background-color: var(--darker); 
+            padding: 10px 0;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 1rem;
+        }
+        
+        .header-right-content {
+            display: flex;
+            align-items: center;
+            gap: 20px; 
+        }
+
+        .visitor-count {
+            list-style: none;
+            display: flex; 
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px; 
+        }
+        
+        .logo-img {
+            height: 50px; 
+            width: auto;
+        }
+
+        .logo-text {
+             color: var(--light); 
+             white-space: nowrap;
+        }
+        
+        .nav-link-custom {
+            color: var(--light) !important;
+            padding: 8px 12px !important;
+            border-radius: 6px !important;
+            transition: background-color 0.3s;
+        }
+        
+        .nav-link-custom:hover {
+            background-color: rgba(255, 255, 255, 0.05) !important;
+            color: var(--light) !important;
+        }
+        .nav-link-custom.active {
+            background-color: rgba(255, 255, 255, 0.05) !important;
+        }
+        
+        #dropdownNavbarLink {
+            color: var(--light) !important;
+            padding: 8px 12px !important;
+            border-radius: 6px !important;
+            transition: background-color 0.3s;
+        }
+
+        #dropdownNavbarLink:hover {
+            background-color: rgba(255, 255, 255, 0.05) !important;
+            color: var(--light) !important;
+        }
+        
+        #dropdownNavbar {
+            background-color: var(--darker) !important;
+            border: 1px solid rgba(255, 255, 255, 0.1) !important;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.4) !important;
+        }
+
+        #dropdownNavbar a {
+            color: var(--light) !important;
+        }
+
+        #dropdownNavbar a:hover {
+            background-color: rgba(255, 255, 255, 0.05) !important;
+        }
+
+        .nav-links-flowbite a i, #dropdownNavbarLink i {
+            margin-right: 5px;
+        }
+
+        .header-right-content button[data-collapse-toggle] {
+            display: none;
+        }
+        
+        @media (max-width: 768px) {
+            .visitor-count {
+                display: none;
+            }
+            .header-right-content button[data-collapse-toggle] {
+                display: inline-flex;
+            }
+        }
+        
+        .dropdown, .dropdown-content, .more-tools-btn, .nav-links {
+            display: none !important; 
+        }
+        
+        .tool-header h1 {
+            color: var(--tool-9);
+            font-weight: bold;
+        }
+        
+        .tool-section h2 {
+            color: var(--tool-9);
+            border-bottom: 2px solid var(--tool-9);
+            font-weight: bold;
+        }
+        
+        .admin-btn {
+            background: linear-gradient(to right, var(--tool-9), #16a085);
+            color: white;
+        }
+        
+        .admin-btn:hover {
+            background: linear-gradient(to right, #16a085, var(--tool-9));
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .results-header h3 {
+            color: var(--tool-9);
+            font-weight: bold;
+        }
+        
+        .tool-section h3 {
+            color: var(--tool-9);
+            border-bottom: 2px solid var(--tool-9);
+            padding-bottom: 8px;
+            margin-top: 20px;
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+        
+        /* Admin Checker Specific Styles */
+        .search-container {
+            background: var(--dark);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .search-controls {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+        
+        .search-input {
+            flex: 1;
+            min-width: 250px;
+        }
+        
+        .filter-select {
+            width: 200px;
+        }
+        
+        .sort-controls {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        
+        .admin-results {
+            margin-top: 30px;
+        }
+        
+        .world-card {
+            background: var(--dark);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-left: 4px solid var(--tool-9);
+            transition: all 0.3s ease;
+        }
+        
+        .world-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .world-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .world-name {
+            font-size: 1.4em;
+            font-weight: 700;
+            color: var(--tool-9);
+        }
+        
+        .world-date {
+            color: #8a9bb0;
+            font-size: 0.9em;
+        }
+        
+        .lock-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .lock-card {
+            background: var(--darker);
+            border-radius: 8px;
+            padding: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+        }
+        
+        .lock-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .lock-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .lock-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 6px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.05);
+        }
+        
+        .lock-icon img {
+            width: 32px;
+            height: 32px;
+            object-fit: contain;
+        }
+        
+        .lock-name {
+            font-weight: 600;
+            color: var(--light);
+        }
+        
+        .lock-count {
+            margin-left: auto;
+            background: rgba(26, 188, 156, 0.2);
+            color: var(--tool-9);
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 0.8em;
+            font-weight: 600;
+        }
+        
+        .lock-position {
+            font-size: 0.9em;
+            color: #8a9bb0;
+            margin-bottom: 10px;
+            padding: 5px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .admin-list {
+            margin-top: 10px;
+        }
+        
+        .admin-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 5px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .admin-item:last-child {
+            border-bottom: none;
+        }
+        
+        .admin-uid {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 0.9em;
+        }
+        
+        .no-admins {
+            color: #8a9bb0;
+            font-style: italic;
+            font-size: 0.9em;
+        }
+        
+        .lock-stats {
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            font-size: 0.85em;
+            color: #8a9bb0;
+        }
+        
+        .world-summary {
+            margin-top: 15px;
+            padding: 10px 15px;
+            background: rgba(26, 188, 156, 0.1);
+            border-radius: 6px;
+            font-size: 0.9em;
+        }
+        
+        .summary-stats {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .stat-label {
+            color: #8a9bb0;
+        }
+        
+        .stat-value {
+            color: var(--tool-9);
+            font-weight: 600;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #8a9bb0;
+        }
+        
+        .empty-state i {
+            font-size: 48px;
+            margin-bottom: 15px;
+            color: var(--tool-9);
+            opacity: 0.5;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 40px 20px;
+            color: #8a9bb0;
+        }
+        
+        .loading-spinner {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--tool-9);
+            animation: spin 1s ease-in-out infinite;
+            margin-bottom: 15px;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .error-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--danger);
+            background: rgba(255, 107, 107, 0.1);
+            border-radius: 12px;
+            margin: 20px 0;
+        }
+        
+        .error-state i {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+        
+        .privacy-notice {
+            background: rgba(26, 188, 156, 0.1);
+            border: 1px solid rgba(26, 188, 156, 0.3);
+            border-radius: 8px;
+            padding: 15px;
+            margin: 20px 0;
+            font-size: 0.9em;
+            color: #8a9bb0;
+        }
+        
+        .privacy-notice i {
+            color: var(--tool-9);
+            margin-right: 10px;
+        }
+        
+        .file-upload-container {
+            background: var(--dark);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+            border: 2px dashed rgba(255, 255, 255, 0.1);
+        }
+        
+        .upload-btn {
+            background: linear-gradient(to right, var(--tool-7), #2980b9);
+            color: white;
+        }
+        
+        .upload-btn:hover {
+            background: linear-gradient(to right, #2980b9, var(--tool-7));
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .social-links a,
+        .social-links a:focus,
+        .social-links a:active,
+        .social-links a:hover {
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            outline: none !important;
+            box-shadow: none !important;
+            border: none !important;
+            text-decoration: none !important;
+            display: inline-block;
+            color: var(--light);
+            transition: all 0.3s ease;
+            font-size: 20px;
+            margin-right: 15px;
+            background: none !important;
+            width: auto !important;
+            height: auto !important;
+            border-radius: 0 !important;
+        }
+
+        .social-links a:hover {
+            color: var(--primary);
+            transform: translateY(-3px);
+        }
+
+        .social-links a:focus:not(:focus-visible) {
+            outline: none !important;
+        }
+
+        .social-links a:focus-visible {
+            outline: 2px solid var(--tool-3) !important;
+            outline-offset: 3px;
+            border-radius: 2px;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-img {
+            height: 50px;
+            width: auto;
+        }
+
+        .btn {
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-content">
+            <div class="logo">
+               <a href="../index.html" class="logo">
+                    <img src="../images/Water_Stone.png" alt="Growtools Logo" class="logo-img">
+                    <span class="logo-text">Growtools</span>
+                </a>
+            </div>
+
+            <div class="header-right-content">
+                <button data-collapse-toggle="navbar-dropdown" type="button" class="inline-flex items-center p-2 ms-3 w-10 h-10 justify-center text-sm rounded-lg md:hidden text-gray-400 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-600" aria-controls="navbar-dropdown" aria-expanded="false">
+                    <span class="sr-only">Open main menu</span>
+                    <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h15M1 7h15M1 13h15"/>
+                    </svg>
+                </button>
+                
+                <div class="hidden w-full md:block md:w-auto" id="navbar-dropdown">
+                    <ul class="nav-links-flowbite flex flex-col font-medium p-4 mt-4 rounded-lg md:flex-row md:mt-0 md:text-sm md:border-0 md:space-x-8 md:rtl:space-x-reverse">
+                        <li>
+                            <a href="../index.html" class="nav-link-custom block">
+                                <i class="fas fa-home"></i> Home
+                            </a>
+                        </li>
+                        <li>
+                            <a href="dat-decoder.html" class="nav-link-custom block">
+                                <i class="fas fa-code icon-dat-decoder"></i> DAT Decoder
+                            </a>
+                        </li>
+                        <li>
+                            <a href="data-mining.html" class="nav-link-custom block">
+                                <i class="fas fa-database icon-data-mining"></i> Data Mining
+                            </a>
+                        </li>
+                        <li>
+                            <a href="rttex-converter.html" class="nav-link-custom block">
+                                <i class="fas fa-exchange-alt icon-rttex-converter"></i> RTTEX Converter
+                            </a>
+                        </li>
+                        
+                        <li>
+                            <button id="dropdownNavbarLink" data-dropdown-toggle="dropdownNavbar" class="flex items-center justify-between w-full py-2 px-3 rounded-lg md:border-0 md:p-0 md:w-auto">
+                                <i class="fas fa-cubes"></i> More Tools <i class="fas fa-chevron-down ms-3" style="font-size: 12px;"></i>
+                            </button>
+                            
+                            <div id="dropdownNavbar" class="z-10 hidden font-normal divide-y divide-gray-600 rounded-lg shadow w-56">
+                                <ul class="py-2 text-sm" aria-labelledby="dropdownNavbarLink">
+                                    <li>
+                                        <a href="account-checker.html" class="block px-4 py-2">
+                                            <i class="fas fa-user-shield icon-account-checker"></i> Account Checker
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="render-world.html" class="block px-4 py-2">
+                                            <i class="fas fa-globe icon-renderer"></i> World Renderer
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="server-monitor.html" class="block px-4 py-2">
+                                            <i class="fas fa-server icon-server-monitor"></i> Server Monitor
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="cache-checker.html" class="block px-4 py-2">
+                                            <i class="fas fa-id-card icon-cache"></i> Cache Checker
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="level-calculator.html" class="block px-4 py-2">
+                                            <i class="fas fa-calculator icon-level-calculator"></i> Level Calculator
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="admin-checker.html" class="nav-link-custom active block px-4 py-2" aria-current="page">
+                                            <i class="fas fa-user-shield icon-admin-checker"></i> Admin Checker
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="visitor-count">
+                    <img src="https://api.visitorbadge.io/api/visitors?path=https%3A%2F%2Fgithub.com%2FxSkriptx%2FSkriptProxy&countColor=%23263759" />
+                </div>  
+            </div>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="content-area">
+            <div class="container tool-container">
+                <div class="tool-header">
+                    <h1><i class="fas fa-user-shield"></i> Admin Checker</h1>
+                    <p>Check admin permissions on Growtopia world locks and analyze security patterns</p>
+                </div>
+                
+                <div class="privacy-notice">
+                    <i class="fas fa-shield-alt"></i>
+                    <strong>Privacy Notice:</strong> All admin UIDs displayed in this tool are anonymized for privacy protection. We do not store or display any personally identifiable information.
+                </div>
+                
+                <div class="privacy-notice" style="background: rgba(255, 193, 7, 0.1); border: 1px solid rgba(255, 193, 7, 0.3);">
+                    <i class="fas fa-exclamation-triangle" style="color: #ffc107;"></i>
+                    <strong>Warning:</strong> Always check the dates of admin checks before trading Perma Links. We are not responsible for any losses resulting from outdated admin check data or Perma Link trades.
+                </div>
+                
+                <div class="privacy-notice" style="background: rgba(52, 152, 219, 0.1); border: 1px solid rgba(52, 152, 219, 0.3);">
+                    <i class="fas fa-info-circle" style="color: #3498db;"></i>
+                    <strong>Note:</strong> The adminchecks.txt file can be found pinned in the Growtools channel on Discord. Join our Discord server to access the latest admin check data.
+                </div>
+                
+                <div class="tool-content">
+                    <div class="tool-section">
+                        <h2>Load Admin Data</h2>
+                        <p>You can load admin data in multiple ways:</p>
+                        
+                        <div class="file-upload-container">
+                            <h3>Option 1: Upload Admin Data File</h3>
+                            <p>Upload your <code>adminchecks.txt</code> file directly:</p>
+                            <input type="file" id="fileInput" accept=".txt" class="form-control" style="margin: 10px 0;">
+                            <button id="uploadBtn" class="btn upload-btn">
+                                <i class="fas fa-upload"></i> Upload and Process File
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tool-content">
+                    <div class="tool-section">
+                        <h2>Search Admin Data</h2>
+                        <p>Search through admin check results to find specific worlds, lock types, or admin UIDs.</p>
+                        
+                        <div class="search-container">
+                            <div class="search-controls">
+                                <div class="search-input">
+                                    <label for="searchInput" class="form-group-label">Search</label>
+                                    <input type="text" id="searchInput" class="form-control" placeholder="Enter world name, lock type, or admin UID...">
+                                </div>
+                                
+                                <div class="filter-select">
+                                    <label for="lockTypeFilter" class="form-group-label">Filter by Lock Type</label>
+                                    <select id="lockTypeFilter" class="form-control">
+                                        <option value="all">All Lock Types</option>
+                                        <option value="World Lock">World Lock</option>
+                                        <option value="Small Lock">Small Lock</option>
+                                        <option value="Big Lock">Big Lock</option>
+                                        <option value="Huge Lock">Huge Lock</option>
+                                        <option value="Royal Lock">Royal Lock</option>
+                                        <option value="Diamond Lock">Diamond Lock</option>
+                                        <option value="Builders Lock">Builders Lock</option>
+                                        <option value="Ruby Lock">Ruby Lock</option>
+                                        <option value="Emerald Lock">Emerald Lock</option>
+                                        <option value="Robotic Lock">Robotic Lock</option>
+                                        <option value="Rayman Lock">Rayman Lock</option>
+                                        <option value="Harmonic Lock">Harmonic Lock</option>
+                                        <option value="Bunny Lock">Bunny Lock</option>
+                                        <option value="Legendary Lock">Legendary Lock</option>
+                                        <option value="Blood Dragon Lock">Blood Dragon Lock</option>
+                                        <option value="Ecto-Lock">Ecto-Lock</option>
+                                        <option value="Guild Lock">Guild Lock</option>
+                                        <option value="Prince of Persia Lock">Prince of Persia Lock</option>
+                                        <option value="Radical City Lock">Radical City Lock</option>
+                                        <option value="Assassins Creed Lock">Assassins Creed Lock</option>
+                                        <option value="Enchanted Lock">Enchanted Lock</option>
+                                        <option value="Royal Enchanted Lock">Royal Enchanted Lock</option>
+                                        <option value="Steampunk Lock">Steampunk Lock</option>
+                                        <option value="Immortals Fenyx Rising Lock">Immortals Fenyx Rising Lock</option>
+                                        <option value="My First World Lock">My First World Lock</option>
+                                        <option value="Blue Gem Lock">Blue Gem Lock</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="sort-controls">
+                                    <label for="sortOrder" class="form-group-label">Sort by Date</label>
+                                    <select id="sortOrder" class="form-control">
+                                        <option value="newest">Newest First</option>
+                                        <option value="oldest">Oldest First</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <button id="searchBtn" class="btn admin-btn">
+                                <i class="fas fa-search"></i> Search
+                            </button>
+                        </div>
+                        
+                        <div class="admin-results">
+                            <div id="loadingState" class="loading">
+                                <div class="loading-spinner"></div>
+                                <p>Loading admin data...</p>
+                            </div>
+                            
+                            <div id="errorState" class="error-state" style="display: none;">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                <h3>Error Loading Data</h3>
+                                <p id="errorMessage">Failed to load admin data. Please try one of the options above.</p>
+                                <button id="retryBtn" class="btn admin-btn" style="margin-top: 15px;">
+                                    <i class="fas fa-redo"></i> Try Again
+                                </button>
+                            </div>
+                            
+                            <div id="emptyState" class="empty-state" style="display: none;">
+                                <i class="fas fa-search"></i>
+                                <h3>No Results Found</h3>
+                                <p>Try adjusting your search criteria or filters</p>
+                            </div>
+                            
+                            <div id="resultsContainer">
+                                <!-- Results will be populated here by JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tool-content">
+                    <div class="tool-section">
+                        <h2>About Admin Checking</h2>
+                        <p>Admin checking allows you to see which users have administrative permissions on world locks in Growtopia. This information can help identify shared ownership and security patterns. It is so useful for Perma Links trades.</p>
+                        
+                        <h3>How It Works</h3>
+                        <p>The admin checker scans world locks and extracts the UIDs of users with administrative permissions. This data is then compiled into reports that show:</p>
+                        <ul>
+                            <li>World names and scan dates</li>
+                            <li>Types and quantities of locks found</li>
+                            <li>Positions of each lock in the world</li>
+                            <li>Admin UIDs for each lock</li>
+                            <li>Statistical summaries of admin permissions</li>
+                        </ul>
+                        
+                        <h3>Common Uses</h3>
+                        <ul>
+                            <li>Identifying shared ownership of worlds</li>
+                            <li>Checking security of your own worlds</li>
+                            <li>Researching lock distribution patterns</li>
+                            <li>Analyzing admin permission trends</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>About Growtools</h3>
+                    <p>A collection of powerful utilities designed to help Growtopia players get the most out of their game experience.</p>
+                    <div class="social-links">
+                        <a href="https://discord.gg/HSdayEQKwe" target="_blank"><i class="fab fa-discord"></i></a>
+                        <a href="https://www.youtube.com/channel/UCvoRNyYeWnmb1TojljTkdbA" target="_blank"><i class="fab fa-youtube"></i></a>
+                        <a href="https://github.com/xSkriptx/Growtools" target="_blank"><i class="fab fa-github"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h3>Tools</h3>
+                    <a href="dat-decoder.html"><i class="fas fa-code"></i> DAT Decoder</a>
+                    <a href="data-mining.html"><i class="fas fa-database"></i> Data Mining</a>
+                    <a href="rttex-converter.html"><i class="fas fa-exchange-alt"></i> RTTEX Converter</a>
+                    <a href="admin-checker.html"><i class="fas fa-user-shield"></i> Admin Checker</a>
+                    <a href="level-calculator.html"><i class="fas fa-calculator"></i> Level Calculator</a>
+                </div>
+                <div class="footer-section">
+                    <h3>Support</h3>
+                    <a href="https://discord.gg/HSdayEQKwe" target="_blank"><i class="fas fa-envelope"></i> Contact Us</a>
+                    <a href="https://discord.gg/HSdayEQKwe" target="_blank"><i class="fas fa-question-circle"></i> FAQ</a>
+                    <a href="https://discord.gg/HSdayEQKwe" target="_blank"><i class="fas fa-bug"></i> Report Bug</a>
+                    <a href="https://discord.gg/HSdayEQKwe" target="_blank"><i class="fas fa-lightbulb"></i> Feature Request</a>
+                </div>
+            </div>
+            <div class="copyright">
+                &copy; 2025 Growtools. Not affiliated with Growtopia or Ubisoft. All Growtopia content is property of Ubisoft Entertainment.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Lock types mapping with image names
+        const LOCK_TYPES = {
+            "World Lock": "World_Lock",
+            "Small Lock": "Small_Lock", 
+            "Big Lock": "Big_Lock",
+            "Huge Lock": "Huge_Lock",
+            "Royal Lock": "Royal_Lock",
+            "Diamond Lock": "Diamond_Lock",
+            "Builders Lock": "Builders_Lock",
+            "Ruby Lock": "Ruby_Lock",
+            "Emerald Lock": "Emerald_Lock",
+            "Robotic Lock": "Robotic_Lock",
+            "Rayman Lock": "Rayman_Lock",
+            "Harmonic Lock": "Harmonic_Lock",
+            "Bunny Lock": "Bunny_Lock",
+            "Legendary Lock": "Legendary_Lock",
+            "Blood Dragon Lock": "Blood_Dragon_Lock",
+            "Ecto-Lock": "Ecto-Lock",
+            "Guild Lock": "Guild_Lock",
+            "Prince of Persia Lock": "Prince_of_Persia_Lock",
+            "Radical City Lock": "Radical_City_Lock",
+            "Assassins Creed Lock": "Assassins_Creed_Lock",
+            "Enchanted Lock": "Enchanted_Lock",
+            "Royal Enchanted Lock": "Royal_Enchanted_Lock",
+            "Steampunk Lock": "Steampunk_Lock",
+            "Immortals Fenyx Rising Lock": "Immortals_Fenyx_Rising_Lock",
+            "My First World Lock": "My_First_World_Lock",
+            "Blue Gem Lock": "Blue_Gem_Lock"
+        };
+    
+        let allAdminData = [];
+    
+        document.addEventListener('DOMContentLoaded', function() {
+            // --- Load saved weather theme ---
+            const savedWeather = localStorage.getItem('selectedWeather');
+            if (savedWeather) {
+                document.body.className = document.body.className.replace(/\bweather-\S+/g, '');
+                if (savedWeather !== 'default') {
+                    document.body.classList.add(`weather-${savedWeather}`);
+                }
+            }
+    
+            // --- UI Event Listeners ---
+            document.getElementById('searchBtn').addEventListener('click', performSearch);
+            document.getElementById('searchInput').addEventListener('keyup', e => {
+                if (e.key === 'Enter') performSearch();
+            });
+            document.getElementById('lockTypeFilter').addEventListener('change', performSearch);
+            document.getElementById('sortOrder').addEventListener('change', performSearch);
+            document.getElementById('retryBtn').addEventListener('click', () => {
+                document.getElementById('errorState').style.display = 'none';
+            });
+            document.getElementById('uploadBtn').addEventListener('click', handleFileUpload);
+    
+            // Hide loading initially
+            document.getElementById('loadingState').style.display = 'block';
+    
+            // --- Try to auto-load adminchecks.txt from the data directory ---
+            autoLoadAdminChecks();
+        });
+    
+        // 🟢 Try to load adminchecks.txt automatically from data directory
+        async function autoLoadAdminChecks() {
+            document.getElementById('loadingState').style.display = 'block';
+            document.getElementById('errorState').style.display = 'none';
+    
+            try {
+                const response = await fetch('../data/adminchecks.txt', { cache: 'no-cache' });
+                if (!response.ok) throw new Error(`(${response.status}) ${response.statusText}`);
+                const textData = await response.text();
+    
+                // Process and display
+                processAdminData(textData);
+            } catch (error) {
+                console.warn('Could not auto-load adminchecks.txt:', error.message);
+                document.getElementById('loadingState').style.display = 'none';
+                showError('Could not load adminchecks.txt automatically. Please upload the file manually.');
+            }
+        }
+    
+        // --- Handle manual upload ---
+        function handleFileUpload() {
+            const fileInput = document.getElementById('fileInput');
+            const file = fileInput.files[0];
+            if (!file) return showError('Please select a file to upload.');
+            if (file.type !== 'text/plain' && !file.name.endsWith('.txt')) {
+                return showError('Please upload a valid .txt file.');
+            }
+    
+            const reader = new FileReader();
+            reader.onload = e => processAdminData(e.target.result);
+            reader.onerror = () => showError('Error reading file.');
+            document.getElementById('loadingState').style.display = 'block';
+            document.getElementById('errorState').style.display = 'none';
+            reader.readAsText(file);
+        }
+    
+        // --- Process and parse ---
+        function processAdminData(textData) {
+            try {
+                allAdminData = parseAdminData(textData);
+                document.getElementById('loadingState').style.display = 'none';
+                performSearch();
+            } catch (err) {
+                showError('Error processing data: ' + err.message);
+            }
+        }
+    
+        // --- Parsing logic ---
+        function parseAdminData(textData) {
+            const results = [];
+            const lines = textData.split('\n');
+            let currentWorld = null;
+            let currentLock = null;
+    
+            for (let i = 0; i < lines.length; i++) {
+                const line = lines[i].trim();
+                if (!line) continue;
+    
+                if (line.startsWith('ADMIN CHECKER RESULTS -')) {
+                    if (currentWorld) results.push(currentWorld);
+                    const dateMatch = line.match(/ADMIN CHECKER RESULTS - (\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2})/);
+                    const worldMatch = lines[i+1] && lines[i+1].includes('WORLD:') ?
+                        lines[i+1].match(/WORLD: (.+)/) : null;
+                    if (dateMatch && worldMatch) {
+                        currentWorld = { date: dateMatch[1], worldName: worldMatch[1], locks: [] };
+                        i++;
+                    }
+                } else if (line.includes(' - Found:') && currentWorld) {
+                    const lockMatch = line.match(/(.+) - Found: (\d+)/);
+                    if (lockMatch) {
+                        currentLock = { type: lockMatch[1].trim(), count: parseInt(lockMatch[2]), positions: [] };
+                        currentWorld.locks.push(currentLock);
+                    }
+                } else if (line.startsWith('Position') && currentLock) {
+                    const posMatch = line.match(/Position \d+: \((\d+),(\d+)\)/);
+                    if (posMatch) {
+                        const position = { x: +posMatch[1], y: +posMatch[2], adminCount: 0, adminUIDs: [] };
+                        let j = i + 1;
+                        while (j < lines.length && !lines[j].includes('Statistics:')) {
+                            const adminLine = lines[j].trim();
+                            if (adminLine.startsWith('Admin Count:')) {
+                                const countMatch = adminLine.match(/Admin Count: (\d+)/);
+                                if (countMatch) position.adminCount = +countMatch[1];
+                            } else if (adminLine.startsWith('Admin UIDs:')) {
+                                j++;
+                                while (j < lines.length && lines[j].trim().match(/^\d+\.\s*\d+$/)) {
+                                    const uidMatch = lines[j].trim().match(/^\d+\.\s*(\d+)$/);
+                                    if (uidMatch) position.adminUIDs.push(uidMatch[1]);
+                                    j++;
+                                }
+                                i = j - 1;
+                                break;
+                            }
+                            j++;
+                        }
+                        currentLock.positions.push(position);
+                    }
+                }
+            }
+            if (currentWorld) results.push(currentWorld);
+            return results;
+        }
+    
+        // --- Search and filter ---
+        function performSearch() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const lockTypeFilter = document.getElementById('lockTypeFilter').value;
+            const sortOrder = document.getElementById('sortOrder').value;
+    
+            let filteredData = [...allAdminData];
+    
+            // Apply search term
+            if (searchTerm) {
+                filteredData = filteredData.filter(world => {
+                    const worldMatch = world.worldName.toLowerCase().includes(searchTerm);
+                    const lockMatch = world.locks.some(lock => {
+                        const typeMatch = lock.type.toLowerCase().includes(searchTerm);
+                        const adminMatch = lock.positions.some(pos => 
+                            pos.adminUIDs.some(uid => uid.includes(searchTerm))
+                        );
+                        return typeMatch || adminMatch;
+                    });
+                    return worldMatch || lockMatch;
+                });
+            }
+    
+            // Apply lock type filter
+            if (lockTypeFilter !== 'all') {
+                filteredData = filteredData.map(world => {
+                    const filteredLocks = world.locks.filter(lock => lock.type === lockTypeFilter);
+                    return { ...world, locks: filteredLocks };
+                }).filter(world => world.locks.length > 0);
+            }
+    
+            // Sort by date
+            filteredData.sort((a, b) => {
+                const dateA = new Date(a.date);
+                const dateB = new Date(b.date);
+                return sortOrder === 'newest' ? dateB - dateA : dateA - dateB;
+            });
+    
+            // Display results
+            displayResults(filteredData);
+        }
+    
+        // --- Display results ---
+        function displayResults(data) {
+            const container = document.getElementById('resultsContainer');
+            const emptyState = document.getElementById('emptyState');
+    
+            if (data.length === 0) {
+                container.innerHTML = '';
+                emptyState.style.display = 'block';
+                return;
+            }
+    
+            emptyState.style.display = 'none';
+            let html = '';
+    
+            data.forEach(world => {
+                const totalLocks = world.locks.reduce((sum, lock) => sum + lock.count, 0);
+                const totalAdmins = world.locks.reduce((sum, lock) => 
+                    sum + lock.positions.reduce((posSum, pos) => posSum + pos.adminCount, 0), 0);
+    
+                html += `
+                <div class="world-card">
+                    <div class="world-header">
+                        <div class="world-name">${escapeHtml(world.worldName)}</div>
+                        <div class="world-date">${escapeHtml(world.date)}</div>
+                    </div>
+                    <div class="world-summary">
+                        <div class="summary-stats">
+                            <div class="stat-item">
+                                <span class="stat-label">Total Locks:</span>
+                                <span class="stat-value">${totalLocks}</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Total Admins:</span>
+                                <span class="stat-value">${totalAdmins}</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Lock Types:</span>
+                                <span class="stat-value">${world.locks.length}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="lock-grid">
+                `;
+    
+                world.locks.forEach(lock => {
+                    const lockImage = LOCK_TYPES[lock.type] || 'World_Lock';
+                    html += `
+                    <div class="lock-card">
+                        <div class="lock-header">
+                            <div class="lock-icon">
+                                <img src="../images/${lockImage}.png" alt="${escapeHtml(lock.type)}" onerror="this.src='../images/World_Lock.png'">
+                            </div>
+                            <div class="lock-name">${escapeHtml(lock.type)}</div>
+                            <div class="lock-count">${lock.count}</div>
+                        </div>
+                        <div class="lock-positions">
+                    `;
+    
+                    lock.positions.forEach(pos => {
+                        html += `
+                        <div class="lock-position">
+                            Position: (${pos.x}, ${pos.y})
+                            <div class="admin-list">
+                                ${pos.adminCount === 0 ? 
+                                    '<div class="no-admins">No admins</div>' : 
+                                    pos.adminUIDs.map(uid => `
+                                        <div class="admin-item">
+                                            <i class="fas fa-user"></i>
+                                            <span class="admin-uid">${uid}</span>
+                                        </div>
+                                    `).join('')
+                                }
+                            </div>
+                        </div>
+                        `;
+                    });
+    
+                    html += `
+                        </div>
+                        <div class="lock-stats">
+                            Positions: ${lock.positions.length} | Total Admins: ${lock.positions.reduce((sum, pos) => sum + pos.adminCount, 0)}
+                        </div>
+                    </div>
+                    `;
+                });
+    
+                html += `
+                    </div>
+                </div>
+                `;
+            });
+    
+            container.innerHTML = html;
+        }
+    
+        // --- Helper functions ---
+        function showError(message) {
+            document.getElementById('loadingState').style.display = 'none';
+            document.getElementById('errorState').style.display = 'block';
+            document.getElementById('errorMessage').textContent = message;
+        }
+    
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
+</body>
+</html>
