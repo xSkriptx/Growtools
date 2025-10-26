@@ -3079,3 +3079,105 @@ World Lock - Found: 1
   Statistics: Total Admins: 1 | Average: 1.0
 
 SUMMARY: 1 total locks scanned across 1 lock types
+ADMIN CHECKER RESULTS - 2025-10-26 15:47:50
+WORLD: BUYPINK
+
+World Lock - Found: 1
+  Position 1: (2,53)
+  Admin Count: 1
+  Admin UIDs:
+    1. 1
+  Statistics: Total Admins: 1 | Average: 1.0
+
+SUMMARY: 1 total locks scanned across 1 lock types
+ADMIN CHECKER RESULTS - 2025-10-26 15:49:13
+WORLD: BUYPINKS
+
+World Lock - Found: 1
+  Position 1: (99,52)
+  Admin Count: 0
+  No admin UIDs found
+  Statistics: Total Admins: 0 | Average: 0.0
+
+SUMMARY: 1 total locks scanned across 1 lock types
+ADMIN CHECKER RESULTS - 2025-10-26 15:50:04
+WORLD: BUYBLUES
+
+World Lock - Found: 1
+  Position 1: (99,53)
+  Admin Count: 0
+  No admin UIDs found
+  Statistics: Total Admins: 0 | Average: 0.0
+
+SUMMARY: 1 total locks scanned across 1 lock types
+ADMIN CHECKER RESULTS - 2025-10-26 15:50:37
+WORLD: SELLWOOD
+
+World Lock - Found: 1
+  Position 1: (5,52)
+  Admin Count: 1
+  Admin UIDs:
+    1. 1
+  Statistics: Total Admins: 1 | Average: 1.0
+
+SUMMARY: 1 total locks scanned across 1 lock types
+ADMIN CHECKER RESULTS - 2025-10-26 15:51:03
+WORLD: BUYTURKEY
+
+World Lock - Found: 1
+  Position 1: (98,53)
+  Admin Count: 5
+  Admin UIDs:
+    1. 1
+    2. 2
+    3. 3
+    4. 4
+    5. 5
+  Statistics: Total Admins: 5 | Average: 5.0
+
+SUMMARY: 1 total locks scanned across 1 lock types
+ADMIN CHECKER RESULTS - 2025-10-26 15:51:42
+WORLD: OER
+
+Huge Lock - Found: 7
+  Position 1: (27,19)
+  Admin Count: 0
+  No admin UIDs found
+  -------------------------
+  Position 2: (34,29)
+  Admin Count: 0
+  No admin UIDs found
+  -------------------------
+  Position 3: (13,12)
+  Admin Count: 0
+  No admin UIDs found
+  -------------------------
+  Position 4: (15,34)
+  Admin Count: 0
+  No admin UIDs found
+  -------------------------
+  Position 5: (4,28)
+  Admin Count: 0
+  No admin UIDs found
+  -------------------------
+  Position 6: (16,22)
+  Admin Count: 1
+  Admin UIDs:
+    1. 1
+  -------------------------
+  Position 7: (11,28)
+  Admin Count: 0
+  No admin UIDs found
+  Statistics: Total Admins: 1 | Average: 0.1
+
+SUMMARY: 7 total locks scanned across 1 lock types
+ADMIN CHECKER RESULTS - 2025-10-26 15:52:42
+WORLD: BALLS
+
+World Lock - Found: 1
+  Position 1: (9,53)
+  Admin Count: 0
+  No admin UIDs found
+  Statistics: Total Admins: 0 | Average: 0.0
+
+SUMMARY: 1 total locks scanned across 1 lock types
