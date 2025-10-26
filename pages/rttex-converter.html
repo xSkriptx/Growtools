@@ -455,6 +455,25 @@
         .icon-admin-checker { 
         color: var(--tool-9) !important; 
         }
+        .image-preview img {
+        width: 100%;
+        height: 150px;
+        object-fit: cover;
+        image-rendering: pixelated; 
+        }
+
+        .tile-grid img {
+        width: 100px;
+        height: 100px;
+        object-fit: contain;
+        image-rendering: pixelated; 
+        }
+
+        .result-card img {
+        max-width: 100%;
+        height: auto;
+        image-rendering: pixelated; 
+        }
     </style>
 </head>
 <body>
@@ -1299,3 +1318,4 @@ document.addEventListener('DOMContentLoaded', () => {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
 </body>
 </html>
+
