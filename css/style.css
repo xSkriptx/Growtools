@@ -19,6 +19,7 @@
     --tool-7: #3498db;
     --tool-8: #d35400;
     --tool-9: #1abc9c;
+    --tool-10: #e84393;
 }
 .tool-card[data-tool="admin-checker"] .tool-icon {
     background: linear-gradient(135deg, var(--tool-9), #16a085);
@@ -35,6 +36,25 @@
 .tool-card[data-tool="admin-checker"] .tool-btn:hover {
     transform: translateY(-2px);
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+.tool-card[data-tool="growtopia-news"] {
+    border-color: var(--tool-10);
+}
+
+.tool-card[data-tool="growtopia-news"] .tool-icon {
+    background: linear-gradient(135deg, var(--tool-10), #fd79a8);
+}
+
+.tool-card[data-tool="growtopia-news"] .tool-btn {
+    background: linear-gradient(to right, var(--tool-10), #fd79a8);
+}
+
+.tool-card[data-tool="growtopia-news"] .tool-btn:hover {
+    background: linear-gradient(to right, #fd79a8, var(--tool-10));
+}
+
+.icon-growtopia-news { 
+    color: var(--tool-10) !important; 
 }
 /* Weather Selector Styles */
 .weather-selector {
