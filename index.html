@@ -586,6 +586,25 @@
         .icon-admin-checker { 
         color: var(--tool-9) !important; 
         }
+        .tool-card[data-tool="growtopia-news"] {
+        border-color: var(--tool-10);
+        }
+
+        .tool-card[data-tool="growtopia-news"] .tool-icon {
+        background: linear-gradient(135deg, var(--tool-10), #fd79a8);
+        }
+
+        .tool-card[data-tool="growtopia-news"] .tool-btn {
+        background: linear-gradient(to right, var(--tool-10), #fd79a8);
+        }
+
+        .tool-card[data-tool="growtopia-news"] .tool-btn:hover {
+        background: linear-gradient(to right, #fd79a8, var(--tool-10));
+        }
+
+        .icon-growtopia-news { 
+        color: var(--tool-10) !important; 
+        }
     </style>
 </head>
 <body>
@@ -664,6 +683,11 @@
                                     <li>
                                         <a href="pages/admin-checker.html" class="block px-4 py-2">
                                             <i class="fas fa-user-shield icon-admin-checker"></i> Admin Checker
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="growtopia-news.html" class="block px-4 py-2">
+                                            <i class="fas fa-newspaper icon-growtopia-news"></i> Growtopia News
                                         </a>
                                     </li>
                                 </ul>
@@ -867,7 +891,16 @@
                         </p>
                         <a href="pages/admin-checker.html" class="tool-btn" id="adminCheckerBtn"><i class="fas fa-arrow-right"></i> Use Tool</a>
                     </div>
-                    
+                    <div class="tool-card" data-tool="growtopia-news">
+                        <div class="tool-icon">
+                            <i class="fas fa-newspaper"></i>
+                        </div>
+                        <h2 class="tool-title">Growtopia News</h2>
+                        <p class="tool-description">
+                            Stay updated with the latest item leaks and updates from Growtopia. Discover new content before it's officially released.
+                        </p>
+                        <a href="pages/growtopia-news.html" class="tool-btn" id="growtopiaNewsBtn"><i class="fas fa-arrow-right"></i> Use Tool</a>
+                    </div>
                     <div class="tool-card" data-tool="proxy-server">
                         <div class="coming-soon">Coming Soon</div>
                         <div class="tool-icon" style="background: linear-gradient(135deg, #95a5a6, #7f8c8d);">
@@ -1074,4 +1107,5 @@
     </script>
 </body>
 </html>
+
 
