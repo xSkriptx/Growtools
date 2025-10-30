@@ -3181,3 +3181,366 @@ World Lock - Found: 1
   Statistics: Total Admins: 0 | Average: 0.0
 
 SUMMARY: 1 total locks scanned across 1 lock types
+ADMIN CHECKER RESULTS - 2025-10-30 14:00:04
+WORLD: BUYAVIATOR
+
+World Lock - Found: 1
+  Position 1: (0,53)
+  Admin Count: 0
+  No admin UIDs found
+  Statistics: Total Admins: 0 | Average: 0.0
+
+SUMMARY: 1 total locks scanned across 1 lock types
+ADMIN CHECKER RESULTS - 2025-10-30 14:05:15
+WORLD: BUYEVENT
+
+Diamond Lock - Found: 1
+  Position 1: (50,42)
+  Admin Count: 2
+  Admin UIDs:
+    1. 1
+    2. 2
+  Statistics: Total Admins: 2 | Average: 2.0
+
+SUMMARY: 1 total locks scanned across 1 lock types
+[2025-10-30 14:05:58] Scanning current world: BUYWOODSPERM
+
+ADMIN CHECKER RESULTS - 2025-10-30 14:05:58
+WORLD: BUYWOODSPERM
+
+World Lock - Found: 1
+  Position 1: (37,22)
+  Admin Count: 0
+  No admin UIDs found
+  Statistics: Total Admins: 0 | Average: 0.0
+
+SUMMARY: 1 total locks scanned across 1 lock types
+ADMIN CHECKER RESULTS - 2025-10-30 14:06:23
+WORLD: PCMV
+
+World Lock - Found: 1
+  Position 1: (0,52)
+  Admin Count: 0
+  No admin UIDs found
+  Statistics: Total Admins: 0 | Average: 0.0
+
+SUMMARY: 1 total locks scanned across 1 lock types
+ADMIN CHECKER RESULTS - 2025-10-30 14:06:48
+WORLD: BUYDF
+
+World Lock - Found: 1
+  Position 1: (0,53)
+  Admin Count: 3
+  Admin UIDs:
+    1. 1
+    2. 2
+    3. 3
+  Statistics: Total Admins: 3 | Average: 3.0
+
+Huge Lock - Found: 1
+  Position 1: (2,53)
+  Admin Count: 0
+  No admin UIDs found
+  Statistics: Total Admins: 0 | Average: 0.0
+
+SUMMARY: 2 total locks scanned across 2 lock types
+ADMIN CHECKER RESULTS - 2025-10-30 14:07:13
+WORLD: BUYSCARF
+
+Small Lock - Found: 16
+  Position 1: (49,25)
+  Admin Count: 0
+  No admin UIDs found
+  -------------------------
+  Position 2: (56,18)
+  Admin Count: 3
+  Admin UIDs:
+    1. 1
+    2. 2
+    3. 3
+  -------------------------
+  Position 3: (45,18)
+  Admin Count: 1
+  Admin UIDs:
+    1. 1
+  -------------------------
+  Position 4: (70,52)
+  Admin Count: 0
+  No admin UIDs found
+  -------------------------
+  Position 5: (49,21)
+  Admin Count: 0
+  No admin UIDs found
+  -------------------------
+  Position 6: (45,26)
+  Admin Count: 1
+  Admin UIDs:
+    1. 1
+  -------------------------
+  Position 7: (55,25)
+  Admin Count: 0
+  No admin UIDs found
+  -------------------------
+  Position 8: (57,25)
+  Admin Count: 0
+  No admin UIDs found
+  -------------------------
+  Position 9: (50,24)
+  Admin Count: 0
+  No admin UIDs found
+  -------------------------
+  Position 10: (54,16)
+  Admin Count: 1
+  Admin UIDs:
+    1. 1
+  -------------------------
+  Position 11: (45,24)
+  Admin Count: 1
+  Admin UIDs:
+    1. 1
+  -------------------------
+  Position 12: (54,23)
+  Admin Count: 0
+  No admin UIDs found
+  -------------------------
+  Position 13: (45,19)
+  Admin Count: 0
+  No admin UIDs found
+  -------------------------
+  Position 14: (54,17)
+  Admin Count: 1
+  Admin UIDs:
+    1. 1
+  -------------------------
+  Position 15: (45,20)
+  Admin Count: 1
+  Admin UIDs:
+    1. 1
+  -------------------------
+  Position 16: (46,19)
+  Admin Count: 1
+  Admin UIDs:
+    1. 1
+  Statistics: Total Admins: 10 | Average: 0.6
+
+Big Lock - Found: 3
+  Position 1: (56,13)
+  Admin Count: 1
+  Admin UIDs:
+    1. 1
+  -------------------------
+  Position 2: (51,21)
+  Admin Count: 2
+  Admin UIDs:
+    1. 1
+    2. 2
+  -------------------------
+  Position 3: (55,26)
+  Admin Count: 1
+  Admin UIDs:
+    1. 1
+  Statistics: Total Admins: 4 | Average: 1.3
+
+Huge Lock - Found: 31
+  Position 1: (16,38)
+  Admin Count: 3
+  Admin UIDs:
+    1. 1
+    2. 2
+    3. 3
+  -------------------------
+  Position 2: (8,11)
+  Admin Count: 1
+  Admin UIDs:
+    1. 1
+  -------------------------
+  Position 3: (56,24)
+  Admin Count: 0
+  No admin UIDs found
+  -------------------------
+  Position 4: (12,16)
+  Admin Count: 2
+  Admin UIDs:
+    1. 1
+    2. 2
+  -------------------------
+  Position 5: (69,23)
+  Admin Count: 3
+  Admin UIDs:
+    1. 1
+    2. 2
+    3. 3
+  -------------------------
+  Position 6: (89,53)
+  Admin Count: 3
+  Admin UIDs:
+    1. 1
+    2. 2
+    3. 3
+  -------------------------
+  Position 7: (43,53)
+  Admin Count: 3
+  Admin UIDs:
+    1. 1
+    2. 2
+    3. 3
+  -------------------------
+  Position 8: (67,53)
+  Admin Count: 1
+  Admin UIDs:
+    1. 1
+  -------------------------
+  Position 9: (58,53)
+  Admin Count: 3
+  Admin UIDs:
+    1. 1
+    2. 2
+    3. 3
+  -------------------------
+  Position 10: (83,23)
+  Admin Count: 3
+  Admin UIDs:
+    1. 1
+    2. 2
+    3. 3
+  -------------------------
+  Position 11: (74,53)
+  Admin Count: 3
+  Admin UIDs:
+    1. 1
+    2. 2
+    3. 3
+  -------------------------
+  Position 12: (0,14)
+  Admin Count: 5
+  Admin UIDs:
+    1. 1
+    2. 2
+    3. 3
+    4. 4
+    5. 5
+  -------------------------
+  Position 13: (66,13)
+  Admin Count: 1
+  Admin UIDs:
+    1. 1
+  -------------------------
+  Position 14: (84,37)
+  Admin Count: 3
+  Admin UIDs:
+    1. 1
+    2. 2
+    3. 3
+  -------------------------
+  Position 15: (29,53)
+  Admin Count: 3
+  Admin UIDs:
+    1. 1
+    2. 2
+    3. 3
+  -------------------------
+  Position 16: (64,32)
+  Admin Count: 4
+  Admin UIDs:
+    1. 1
+    2. 2
+    3. 3
+    4. 4
+  -------------------------
+  Position 17: (45,17)
+  Admin Count: 1
+  Admin UIDs:
+    1. 1
+  -------------------------
+  Position 18: (66,2)
+  Admin Count: 3
+  Admin UIDs:
+    1. 1
+    2. 2
+    3. 3
+  -------------------------
+  Position 19: (0,53)
+  Admin Count: 3
+  Admin UIDs:
+    1. 1
+    2. 2
+    3. 3
+  -------------------------
+  Position 20: (61,31)
+  Admin Count: 1
+  Admin UIDs:
+    1. 1
+  -------------------------
+  Position 21: (23,11)
+  Admin Count: 1
+  Admin UIDs:
+    1. 1
+  -------------------------
+  Position 22: (96,38)
+  Admin Count: 3
+  Admin UIDs:
+    1. 1
+    2. 2
+    3. 3
+  -------------------------
+  Position 23: (15,53)
+  Admin Count: 3
+  Admin UIDs:
+    1. 1
+    2. 2
+    3. 3
+  -------------------------
+  Position 24: (96,23)
+  Admin Count: 3
+  Admin UIDs:
+    1. 1
+    2. 2
+    3. 3
+  -------------------------
+  Position 25: (46,28)
+  Admin Count: 1
+  Admin UIDs:
+    1. 1
+  -------------------------
+  Position 26: (82,8)
+  Admin Count: 3
+  Admin UIDs:
+    1. 1
+    2. 2
+    3. 3
+  -------------------------
+  Position 27: (96,8)
+  Admin Count: 3
+  Admin UIDs:
+    1. 1
+    2. 2
+    3. 3
+  -------------------------
+  Position 28: (55,28)
+  Admin Count: 0
+  No admin UIDs found
+  -------------------------
+  Position 29: (30,38)
+  Admin Count: 3
+  Admin UIDs:
+    1. 1
+    2. 2
+    3. 3
+  -------------------------
+  Position 30: (3,38)
+  Admin Count: 3
+  Admin UIDs:
+    1. 1
+    2. 2
+    3. 3
+  -------------------------
+  Position 31: (31,1)
+  Admin Count: 4
+  Admin UIDs:
+    1. 1
+    2. 2
+    3. 3
+    4. 4
+  Statistics: Total Admins: 76 | Average: 2.5
+
+SUMMARY: 50 total locks scanned across 3 lock types
