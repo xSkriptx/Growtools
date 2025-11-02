@@ -3847,3 +3847,56 @@ World Lock - Found: 1
   Statistics: Total Admins: 0 | Average: 0.0
 
 SUMMARY: 1 total locks scanned across 1 lock types
+ADMIN CHECKER RESULTS - 2025-11-02 20:05:08
+WORLD: BUYDRAG
+
+Small Lock - Found: 1
+  Position 1: (8,45)
+  Admin Count: 0
+  No admin UIDs found
+  Statistics: Total Admins: 0 | Average: 0.0
+
+Huge Lock - Found: 1
+  Position 1: (0,49)
+  Admin Count: 0
+  No admin UIDs found
+  Statistics: Total Admins: 0 | Average: 0.0
+
+Blood Dragon Lock - Found: 1
+  Position 1: (0,53)
+  Admin Count: 1
+  Admin UIDs:
+    1. 1
+  Statistics: Total Admins: 1 | Average: 1.0
+
+SUMMARY: 3 total locks scanned across 3 lock types
+ADMIN CHECKER RESULTS - 2025-11-02 20:06:29
+WORLD: BUYROYALPRIMAL
+
+World Lock - Found: 1
+  Position 1: (21,51)
+  Admin Count: 0
+  No admin UIDs found
+  Statistics: Total Admins: 0 | Average: 0.0
+
+SUMMARY: 1 total locks scanned across 1 lock types
+ADMIN CHECKER RESULTS - 2025-11-02 20:07:04
+WORLD: BUYSTURDY
+
+World Lock - Found: 1
+  Position 1: (5,24)
+  Admin Count: 0
+  No admin UIDs found
+  Statistics: Total Admins: 0 | Average: 0.0
+
+SUMMARY: 1 total locks scanned across 1 lock types
+ADMIN CHECKER RESULTS - 2025-11-02 20:07:36
+WORLD: SELLMASTER
+
+World Lock - Found: 1
+  Position 1: (0,53)
+  Admin Count: 0
+  No admin UIDs found
+  Statistics: Total Admins: 0 | Average: 0.0
+
+SUMMARY: 1 total locks scanned across 1 lock types
