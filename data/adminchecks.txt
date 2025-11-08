@@ -4281,3 +4281,32 @@ World Lock - Found: 1
   Statistics: Total Admins: 1 | Average: 1.0
 
 SUMMARY: 1 total locks scanned across 1 lock types
+ADMIN CHECKER RESULTS - 2025-11-08 18:40:18
+WORLD: BUYELDRITCH
+
+Royal Lock - Found: 1
+  Position 1: (97,53)
+  Admin Count: 0
+  No admin UIDs found
+  Statistics: Total Admins: 0 | Average: 0.0
+
+Big Lock - Found: 1
+  Position 1: (15,53)
+  Admin Count: 0
+  No admin UIDs found
+  Statistics: Total Admins: 0 | Average: 0.0
+
+SUMMARY: 2 total locks scanned across 2 lock types
+ADMIN CHECKER RESULTS - 2025-11-08 18:41:00
+WORLD: BOMBELDRITCH
+
+World Lock - Found: 1
+  Position 1: (49,23)
+  Admin Count: 3
+  Admin UIDs:
+    1. 1
+    2. 2
+    3. 3
+  Statistics: Total Admins: 3 | Average: 3.0
+
+SUMMARY: 1 total locks scanned across 1 lock types
