@@ -3900,3 +3900,384 @@ World Lock - Found: 1
   Statistics: Total Admins: 0 | Average: 0.0
 
 SUMMARY: 1 total locks scanned across 1 lock types
+ADMIN CHECKER RESULTS - 2025-11-08 18:28:42
+WORLD: INDONESIA
+
+Builders Lock - Found: 2
+  Position 1: (40,34)
+  Admin Count: 0
+  No admin UIDs found
+  -------------------------
+  Position 2: (49,30)
+  Admin Count: 1
+  Admin UIDs:
+    1. 1
+  Statistics: Total Admins: 1 | Average: 0.5
+
+Small Lock - Found: 4
+  Position 1: (29,35)
+  Admin Count: 0
+  No admin UIDs found
+  -------------------------
+  Position 2: (45,24)
+  Admin Count: 0
+  No admin UIDs found
+  -------------------------
+  Position 3: (29,38)
+  Admin Count: 0
+  No admin UIDs found
+  -------------------------
+  Position 4: (41,23)
+  Admin Count: 0
+  No admin UIDs found
+  Statistics: Total Admins: 0 | Average: 0.0
+
+Big Lock - Found: 8
+  Position 1: (12,1)
+  Admin Count: 1
+  Admin UIDs:
+    1. 1
+  -------------------------
+  Position 2: (50,21)
+  Admin Count: 7
+  Admin UIDs:
+    1. 1
+    2. 2
+    3. 3
+    4. 4
+    5. 5
+    6. 6
+    7. 7
+  -------------------------
+  Position 3: (12,4)
+  Admin Count: 1
+  Admin UIDs:
+    1. 1
+  -------------------------
+  Position 4: (12,2)
+  Admin Count: 1
+  Admin UIDs:
+    1. 1
+  -------------------------
+  Position 5: (0,7)
+  Admin Count: 1
+  Admin UIDs:
+    1. 1
+  -------------------------
+  Position 6: (33,11)
+  Admin Count: 0
+  No admin UIDs found
+  -------------------------
+  Position 7: (12,5)
+  Admin Count: 2
+  Admin UIDs:
+    1. 1
+    2. 2
+  -------------------------
+  Position 8: (54,34)
+  Admin Count: 1
+  Admin UIDs:
+    1. 1
+  Statistics: Total Admins: 14 | Average: 1.8
+
+World Lock - Found: 1
+  Position 1: (0,52)
+  Admin Count: 12
+  Admin UIDs:
+    1. 1
+    2. 2
+    3. 3
+    4. 4
+    5. 5
+    6. 6
+    7. 7
+    8. 8
+    9. 9
+    10. 10
+    11. 11
+    12. 12
+  Statistics: Total Admins: 12 | Average: 12.0
+
+Huge Lock - Found: 6
+  Position 1: (0,47)
+  Admin Count: 0
+  No admin UIDs found
+  -------------------------
+  Position 2: (59,23)
+  Admin Count: 1
+  Admin UIDs:
+    1. 1
+  -------------------------
+  Position 3: (1,7)
+  Admin Count: 1
+  Admin UIDs:
+    1. 1
+  -------------------------
+  Position 4: (59,9)
+  Admin Count: 0
+  No admin UIDs found
+  -------------------------
+  Position 5: (44,8)
+  Admin Count: 0
+  No admin UIDs found
+  -------------------------
+  Position 6: (50,32)
+  Admin Count: 3
+  Admin UIDs:
+    1. 1
+    2. 2
+    3. 3
+  Statistics: Total Admins: 5 | Average: 0.8
+
+SUMMARY: 21 total locks scanned across 5 lock types
+ADMIN CHECKER RESULTS - 2025-11-08 18:30:07
+WORLD: BUYDRAG
+
+Small Lock - Found: 1
+  Position 1: (8,45)
+  Admin Count: 0
+  No admin UIDs found
+  Statistics: Total Admins: 0 | Average: 0.0
+
+Huge Lock - Found: 1
+  Position 1: (0,49)
+  Admin Count: 0
+  No admin UIDs found
+  Statistics: Total Admins: 0 | Average: 0.0
+
+Blood Dragon Lock - Found: 1
+  Position 1: (0,53)
+  Admin Count: 1
+  Admin UIDs:
+    1. 1
+  Statistics: Total Admins: 1 | Average: 1.0
+
+SUMMARY: 3 total locks scanned across 3 lock types
+ADMIN CHECKER RESULTS - 2025-11-08 18:31:12
+WORLD: BUYWING
+
+World Lock - Found: 1
+  Position 1: (49,0)
+  Admin Count: 1
+  Admin UIDs:
+    1. 1
+  Statistics: Total Admins: 1 | Average: 1.0
+
+Huge Lock - Found: 2
+  Position 1: (97,1)
+  Admin Count: 0
+  No admin UIDs found
+  -------------------------
+  Position 2: (54,0)
+  Admin Count: 1
+  Admin UIDs:
+    1. 1
+  Statistics: Total Admins: 1 | Average: 0.5
+
+SUMMARY: 3 total locks scanned across 2 lock types
+ADMIN CHECKER RESULTS - 2025-11-08 18:31:49
+WORLD: BUYWINGS
+
+Builders Lock - Found: 1
+  Position 1: (28,31)
+  Admin Count: 0
+  No admin UIDs found
+  Statistics: Total Admins: 0 | Average: 0.0
+
+World Lock - Found: 1
+  Position 1: (48,2)
+  Admin Count: 3
+  Admin UIDs:
+    1. 1
+    2. 2
+    3. 3
+  Statistics: Total Admins: 3 | Average: 3.0
+
+SUMMARY: 2 total locks scanned across 2 lock types
+ADMIN CHECKER RESULTS - 2025-11-08 18:32:13
+WORLD: BUYOMEGALUL
+
+World Lock - Found: 1
+  Position 1: (29,19)
+  Admin Count: 0
+  No admin UIDs found
+  Statistics: Total Admins: 0 | Average: 0.0
+
+SUMMARY: 1 total locks scanned across 1 lock types
+ADMIN CHECKER RESULTS - 2025-11-08 18:32:42
+WORLD: BUYVAMPIREFANG
+
+World Lock - Found: 1
+  Position 1: (1,53)
+  Admin Count: 0
+  No admin UIDs found
+  Statistics: Total Admins: 0 | Average: 0.0
+
+SUMMARY: 1 total locks scanned across 1 lock types
+ADMIN CHECKER RESULTS - 2025-11-08 18:33:11
+WORLD: BUYMOUTH
+
+World Lock - Found: 1
+  Position 1: (85,21)
+  Admin Count: 3
+  Admin UIDs:
+    1. 1
+    2. 2
+    3. 3
+  Statistics: Total Admins: 3 | Average: 3.0
+
+SUMMARY: 1 total locks scanned across 1 lock types
+ADMIN CHECKER RESULTS - 2025-11-08 18:33:31
+WORLD: DLS
+
+World Lock - Found: 1
+  Position 1: (60,53)
+  Admin Count: 1
+  Admin UIDs:
+    1. 1
+  Statistics: Total Admins: 1 | Average: 1.0
+
+SUMMARY: 1 total locks scanned across 1 lock types
+ADMIN CHECKER RESULTS - 2025-11-08 18:33:53
+WORLD: BUYCABIN
+
+World Lock - Found: 1
+  Position 1: (0,53)
+  Admin Count: 1
+  Admin UIDs:
+    1. 1
+  Statistics: Total Admins: 1 | Average: 1.0
+
+SUMMARY: 1 total locks scanned across 1 lock types
+ADMIN CHECKER RESULTS - 2025-11-08 18:34:21
+WORLD: BUYMOUTHS
+
+Small Lock - Found: 4
+  Position 1: (45,48)
+  Admin Count: 0
+  No admin UIDs found
+  -------------------------
+  Position 2: (46,47)
+  Admin Count: 0
+  No admin UIDs found
+  -------------------------
+  Position 3: (47,47)
+  Admin Count: 0
+  No admin UIDs found
+  -------------------------
+  Position 4: (46,49)
+  Admin Count: 0
+  No admin UIDs found
+  Statistics: Total Admins: 0 | Average: 0.0
+
+Big Lock - Found: 1
+  Position 1: (80,51)
+  Admin Count: 0
+  No admin UIDs found
+  Statistics: Total Admins: 0 | Average: 0.0
+
+World Lock - Found: 1
+  Position 1: (49,39)
+  Admin Count: 2
+  Admin UIDs:
+    1. 1
+    2. 2
+  Statistics: Total Admins: 2 | Average: 2.0
+
+SUMMARY: 6 total locks scanned across 3 lock types
+ADMIN CHECKER RESULTS - 2025-11-08 18:35:13
+WORLD: BUYCATFISH
+
+World Lock - Found: 1
+  Position 1: (99,53)
+  Admin Count: 0
+  No admin UIDs found
+  Statistics: Total Admins: 0 | Average: 0.0
+
+SUMMARY: 1 total locks scanned across 1 lock types
+ADMIN CHECKER RESULTS - 2025-11-08 18:35:43
+WORLD: MORTYPERMALINK
+
+World Lock - Found: 1
+  Position 1: (68,26)
+  Admin Count: 1
+  Admin UIDs:
+    1. 1
+  Statistics: Total Admins: 1 | Average: 1.0
+
+SUMMARY: 1 total locks scanned across 1 lock types
+ADMIN CHECKER RESULTS - 2025-11-08 18:36:11
+WORLD: BUYAMERICAN
+
+World Lock - Found: 1
+  Position 1: (99,52)
+  Admin Count: 3
+  Admin UIDs:
+    1. 1
+    2. 2
+    3. 3
+  Statistics: Total Admins: 3 | Average: 3.0
+
+SUMMARY: 1 total locks scanned across 1 lock types
+ADMIN CHECKER RESULTS - 2025-11-08 18:36:43
+WORLD: BUYGACHA
+
+World Lock - Found: 1
+  Position 1: (0,52)
+  Admin Count: 4
+  Admin UIDs:
+    1. 1
+    2. 2
+    3. 3
+    4. 4
+  Statistics: Total Admins: 4 | Average: 4.0
+
+SUMMARY: 1 total locks scanned across 1 lock types
+ADMIN CHECKER RESULTS - 2025-11-08 18:37:24
+WORLD: BUYDRESS
+
+Builders Lock - Found: 1
+  Position 1: (48,38)
+  Admin Count: 0
+  No admin UIDs found
+  Statistics: Total Admins: 0 | Average: 0.0
+
+World Lock - Found: 1
+  Position 1: (0,53)
+  Admin Count: 10
+  Admin UIDs:
+    1. 1
+    2. 2
+    3. 3
+    4. 4
+    5. 5
+    6. 6
+    7. 7
+    8. 8
+    9. 9
+    10. 10
+  Statistics: Total Admins: 10 | Average: 10.0
+
+SUMMARY: 2 total locks scanned across 2 lock types
+ADMIN CHECKER RESULTS - 2025-11-08 18:37:56
+WORLD: BUYDIAMOND
+
+World Lock - Found: 1
+  Position 1: (0,53)
+  Admin Count: 1
+  Admin UIDs:
+    1. 1
+  Statistics: Total Admins: 1 | Average: 1.0
+
+SUMMARY: 1 total locks scanned across 1 lock types
+ADMIN CHECKER RESULTS - 2025-11-08 18:38:18
+WORLD: BUYMASTERS
+
+World Lock - Found: 1
+  Position 1: (99,52)
+  Admin Count: 1
+  Admin UIDs:
+    1. 1
+  Statistics: Total Admins: 1 | Average: 1.0
+
+SUMMARY: 1 total locks scanned across 1 lock types
