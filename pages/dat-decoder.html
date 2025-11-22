@@ -768,6 +768,7 @@
             "_unk8": field(1, { version: 20 }),
             "_unk9": field(1, { version: 21 }),
             "item_description": field(STRING, { version: 22 }),
+            "item_info": field(4, { version: 23 }),
         };
     }
     function parseNumber(buffer, offset, size) {
@@ -1142,6 +1143,7 @@
             "_unk8": "Unknown Data (1 byte)",
             "_unk9": "Unknown Data (1 byte)",
             "item_description": "Item Description",
+            "info_items" : "Item Info",
         };
         
         const desiredOrder = ["name", "id", "item_description", "file_name"];
@@ -1334,3 +1336,4 @@
 </script>
 </body>
 </html>
+
