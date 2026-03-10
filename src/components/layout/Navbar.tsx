@@ -44,7 +44,6 @@ export function Navbar() {
   return (
     <nav className="sticky top-0 z-50 w-full glass border-b border-border/50">
       <div className="container flex h-16 items-center justify-between">
-        {/* Logo */}
         <Link to="/" className="flex items-center gap-2 group">
           <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-primary to-accent flex items-center justify-center group-hover:scale-110 transition-transform">
             <Wrench className="w-5 h-5 text-primary-foreground" />
@@ -54,7 +53,6 @@ export function Navbar() {
           </span>
         </Link>
 
-        {/* Desktop Navigation */}
         <div className="hidden md:flex items-center gap-1">
           {mainTools.map((tool) => (
             <Link key={tool.path} to={tool.path}>
@@ -98,7 +96,6 @@ export function Navbar() {
           </DropdownMenu>
         </div>
 
-        {/* Mobile Menu */}
         <Sheet open={isOpen} onOpenChange={setIsOpen}>
           <SheetTrigger asChild className="md:hidden">
             <Button variant="ghost" size="icon">

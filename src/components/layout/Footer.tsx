@@ -6,7 +6,6 @@ export function Footer() {
     <footer className="border-t border-border/50 bg-card/50 backdrop-blur-sm">
       <div className="container py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-          {/* Brand */}
           <div className="md:col-span-2">
             <Link to="/" className="flex items-center gap-2 mb-4">
               <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-primary to-accent flex items-center justify-center">
@@ -36,7 +35,6 @@ export function Footer() {
             </div>
           </div>
 
-          {/* Tools */}
           <div>
             <h4 className="font-semibold mb-4 text-sm uppercase tracking-wider text-muted-foreground">
               Popular Tools
@@ -65,7 +63,6 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* More */}
           <div>
             <h4 className="font-semibold mb-4 text-sm uppercase tracking-wider text-muted-foreground">
               More Tools

@@ -155,7 +155,6 @@ const features = [
 export default function Index() {
   return (
     <div className="flex flex-col">
-      {/* Hero Section */}
       <section className="relative py-20 md:py-32 overflow-hidden">
         <div className="absolute inset-0 bg-hero-gradient" />
         <div className="absolute inset-0 bg-gradient-radial from-primary/10 via-transparent to-transparent" />
@@ -194,7 +193,6 @@ export default function Index() {
         </div>
       </section>
 
-      {/* Tools Grid */}
       <section className="py-16 md:py-24">
         <div className="container">
           <div className="text-center mb-12">
@@ -221,7 +219,6 @@ export default function Index() {
         </div>
       </section>
 
-      {/* Features Section */}
       <section className="py-16 md:py-24 bg-card/30">
         <div className="container">
           <div className="text-center mb-12">
@@ -251,7 +248,6 @@ export default function Index() {
         </div>
       </section>
 
-      {/* CTA Section */}
       <section className="py-16 md:py-24">
         <div className="container">
           <div className="max-w-3xl mx-auto text-center glass-card p-8 md:p-12">

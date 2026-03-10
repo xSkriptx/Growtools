@@ -8,7 +8,6 @@ import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import ComingSoon from "./pages/ComingSoon";
 
-// Tool Pages
 import DatDecoder from "./pages/tools/DatDecoder";
 import DataMining from "./pages/tools/DataMining";
 import RttexConverter from "./pages/tools/RttexConverter";
@@ -34,7 +33,6 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Index />} />
             
-            {/* Tool Routes */}
             <Route path="/dat-decoder" element={<DatDecoder />} />
             <Route path="/data-mining" element={<DataMining />} />
             <Route path="/rttex-converter" element={<RttexConverter />} />
@@ -48,12 +46,10 @@ const App = () => (
             <Route path="/item-browser" element={<ItemBrowser />} />
             <Route path="/world-planner" element={<WorldPlanner />} />
             
-            {/* Coming Soon Routes */}
             <Route path="/proxy-server" element={<ComingSoon title="Proxy Server" />} />
             <Route path="/set-planner" element={<ComingSoon title="Set Planner" />} />
             <Route path="/gacha-simulator" element={<ComingSoon title="Gacha Simulator" />} />
             
-            {/* Catch-all */}
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Layout>
