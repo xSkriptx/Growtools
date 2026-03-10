@@ -1,11 +1,12 @@
 import { useState, useCallback } from "react";
-import { Image, Upload, Download, RefreshCw, ArrowRight } from "lucide-react";
+import { Image, Upload, Download, RefreshCw, ArrowRight, Archive } from "lucide-react";
 import { ToolPageLayout } from "@/components/ToolPageLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { RTTEXConverter } from "@/lib/rttexConverter";
+import JSZip from "jszip";
 
 export default function RttexConverter() {
   const [files, setFiles] = useState<File[]>([]);
@@ -16,6 +17,7 @@ export default function RttexConverter() {
     error?: string;
   }[]>([]);
   const [isConverting, setIsConverting] = useState(false);
+  const [isZipping, setIsZipping] = useState(false);
 
   const handleDrop = useCallback((e: React.DragEvent) => {
     e.preventDefault();
@@ -42,49 +44,71 @@ export default function RttexConverter() {
 
   const convertFiles = async () => {
     setIsConverting(true);
-    
+
     for (let i = 0; i < conversions.length; i++) {
       if (conversions[i].status !== 'pending') continue;
-      
-      setConversions(prev => prev.map((conv, idx) => 
+
+      setConversions(prev => prev.map((conv, idx) =>
         idx === i ? { ...conv, status: 'converting' } : conv
       ));
 
       try {
         const file = conversions[i].file;
         let result: Blob;
-        
+
         if (file.name.endsWith('.rttex')) {
           result = await RTTEXConverter.convertRTTEXToPNG(file);
         } else {
           result = await RTTEXConverter.convertPNGToRTTEX(file);
         }
 
-        setConversions(prev => prev.map((conv, idx) => 
+        setConversions(prev => prev.map((conv, idx) =>
           idx === i ? { ...conv, status: 'completed', result } : conv
         ));
       } catch (error) {
-        setConversions(prev => prev.map((conv, idx) => 
-          idx === i ? { 
-            ...conv, 
-            status: 'error', 
-            error: error instanceof Error ? error.message : 'Conversion failed' 
+        setConversions(prev => prev.map((conv, idx) =>
+          idx === i ? {
+            ...conv,
+            status: 'error',
+            error: error instanceof Error ? error.message : 'Conversion failed'
           } : conv
         ));
       }
     }
-    
+
     setIsConverting(false);
   };
 
   const downloadResult = (conversion: typeof conversions[0]) => {
     if (!conversion.result) return;
-    
+
     const originalName = conversion.file.name;
     const newExtension = originalName.endsWith('.rttex') ? '.png' : '.rttex';
     const newName = originalName.replace(/\.(rttex|png)$/i, newExtension);
-    
+
     RTTEXConverter.downloadBlob(conversion.result, newName);
+  };
+
+  const downloadAllAsZip = async () => {
+    const completed = conversions.filter(c => c.status === 'completed' && c.result);
+    if (completed.length === 0) return;
+
+    setIsZipping(true);
+    try {
+      const zip = new JSZip();
+
+      for (const conversion of completed) {
+        const originalName = conversion.file.name;
+        const newExtension = originalName.endsWith('.rttex') ? '.png' : '.rttex';
+        const newName = originalName.replace(/\.(rttex|png)$/i, newExtension);
+        zip.file(newName, conversion.result!);
+      }
+
+      const zipBlob = await zip.generateAsync({ type: "blob" });
+      RTTEXConverter.downloadBlob(zipBlob, "converted_textures.zip");
+    } finally {
+      setIsZipping(false);
+    }
   };
 
   const clearAll = () => {
@@ -100,6 +124,8 @@ export default function RttexConverter() {
       default: return 'bg-muted';
     }
   };
+
+  const completedCount = conversions.filter(c => c.status === 'completed').length;
 
   return (
     <ToolPageLayout
@@ -145,13 +171,23 @@ export default function RttexConverter() {
               <div className="flex items-center justify-between">
                 <CardTitle>Conversion Queue ({conversions.length} files)</CardTitle>
                 <div className="flex gap-2">
-                  <Button 
-                    onClick={convertFiles} 
+                  <Button
+                    onClick={convertFiles}
                     disabled={isConverting || conversions.every(c => c.status !== 'pending')}
                   >
                     <RefreshCw className={`w-4 h-4 mr-2 ${isConverting ? 'animate-spin' : ''}`} />
                     Convert All
                   </Button>
+                  {completedCount > 0 && (
+                    <Button
+                      variant="secondary"
+                      onClick={downloadAllAsZip}
+                      disabled={isZipping}
+                    >
+                      <Archive className={`w-4 h-4 mr-2 ${isZipping ? 'animate-pulse' : ''}`} />
+                      {isZipping ? 'Zipping...' : `Download ZIP (${completedCount})`}
+                    </Button>
+                  )}
                   <Button variant="outline" onClick={clearAll}>
                     Clear All
                   </Button>
@@ -163,7 +199,7 @@ export default function RttexConverter() {
                 {conversions.map((conversion, index) => (
                   <div key={index} className="flex items-center gap-4 p-3 rounded-lg border bg-card/50">
                     <div className={`w-2 h-2 rounded-full ${getStatusColor(conversion.status)}`} />
-                    
+
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 mb-1">
                         <span className="font-medium truncate">{conversion.file.name}</span>
@@ -172,22 +208,22 @@ export default function RttexConverter() {
                           {conversion.file.name.endsWith('.rttex') ? '.png' : '.rttex'}
                         </span>
                       </div>
-                      
+
                       <div className="flex items-center gap-2">
                         <Badge variant="outline" className="text-xs">
                           {(conversion.file.size / 1024).toFixed(1)} KB
                         </Badge>
-                        <Badge 
+                        <Badge
                           variant={
                             conversion.status === 'completed' ? 'default' :
-                            conversion.status === 'error' ? 'destructive' :
-                            conversion.status === 'converting' ? 'secondary' : 'outline'
+                              conversion.status === 'error' ? 'destructive' :
+                                conversion.status === 'converting' ? 'secondary' : 'outline'
                           }
                         >
                           {conversion.status}
                         </Badge>
                       </div>
-                      
+
                       {conversion.error && (
                         <p className="text-sm text-destructive mt-1">{conversion.error}</p>
                       )}
@@ -197,9 +233,9 @@ export default function RttexConverter() {
                       <div className="flex items-center gap-4">
                         {conversion.file.name.endsWith('.rttex') && (
                           <div className="w-16 h-16 rounded overflow-hidden bg-black/10 border flex-shrink-0">
-                            <img 
-                              src={URL.createObjectURL(conversion.result)} 
-                              alt="Preview" 
+                            <img
+                              src={URL.createObjectURL(conversion.result)}
+                              alt="Preview"
                               className="w-full h-full object-contain"
                               style={{ imageRendering: 'pixelated' }}
                             />
