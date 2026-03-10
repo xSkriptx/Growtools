@@ -163,7 +163,7 @@ export default function Index() {
         <div className="container relative z-10">
           <div className="max-w-3xl mx-auto text-center">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 mb-6 animate-fade-in">
-              <img src="/logo.png" className="w-5 h-5 rounded-sm" alt="Logo" />
+              <Wrench className="w-4 h-4 text-primary" />
               <span className="text-sm text-primary font-medium">The Ultimate Growtopia Toolkit</span>
             </div>
             

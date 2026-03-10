@@ -46,8 +46,8 @@ export function Navbar() {
       <div className="container flex h-16 items-center justify-between">
         {/* Logo */}
         <Link to="/" className="flex items-center gap-2 group">
-          <div className="w-10 h-10 rounded-lg overflow-hidden flex items-center justify-center group-hover:scale-110 transition-transform">
-            <img src="/logo.png" className="w-full h-full object-cover" alt="Growtools Logo" />
+          <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-primary to-accent flex items-center justify-center group-hover:scale-110 transition-transform">
+            <Wrench className="w-5 h-5 text-primary-foreground" />
           </div>
           <span className="text-xl font-bold gradient-text hidden sm:inline">
             Growtools
