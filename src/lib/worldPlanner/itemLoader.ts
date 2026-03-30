@@ -16,17 +16,21 @@ export function getTextureUrl(): string { return TEX; }
 export function getVersions(): string[] { return VERSIONS; }
 export function getCurrentVersion(): string { return CFG.ver; }
 export function setVersion(ver: string) {
-  if (VERSIONS.includes(ver)) {
-    CFG.ver = ver;
-    TEX = `${RAW}/${CFG.ver}/decoded/textures/`;
-  }
+  CFG.ver = ver;
+  TEX = `${RAW}/${CFG.ver}/decoded/textures/`;
 }
 
 export function pngName(fn: string): string | null {
   if (!fn) return null;
+  if (fn.toLowerCase().endsWith('.png')) return fn;
   const b = fn.replace(/\.rttex$/i, '');
   if (/^player_(feet|handitem|longhanditem|cosmetics)/i.test(b)) return b + '_icon.png';
   return b + '.png';
+}
+
+export function isIconItem(it: { file_name?: string }): boolean {
+  const fn = (it.file_name || '').toLowerCase();
+  return /player_(feet|handitem|longhanditem|cosmetics)/i.test(fn);
 }
 
 function parseItems(txt: string): GTItem[] {
@@ -68,6 +72,19 @@ export function autoLayer(it: GTItem): 0 | 1 {
   return 1;
 }
 
+export type BlockCategory = 'block' | 'background';
+
+export function getBlockCategory(it: GTItem): BlockCategory {
+  // Background: type = 18 (Cave Background, Wooden Background, etc.)
+  if (it.type === 18) return 'background';
+  
+  // Block: collision = 1 (solid) OR collision = 0 AND type ≠ 18 (walkable foreground like Main Door, Sign, Door)
+  if (it.collision === 1 || (it.collision === 0 && it.type !== 18)) return 'block';
+  
+  // Default to block
+  return 'block';
+}
+
 export function getPaintColor(it: GTItem): string | null {
   if (!it.name.toLowerCase().includes('paint')) return null;
   if (it.id === 3492) return null; // Varnish
@@ -94,12 +111,28 @@ export function getImage(fileName: string): HTMLImageElement | null {
   if (!fileName) return null;
   const p = pngName(fileName);
   if (!p) return null;
-  if (imageCache[p]) return imageCache[p];
+  const key = `${TEX}${p}`;
+  if (imageCache[key]) return imageCache[key];
   const img = new Image();
   img.crossOrigin = 'anonymous';
-  img.src = TEX + p;
-  imageCache[p] = img;
+  img.src = key;
+  imageCache[key] = img;
   return img;
+}
+
+export function getIconCoordinates(item: { tex_x?: number; tex_y?: number; spread_type?: number; storage_type?: number }): [number, number] {
+  const x = item.tex_x ?? 0;
+  const y = item.tex_y ?? 0;
+  const spreadType = item.spread_type ?? item.storage_type;
+  switch (spreadType) {
+    case 2:
+    case 5:
+      return [x + 4, y + 1];
+    case 3:
+      return [x + 3, y];
+    default:
+      return [x, y];
+  }
 }
 
 export function isImageLoaded(img: HTMLImageElement | null): boolean {

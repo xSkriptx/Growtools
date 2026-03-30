@@ -30,6 +30,138 @@ import {
 } from "@/components/ui/pagination";
 import { DATParser, type Item } from "@/lib/datParser";
 
+function isIconItem(item: Item): boolean {
+  const fn = item.file_name?.toLowerCase() ?? "";
+  return /player_(feet|handitem|longhanditem|cosmetics)/.test(fn);
+}
+
+function decodeGTColor(value: number): [number, number, number] {
+  const num = (value || 0) >>> 0;
+  const r = (num >> 16) & 0xff;
+  const g = (num >> 8) & 0xff;
+  const b = num & 0xff;
+
+  // Growtopia sometimes stores seed colors as a plain 24-bit RGB value
+  // or as a little-endian 32-bit word where the lowest byte is unused.
+  if ((num & 0xff) === 0) {
+    return [r, g, b];
+  }
+
+  return [
+    (num >> 8) & 0xff,
+    (num >> 16) & 0xff,
+    (num >> 24) & 0xff,
+  ];
+}
+
+function isLikelyOddIdSeed(item: Item, allItems: Item[]): boolean {
+  if ((item.id ?? 0) % 2 !== 1) return false;
+  const prev = allItems.find((it) => it.id === item.id - 1);
+  if (!prev) return false;
+
+  const hasSeedData =
+    (item.seed1 ?? 0) !== 0 ||
+    (item.seed2 ?? 0) !== 0 ||
+    (item.seed_base ?? 0) !== 0 ||
+    (item.seed_over ?? 0) !== 0 ||
+    (item.bg_col ?? 0) !== 0 ||
+    (item.fg_col ?? 0) !== 0 ||
+    (item.bloom_time ?? 0) !== 0;
+
+  return hasSeedData;
+}
+
+function isSeedItem(item: Item, allItems: Item[]): boolean {
+  return (item.type !== 38 && (item.bloom_time || 0) !== 0) || isLikelyOddIdSeed(item, allItems);
+}
+
+function drawBootIcon(ctx: CanvasRenderingContext2D, img: HTMLImageElement, item: Item, width = 32, height = 32) {
+  const fileName = item.file_name?.toLowerCase() ?? "";
+  const isFeet = fileName.includes('player_feet');
+  const tx = item.tex_x || 0;
+  const ty = isFeet ? (item.tex_y || 0) * 2 : (item.tex_y || 0);
+  if (tx < 0 || ty < 0) return false;
+  ctx.imageSmoothingEnabled = false;
+  ctx.drawImage(img, tx * 32, ty * 32, 32, 32, 0, 0, width, height);
+  return true;
+}
+
+function drawSeedIcon(ctx: CanvasRenderingContext2D, img: HTMLImageElement, item: Item, width = 32, height = 32) {
+  const pickSlot = (primary: number | undefined, fallback: number | undefined) => {
+    const p = primary ?? 0;
+    const f = fallback ?? 0;
+    return p !== 0 ? p : f;
+  };
+
+  const baseSlot = pickSlot(item.seed_base, item.seed1);
+  const overSlot = pickSlot(item.seed_over, item.seed2);
+  const bgColor = decodeGTColor(item.bg_col || 0);
+  const fgColor = decodeGTColor(item.fg_col || 0);
+
+  const isValidSeedColor = (color: [number, number, number]) =>
+    color[0] > 10 || color[1] > 10 || color[2] > 10;
+
+  const drawLayer = (
+    slot: number,
+    row: number,
+    color: [number, number, number],
+    fallback: [number, number, number]
+  ) => {
+    const tileX = slot % 16;
+    const tileY = row;
+    const layerColor = isValidSeedColor(color) ? color : fallback;
+
+    const layerCanvas = document.createElement('canvas');
+    layerCanvas.width = 16;
+    layerCanvas.height = 16;
+    const layerCtx = layerCanvas.getContext('2d');
+    if (!layerCtx) return;
+    layerCtx.imageSmoothingEnabled = false;
+
+    layerCtx.drawImage(img, tileX * 16, tileY * 16, 16, 16, 0, 0, 16, 16);
+    const imageData = layerCtx.getImageData(0, 0, 16, 16);
+    const data = imageData.data;
+    for (let i = 0; i < data.length; i += 4) {
+      if (data[i + 3] === 0) continue;
+      const gray = data[i] / 255;
+      const tint = gray * 0.9;
+      data[i] = Math.round(layerColor[0] * tint);
+      data[i + 1] = Math.round(layerColor[1] * tint);
+      data[i + 2] = Math.round(layerColor[2] * tint);
+    }
+    layerCtx.putImageData(imageData, 0, 0);
+
+    ctx.drawImage(layerCanvas, 0, 0, 16, 16, 0, 0, width, height);
+  };
+
+  drawLayer(baseSlot, 0, bgColor, [160, 180, 80]);
+  drawLayer(overSlot, 1, fgColor, [60, 80, 40]);
+}
+
+function applyIconDarkTint(ctx: CanvasRenderingContext2D, width: number, height: number) {
+  // Match ItemBrowser's ~10% darkening used during seed tinting.
+  ctx.fillStyle = 'rgba(0, 0, 0, 0.10)';
+  ctx.fillRect(0, 0, width, height);
+}
+
+function getBlockIconCoordinates(item: Item): [number, number] {
+  const x = item.tex_x || 0;
+  const y = item.tex_y || 0;
+  const spreadType = item.storage_type || 0;
+
+  switch (spreadType) {
+    case 2:
+    case 5:
+      return [x + 4, y + 1];
+    case 3:
+      return [x + 3, y];
+    case 0:
+    case 1:
+    default:
+      return [x, y];
+  }
+}
+
 const FIELD_MAPPING = {
   "id": "Item ID",
   "properties": "Editable Type", 
@@ -117,6 +249,19 @@ export default function DatDecoder() {
   // Sprite cache
   const spriteCache = useRef<Record<string, HTMLImageElement>>({});
 
+  // Helper to resize canvas to device pixel ratio
+  const resizeCanvasToDisplaySize = (canvas: HTMLCanvasElement) => {
+    const rect = canvas.getBoundingClientRect();
+    const dpr = window.devicePixelRatio || 1;
+    const width = Math.max(1, Math.round(rect.width * dpr));
+    const height = Math.max(1, Math.round(rect.height * dpr));
+    if (canvas.width !== width || canvas.height !== height) {
+      canvas.width = width;
+      canvas.height = height;
+    }
+    return { width, height };
+  };
+
   // Filter states
   const [actionTypeFilter, setActionTypeFilter] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("");
@@ -129,6 +274,7 @@ export default function DatDecoder() {
   // Sprite rendering functions
   const fileNameToPng = (fileName: string): string | null => {
     if (!fileName) return null;
+    if (/\.png$/i.test(fileName)) return fileName;
     const base = fileName.replace(/\.rttex$/i, '');
     if (/^player_feet/i.test(base) || /^player_handitem/i.test(base) ||
         /^player_longhanditem/i.test(base) || /^player_cosmetics/i.test(base)) {
@@ -161,46 +307,56 @@ export default function DatDecoder() {
   };
 
   const drawItemIcon = (canvas: HTMLCanvasElement, item: Item) => {
+    const { width, height } = resizeCanvasToDisplaySize(canvas);
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
+    ctx.imageSmoothingEnabled = false;
+
     // Clear canvas
     ctx.fillStyle = '#1a1a1a';
-    ctx.fillRect(0, 0, 32, 32);
+    ctx.fillRect(0, 0, width, height);
 
-    if (!item.file_name || !texBaseIcons) {
+    if (!texBaseIcons) {
       // Draw default icon (question mark or similar)
       ctx.fillStyle = '#666';
       ctx.font = '20px monospace';
       ctx.textAlign = 'center';
-      ctx.fillText('?', 16, 22);
+      ctx.fillText('?', width / 2, height * 0.7);
       return;
     }
 
-    const img = getSpriteImg(item.file_name);
+    const seed = isSeedItem(item, items);
+    const img = seed ? getSpriteImg('seed.png') : (item.file_name ? getSpriteImg(item.file_name) : null);
     if (img && img.complete && img.naturalWidth > 0) {
-      const texX = item.tex_x || 0;
-      const texY = item.tex_y || 0;
-      
       try {
-        ctx.drawImage(
-          img,
-          texX * 32, texY * 32, 32, 32, // source
-          0, 0, 32, 32 // destination
-        );
+        if (seed) {
+          drawSeedIcon(ctx, img, item, width, height);
+          applyIconDarkTint(ctx, width, height);
+        } else if (isIconItem(item)) {
+          if (!drawBootIcon(ctx, img, item, width, height)) throw new Error('Boot draw failed');
+        } else {
+          const [texX, texY] = getBlockIconCoordinates(item);
+          ctx.drawImage(
+            img,
+            texX * 32, texY * 32, 32, 32, // source
+            0, 0, width, height // destination
+          );
+          applyIconDarkTint(ctx, width, height);
+        }
       } catch (e) {
         // Fallback to placeholder
         ctx.fillStyle = '#666';
         ctx.font = '12px monospace';
         ctx.textAlign = 'center';
-        ctx.fillText('ERR', 16, 18);
+        ctx.fillText('ERR', width / 2, height * 0.6);
       }
     } else {
       // Show loading placeholder
       ctx.fillStyle = '#444';
       ctx.font = '10px monospace';
       ctx.textAlign = 'center';
-      ctx.fillText('...', 16, 18);
+      ctx.fillText('...', width / 2, height * 0.6);
     }
   };
 

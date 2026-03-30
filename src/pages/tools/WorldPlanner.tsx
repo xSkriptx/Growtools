@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { toast } from "@/hooks/use-toast";
 import { WorldPlannerEngine } from "@/lib/worldPlanner/engine";
-import { loadItems, isPlaceable, autoLayer, getImage, isImageLoaded } from "@/lib/worldPlanner/itemLoader";
+import { loadItems, isPlaceable, autoLayer, getImage, getIconCoordinates, isImageLoaded, getBlockCategory, BlockCategory } from "@/lib/worldPlanner/itemLoader";
 import { GTItem, Tool, LayerMode } from "@/lib/worldPlanner/types";
 
 const TOOLS: { id: Tool; icon: any; label: string; key: string }[] = [
@@ -38,7 +38,7 @@ export default function WorldPlanner() {
   const [activeLayer, setActiveLayer] = useState<LayerMode>('auto');
   const [selectedItem, setSelectedItem] = useState<GTItem | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
-  const [filterType, setFilterType] = useState<'all' | 'fg' | 'bg'>('all');
+  const [filterType, setFilterType] = useState<'all' | 'block' | 'background'>('all');
   const [blockCount, setBlockCount] = useState(0);
   const [coords, setCoords] = useState({ x: 0, y: 0 });
   const [canUndo, setCanUndo] = useState(false);
@@ -56,8 +56,8 @@ export default function WorldPlanner() {
       const q = searchQuery.toLowerCase();
       list = list.filter(it => it.name.toLowerCase().includes(q) || String(it.id) === q);
     }
-    if (filterType === 'fg') list = list.filter(it => autoLayer(it) === 1);
-    if (filterType === 'bg') list = list.filter(it => autoLayer(it) === 0);
+    if (filterType === 'block') list = list.filter(it => getBlockCategory(it) === 'block');
+    if (filterType === 'background') list = list.filter(it => getBlockCategory(it) === 'background');
     return list;
   }, [items, searchQuery, filterType]);
 
@@ -180,7 +180,7 @@ export default function WorldPlanner() {
 
           {/* Filter */}
           <div className="flex gap-1 p-1.5 border-b">
-            {(['all', 'fg', 'bg'] as const).map(f => (
+            {(['all', 'block', 'background'] as const).map(f => (
               <button
                 key={f}
                 onClick={() => { setFilterType(f); setSidebarPage(0); }}
@@ -190,7 +190,7 @@ export default function WorldPlanner() {
                     : 'border-border text-muted-foreground hover:text-foreground'
                 }`}
               >
-                {f.toUpperCase()}
+                {f === 'all' ? 'ALL' : f === 'block' ? 'BLOCKS' : 'BACKGROUNDS'}
               </button>
             ))}
             <span className="ml-auto text-[10px] text-muted-foreground self-center">{filteredItems.length}</span>
@@ -232,9 +232,16 @@ export default function WorldPlanner() {
                 <div className="min-w-0 flex-1">
                   <div className="text-sm font-bold truncate leading-tight">{selectedItem.name}</div>
                   <div className="flex items-center gap-2 mt-0.5">
-                    <div className="text-[10px]" style={{ color: autoLayer(selectedItem) === 1 ? '#4ade80' : '#38bdf8' }}>
-                      {autoLayer(selectedItem) === 1 ? 'Block (Foreground)' : 'Background (Layer 0)'}
-                    </div>
+                    {(() => {
+                      const category = getBlockCategory(selectedItem);
+                      const categoryColor = category === 'block' ? '#4ade80' : '#38bdf8';
+                      const categoryLabel = category === 'block' ? 'Block' : 'Background';
+                      return (
+                        <div className="text-[10px]" style={{ color: categoryColor }}>
+                          {categoryLabel}
+                        </div>
+                      );
+                    })()}
                     <span className="text-[9px] text-muted-foreground bg-muted px-1 rounded">#{selectedItem.id}</span>
                   </div>
                 </div>
@@ -411,11 +418,53 @@ function WrenchModal({ data, onClose, onSelect }: {
   }, [tileFile]);
 
   const tiles = [];
+  
+  // Only show variants for this specific block based on spread_type
   if (imgSize.w) {
-    for (let y = 0; y < imgSize.h / 32; y++) {
-      for (let x = 0; x < imgSize.w / 32; x++) {
-        tiles.push({ x, y });
+    if (data.item.spread_type === 2) {
+      // spread_type 2: 8x6 grid (x to x+7, y to y+5)
+      const baseX = data.item.tex_x;
+      const baseY = data.item.tex_y;
+      for (let ty = baseY; ty < baseY + 6; ty++) {
+        for (let tx = baseX; tx < baseX + 8; tx++) {
+          tiles.push({ x: tx, y: ty, label: null });
+        }
       }
+    } else if (data.item.spread_type === 5) {
+      // spread_type 5: 8x2 grid (x to x+7, y to y+1)
+      const baseX = data.item.tex_x;
+      const baseY = data.item.tex_y;
+      for (let ty = baseY; ty < baseY + 2; ty++) {
+        for (let tx = baseX; tx < baseX + 8; tx++) {
+          tiles.push({ x: tx, y: ty, label: null });
+        }
+      }
+    } else if (data.item.spread_type === 3) {
+      // spread_type 3: 3x1 grid (x to x+2, y to y+0)
+      const baseX = data.item.tex_x;
+      const baseY = data.item.tex_y;
+      for (let tx = baseX; tx < baseX + 3; tx++) {
+        tiles.push({ x: tx, y: baseY, label: null });
+      }
+    } else if (data.item.spread_type === 1) {
+      // spread_type 1: Animated toggle (OFF + 2 ON frames)
+      const baseX = data.item.tex_x;
+      const baseY = data.item.tex_y;
+      tiles.push({ x: baseX, y: baseY, label: 'OFF' });
+      tiles.push({ x: baseX + 1, y: baseY, label: 'ON (Frame 1)' });
+      tiles.push({ x: baseX + 2, y: baseY, label: 'ON (Frame 2)' });
+    } else if (data.item.spread_type === 4) {
+      // spread_type 4: Static toggle (State 1 + State 2, no animation)
+      const baseX = data.item.tex_x;
+      const baseY = data.item.tex_y;
+      tiles.push({ x: baseX, y: baseY, label: 'State 1 (Closed)' });
+      tiles.push({ x: baseX + 1, y: baseY, label: 'State 2 (Open)' });
+    } else if (data.item.spread_type === 0) {
+      // spread_type 0: just the single tile
+      tiles.push({ x: data.item.tex_x, y: data.item.tex_y, label: null });
+    } else {
+      // For other spread types, show single tile for now
+      tiles.push({ x: data.item.tex_x, y: data.item.tex_y, label: null });
     }
   }
 
@@ -425,31 +474,45 @@ function WrenchModal({ data, onClose, onSelect }: {
         <div className="p-4 border-b flex items-center justify-between bg-muted/30">
           <div>
             <h3 className="font-bold">Wrench: {data.item.name}</h3>
-            <p className="text-[10px] text-muted-foreground">Select a tile variation from the spritesheet or clear override.</p>
+            <p className="text-[10px] text-muted-foreground">
+              {data.item.spread_type === 2 
+                ? `Variants (8×6 grid)` 
+                : data.item.spread_type === 5
+                ? `Variants (8×2 grid)`
+                : data.item.spread_type === 3
+                ? `Variants (3×1 grid)`
+                : data.item.spread_type === 1
+                ? `States (OFF + ON with 2 animation frames)`
+                : data.item.spread_type === 4
+                ? `States (2 static states, no animation)`
+                : `Select a variation or clear override.`}
+            </p>
           </div>
           <Button variant="ghost" size="icon" className="h-8 w-8" onClick={onClose}><X className="w-4 h-4" /></Button>
         </div>
         <div className="p-4 overflow-y-auto flex flex-wrap gap-1 justify-center bg-[#0d1117]">
           {tiles.map(t => (
-             <button
-               key={`${t.x},${t.y}`}
-               onClick={() => onSelect(t.x, t.y)}
-               className="group relative border border-white/5 hover:border-primary/50 bg-black/40 transition-colors rounded overflow-hidden"
-               style={{ width: 44, height: 44 }}
-             >
-               <div 
-                 className="absolute inset-1 pointer-events-none"
-                 style={{
-                   imageRendering: 'pixelated',
-                   backgroundImage: `url(${getImage(tileFile)?.src})`,
-                   backgroundPosition: `-${t.x * 32}px -${t.y * 32}px`,
-                   backgroundSize: `${imgSize.w}px ${imgSize.h}px`,
-                   transform: 'scale(1.125)',
-                   transformOrigin: 'top left'
-                 }}
-               />
-               <span className="absolute bottom-0 right-0 text-[6px] text-white/20 px-0.5 group-hover:text-primary/50">{t.x},{t.y}</span>
-             </button>
+             <div key={`${t.x},${t.y}`} className="flex flex-col items-center gap-1">
+               <button
+                 onClick={() => onSelect(t.x, t.y)}
+                 className="group relative border border-white/5 hover:border-primary/50 bg-black/40 transition-colors rounded overflow-hidden"
+                 style={{ width: 44, height: 44 }}
+               >
+                 <div 
+                   className="absolute inset-1 pointer-events-none"
+                   style={{
+                     imageRendering: 'pixelated',
+                     backgroundImage: `url(${getImage(tileFile)?.src})`,
+                     backgroundPosition: `-${t.x * 32}px -${t.y * 32}px`,
+                     backgroundSize: `${imgSize.w}px ${imgSize.h}px`,
+                     transform: 'scale(1.125)',
+                     transformOrigin: 'top left'
+                   }}
+                 />
+                 <span className="absolute bottom-0 right-0 text-[6px] text-white/20 px-0.5 group-hover:text-primary/50">{t.x},{t.y}</span>
+               </button>
+               {t.label && <span className="text-[8px] text-muted-foreground font-semibold text-center">{t.label}</span>}
+             </div>
           ))}
         </div>
         <div className="p-3 border-t bg-muted/30 flex justify-between">
@@ -475,7 +538,8 @@ const downloadItemPng = (item: GTItem) => {
   if (!ctx) return;
 
   ctx.imageSmoothingEnabled = false;
-  ctx.drawImage(img, item.tex_x * 32, item.tex_y * 32, 32, 32, 0, 0, 32, 32);
+  const [texX, texY] = getIconCoordinates(item);
+  ctx.drawImage(img, texX * 32, texY * 32, 32, 32, 0, 0, 32, 32);
 
   const link = document.createElement('a');
   link.download = `${item.name.replace(/[^a-z0-9]/gi, '_').toLowerCase()}_${item.id}.png`;
@@ -485,7 +549,7 @@ const downloadItemPng = (item: GTItem) => {
 
 // Sub-components
 function SidebarItem({ item, selected, onClick, onDownload }: { item: GTItem; selected: boolean; onClick: () => void; onDownload: (item: GTItem) => void }) {
-  const layer = autoLayer(item);
+  const category = getBlockCategory(item);
   return (
     <div
       className={`group w-full flex items-center gap-1.5 px-1.5 py-1 rounded text-left border transition-colors mb-px relative ${
@@ -504,12 +568,12 @@ function SidebarItem({ item, selected, onClick, onDownload }: { item: GTItem; se
         <span
           className="text-[8px] font-bold px-1 rounded border flex-shrink-0"
           style={{
-            color: layer === 1 ? '#4ade80' : '#38bdf8',
-            borderColor: layer === 1 ? 'rgba(74,222,128,0.4)' : 'rgba(56,189,248,0.4)',
-            background: layer === 1 ? 'rgba(74,222,128,0.06)' : 'rgba(56,189,248,0.06)',
+            color: category === 'block' ? '#4ade80' : '#38bdf8',
+            borderColor: category === 'block' ? 'rgba(74,222,128,0.4)' : 'rgba(56,189,248,0.4)',
+            background: category === 'block' ? 'rgba(74,222,128,0.06)' : 'rgba(56,189,248,0.06)',
           }}
         >
-          {layer === 1 ? 'BLK' : 'BG'}
+          {category === 'block' ? 'BLK' : 'BG'}
         </span>
       </div>
       <Button
@@ -543,7 +607,8 @@ function ItemIcon({ item, size }: { item: GTItem; size: number }) {
       ctx.clearRect(0, 0, size, size);
       ctx.imageSmoothingEnabled = false;
       const T = 32;
-      const px = item.tex_x * T, py = item.tex_y * T;
+      const [texX, texY] = getIconCoordinates(item);
+      const px = texX * T, py = texY * T;
       if (px + T <= img.naturalWidth && py + T <= img.naturalHeight) {
         ctx.drawImage(img, px, py, T, T, 0, 0, size, size);
       } else {

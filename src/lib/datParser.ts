@@ -327,6 +327,6 @@ export class DATParser {
   }
 
   static isNullItem(item: Item): boolean {
-    return !item.name || item.name.trim() === '' || item.id === 0;
+    return !item.name || item.name.trim() === '';
   }
 }

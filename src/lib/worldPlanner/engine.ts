@@ -1,5 +1,5 @@
 import { GTItem, Tool, LayerMode, ViewState, ClipboardCell } from './types';
-import { getImage, isImageLoaded, autoLayer, pngName, getPaintColor } from './itemLoader';
+import { getImage, isImageLoaded, getBlockCategory, pngName, getPaintColor } from './itemLoader';
 import { ST2, ST5, ST14, bestAutotile, bestAutotileAxis } from './autotile';
 
 const T = 32; // tile size
@@ -56,6 +56,7 @@ export class WorldPlannerEngine {
   private lastCell = { x: -1, y: -1 };
   private lastMousePos = { x: 0, y: 0 };
   private shapeStart: { x: number; y: number } | null = null;
+  private deleteLayer: 0 | 1 | null = null; // Track which layer to delete from during drag
 
   private previewCanvas: HTMLCanvasElement | null = null;
   private pvCtx: CanvasRenderingContext2D | null = null;
@@ -395,15 +396,25 @@ export class WorldPlannerEngine {
 
   // Placement
   private getPlaceLayer(it: GTItem): 0 | 1 {
-    return autoLayer(it);
+    const category = getBlockCategory(it);
+    return category === 'block' ? 1 : 0;
   }
 
   private placeCell(wx: number, wy: number, erase: boolean) {
     if (!this.inBounds(wx, wy)) return;
     if (erase) {
-      if (this.layerMode === 'auto') {
-        if (this.world[1][wy][wx] != null) this.world[1][wy][wx] = null;
-        else if (this.world[0][wy][wx] != null) this.world[0][wy][wx] = null;
+      if (this.deleteLayer !== null) {
+        // During drag erase, only delete from the tracked layer
+        this.world[this.deleteLayer][wy][wx] = null;
+      } else if (this.layerMode === 'auto') {
+        // First deletion in auto mode - delete from whichever layer has content
+        if (this.world[1][wy][wx] != null) {
+          this.deleteLayer = 1;
+          this.world[1][wy][wx] = null;
+        } else if (this.world[0][wy][wx] != null) {
+          this.deleteLayer = 0;
+          this.world[0][wy][wx] = null;
+        }
       } else {
         const l = this.layerMode as number;
         this.world[l][wy][wx] = null;
@@ -633,6 +644,7 @@ export class WorldPlannerEngine {
     if (this.tool === 'pan') return;
     if (this.tool === 'pencil' || this.tool === 'erase') {
       this.drawing = true;
+      this.deleteLayer = null; // Reset delete layer for new stroke
       this.lastCell = { x: -1, y: -1 };
       this.placeCell(wx, wy, this.tool === 'erase' || erase);
       this.lastCell = { x: wx, y: wy };
@@ -689,6 +701,7 @@ export class WorldPlannerEngine {
     if (this.drawing) {
       this.drawing = false;
       this.lastCell = { x: -1, y: -1 };
+      this.deleteLayer = null; // Reset delete layer after drag
       this.snapshot();
       this.autoSave();
       return;
