@@ -194,10 +194,6 @@ export class DATParser {
     const version = vr.value;
     offset = vr.newOffset;
     
-    if (version < 22) {
-      throw new Error(`Unsupported items.dat version: ${version}. Need ≥22.`);
-    }
-    
     // Parse item count
     const cr = parseNumber(buffer, offset, 4);
     const itemCount = cr.value;
